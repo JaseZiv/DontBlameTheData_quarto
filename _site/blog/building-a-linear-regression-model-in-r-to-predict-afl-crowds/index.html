@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.269">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Jason Zivkovic">
+<meta name="dcterms.date" content="2019-07-27">
+
+<title>Don’t Blame the Data - Building a Linear Regression Model in R to Predict AFL Crowds</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../favicon.ico" rel="icon">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+<script type="text/javascript">
+
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-145056765-1', 'auto');
+
+ga('send', {
+  hitType: 'pageview',
+  'anonymizeIp': true,
+});
+</script>
+
+<script src="../../site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="../../site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+
+
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../icon.jpg" alt="" class="navbar-logo">
+    </a>
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Don’t Blame the Data</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../blog.html">
+ <span class="menu-text">Blog</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-projects" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Projects</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-projects">    
+        <li>
+    <a class="dropdown-item" href="../../pages/worldfootballR.html">
+ <span class="dropdown-text">worldfootballR</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/chessR.html">
+ <span class="dropdown-text">chessR</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/nblR.html">
+ <span class="dropdown-text">nblR</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/bettRtab.html">
+ <span class="dropdown-text">bettRtab</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="https://nbl-r-shiny.herokuapp.com">
+ <span class="menu-text">NBL Win Probability App</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/JaseZiv"><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/jaseziv"><i class="bi bi-twitter" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://linkedin.com/in/jason-zivkovic-4a0a1926/"><i class="bi bi-linkedin" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Building a Linear Regression Model in R to Predict AFL Crowds</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">R</div>
+                <div class="quarto-category">afl</div>
+                <div class="quarto-category">regression</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Jason Zivkovic </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">July 27, 2019</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
+<p>There is a lot of talk about crowd behaviour and crowd issues with the modern day AFL. I personally feel the crowd issues are a case of <em>business-as-usual</em>; I’ve been going to AFL games on-and-off for close to three decades and the crowd behaviour is no different today as it was 20 years ago… just now everyone with a phone and Twitter account is a journo.</p>
+<p>Anyway, that’s my two cents worth. This analysis is not on crowd behaviour. This post is primarily concerned with building a model to predict AFL crowds during the season proper. While data was collected since the beginning of the 2000 season, the model will be bult on training data from the beginning of the 2013 season to the end of the 2018 season (Finals series excluded), with the trained model then used to predict the attendance figures of AFL games during the 2019 season up until round 18 which concluded on Sunday 21st July, 2019. The linear model will be built using R (version 3.5.3) in <a href="http://www.rstudio.com/">RStudio</a>.</p>
+<p>This post is a follow up to my introductory analysis done on bandwagon fans. It can be found <a href="https://medium.com/@jaseziv83/using-data-to-determine-which-afl-fans-jump-on-the-bandwagon-8adbcc4160b0?sk=b4c0788b1f54aca1cfd50e2766eadd5c">here</a>.</p>
+<p>The article was inspired by the amazing work Tony Corke does, specifically his post on <a href="http://www.matterofstats.com/mafl-stats-journal/2016/3/16/the-predic">The Predictability of AFL Crowds</a>.</p>
+<p>All code for this project can be found on GitHub <a href="https://github.com/JaseZiv/AFL-Crowd-Analytics">here</a></p>
+<section id="the-data" class="level2">
+<h2 class="anchored" data-anchor-id="the-data">The Data</h2>
+<p>Three sources of data were used in the project:</p>
+<ol type="1">
+<li><a href="https://afltables.com">AFL Tables</a> was used as the primary source of information. This is no doubt the go to for anyone looking at doing AFL analysis</li>
+<li><a href="http://www.aussportsbetting.com">Australian Sports Betting</a> was used to get betting data for matches from the 2013 season</li>
+<li><a href="http://www.bom.gov.au/climate/data/">Australian Bureau of Meteorology</a> was used for climat data (rain and temperature). Part of the scraper for BOM data was taken from James Day’s <a href="https://github.com/jimmyday12/fitzRoy">fitzRoy</a> R package. Big thanks to him. The rain and temperature data had some missing observations. Missing rain data was filled by averaging out the next taken reading over the missed data points before it. Missing temperature was filled taking the average temperature for that month.</li>
+</ol>
+<hr>
+</section>
+</section>
+<section id="feature-engineering" class="level1">
+<h1>Feature Engineering</h1>
+<p>The data contained at AFL Tables is a rich source of information, but some steps were needed to glean some additional information from the data.</p>
+<p>The original three data sources combined contained approximately 35 variables for potential use. Feature engineering (the process of creating additional explanatory variables to use in a predictive model) was then conducted and resulted in ~95 features in total to see if they would ultimately be added to the final model to be used.</p>
+<section id="features-created" class="level2">
+<h2 class="anchored" data-anchor-id="features-created">Features Created</h2>
+<p>Based on some feedback from the Banwagon article and other things that I wanted to explore, some new features were created to see if they had any predictive power.</p>
+<p>Take the game start time as an example - having the time is great, but a regression model may find it better to categorise the time to a period of the day to reduce some of the noise. So, with that in mind, a feature (<code>time_period</code>) was created - if the game started by 5pm, I have classified it as an afternoon game. Games started between 5pm-7pm were classified as evening games, while games later than this were night games.</p>
+<p>Additionally, the day of the week and the <code>time_period</code> were joined into one variable <code>game_time</code> to use in the model. For example, if it was a Saturday game starting at 5:30pm, it was classified as “Sat-Evening”.</p>
+<p>Venues that were used infrequently, or more accurately, weren’t the teams primary “home” stadium were labelled as “Other”. There were 94 games played at these venues, and this includes at stadiums like <em>Eureka Stadium</em>, <em>Cazaly’s Stadium</em>, <em>Traeger Park</em>, and international venues <em>Wellington</em> in NZ and <em>Jiangwan Stadium</em> in China.</p>
+<p>Another feature was created to determine rivalry games - the thinking being that when two fierce rivals face off against each other, the crowds will come. To be a rivalry game, a few different options existed. The first contains the four oldest traditional rivals, all from Melbourne - Collingwood, Richmond, Essendon and Carlton (hold your Carlton opinions, I know they’ve been horrible but their fans still turn up to these rivalry games). The Derby in SA (<em>The Showdown</em> between Adelaide and Port Adelaide) and in WA (<em>Western Derby</em> between West Coast and Fremantle) are also classed as rivalry games.</p>
+<p>After hearing a key AFL staffer talk a few years back talk about betting markets being a strong predictor of attendances, I collected betting data to test this assumption. A number of features were created in addition to the raw odds and line data scraped. These included calculating the differences between the odds of the home and away team and also calculating the change in betting throughout the week.</p>
+<p>Features were also created of the average experience of both the home and away teams, as were milestone games (where players of either team are playing in their 100, 200, 250 or 300th games).</p>
+<p>Each team’s last game result was calculated, as was the number of wins each team had in their previous three games. Additionally, whether the team played finals the previous season was identified.</p>
+<p>A ladder at each round was created and ladder position, percentage and score for and against was explored as possible features for the end model.</p>
+<p>A feature was also created to identify games played by teams from the same state or not.</p>
+</section>
+</section>
+<section id="exploratory-data-analysis" class="level1">
+<h1>Exploratory Data Analysis</h1>
+<p>Before we start building the model, we need to understand both the response and predictor variables. The most effective way to do this is through visualisations, and what package is better to use than <code>ggplot2</code>!</p>
+<p>This section will contain some Exploratory Data Analysis (more commonly known as ‘EDA’), which is a natural first step in any data analysis project. It is an extrememly important step and allows the analyst to inspect the data - what shape does the target and predictor variables have, are there any correlations between the variables that may be included in a predictive model, are there any outliers in the data, or any missing data… you get the point, EDA is very important!</p>
+<p>Well there is no missing data in the dataset being used… that has all been cleaned in the pre-processing stage that can be found in <a href="https://github.com/JaseZiv/AFL-Crowd-Analytics/blob/master/src/preprocessing.R">this</a> R code.</p>
+<section id="the-response-variable---attendance" class="level2">
+<h2 class="anchored" data-anchor-id="the-response-variable---attendance">The Response Variable - <code>Attendance</code></h2>
+<p>Let’s look at our response variable - or the thing we’re trying to predict - <code>attendance</code> at AFL premiership season games.</p>
+<p>We can see that the attendance figures are somewhat positively skewed. We’ll see if the few higher attendance games cause any issues later on. This variable may need to undergo some form of transformation, but more on that later.</p>
+<p>The median attendance to AFL games during the regular season is just under 32,500 for the 1,340 games played since 2013.</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/attendance-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="some-key-predictors" class="level2">
+<h2 class="anchored" data-anchor-id="some-key-predictors">Some Key Predictors</h2>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>data_for_model <span class="ot">&lt;-</span> afl_premiership_season <span class="sc">%&gt;%</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(season, attendance, team1, team2, round, venue, game_time, home_median_experience, home_mean_experience, away_median_experience, away_mean_experience, home_300, home_milestone, away_300, away_milestone, count_milestones, rainfall_clean, min_temp, max_temp, last_five_days_rain, temperature_diff, HomeOddsOpen, AwayOddsOpen, HomeLineOpen, AwayLineOpen, odds_diff, rivalry_game, HomeTeamFav, team1_last_result, team2_last_result, split_round, home_team_finals_last_season, away_team_finals_last_season, season_stage, temperature, IsHomeMilestone, IsAwayMilestone, count_milestones, last_results, home_team_state, away_team_state, is_same_state, temperature_diff, home_odds_change, away_odds_change, home_line_change, away_line_change, second_home_game, home_season_points, home_score_for, home_percentage, home_ladder_pos, away_wins_last_three, away_season_points, away_score_for, away_percentage, away_ladder_pos, teams_in_eight, finals_last_season, home_wins_last_three, away_wins_last_three) <span class="sc">%&gt;%</span> <span class="fu">na.omit</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>As was evident in the first post of this series, there was noticeable variation in attendances between the teams, and also whether teams won or lost their previous game. Finally, the first post showed that the home team’s favouritism status also seemed to have a relationship with attendance.</p>
+<p><strong>Categorical Features:</strong></p>
+<p>Some of the key categorical variables created that we would expect to have an impact on crowd figures are displayed below.</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/multi_plots-1.png" class="img-fluid" width="1344"></p>
+</div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/multi_plots-2.png" class="img-fluid" width="1344"></p>
+</div>
+</div>
+<p><strong>Some observations:</strong></p>
+<ul>
+<li><p>There appears to be a relationship between the venue the game is played at and the attendance. Stadiums classified as <code>Other</code> include secondary home grounds and some of the ovals not used in 2019. There were 238 of the 1,340 games at these stadiums</p></li>
+<li><p>Whether either the home or away team played finals last year seems to have a weak relationship with attendance. It may be useful to include in our model</p></li>
+<li><p>When the game is played and attendance appear to be related. <code>Weekday Afternoon</code> and <code>Friday Afternoon</code> are high because of ANZAC day clashes between Essendon and Collingwood no doubt. Friday and Sunday night games seem to draw better crowds. Could be a useful predictor</p></li>
+<li><p>There appears to be some variance in attendance figures between the different rounds during a season. Could be a useful predictor</p></li>
+<li><p>Games classed as “Rivalry Games” clearly draw larger attendances than non-rivalry games. Could be a useful predictor</p></li>
+<li><p>Whether the round was a split round (where some teams have a bye, or week off) or not doesn’t appear to be related to attendances. Might not be a useful predictor</p></li>
+<li><p>There appears to be slightly higher crowds when the home team has a player playing a milestone (either a 100, 200, 250 or 300th game), but the relationship certainly doesn’t appear strong. Might not be a useful predictor</p></li>
+<li><p>When the two competing teams are from the same state, crowds appear to be higher. Could be a useful predictor</p></li>
+<li><p>To be expected, games where the home team is playing the game at their second home ground (Hawthorn and North in Tasmania, Melbourne, Western Bulldogs in Darwin, etc) draw lower crowds. This is probably more to do with lower statium capacities, but may still be a useful feature</p></li>
+</ul>
+<p><strong>Numerical Features:</strong></p>
+<p>To explore the relationship between the numerical features and <code>attendance</code>, Pearson’s correlation will be employed.</p>
+<p>Using dplyr to select just the numerical features and then calculate the correlations on the converted matrix yields the below correlations with <code>attendance</code>.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>numeric_features <span class="ot">&lt;-</span> data_for_model <span class="sc">%&gt;%</span> <span class="fu">select_if</span>(is.numeric)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>numeric_features <span class="sc">%&gt;%</span> </span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.matrix</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cor</span>() <span class="sc">%&gt;%</span> .[,<span class="st">"attendance"</span>] <span class="sc">%&gt;%</span> <span class="fu">sort</span>(<span class="at">decreasing =</span> T)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>            attendance   home_mean_experience        home_percentage 
+            1.00000000             0.26242775             0.23603629 
+home_median_experience   home_wins_last_three   away_mean_experience 
+            0.23224717             0.17740024             0.16024146 
+away_median_experience     home_season_points        away_percentage 
+            0.12698259             0.10829187             0.10549367 
+  away_wins_last_three                 season           AwayLineOpen 
+            0.08874187             0.06906937             0.06717077 
+      temperature_diff       count_milestones       home_line_change 
+            0.04693253             0.04502199             0.03176978 
+        away_milestone               home_300         home_milestone 
+            0.02947022             0.02805048             0.02612771 
+    away_season_points               away_300       home_odds_change 
+            0.01964212             0.01305329             0.01234577 
+      away_odds_change         home_score_for       away_line_change 
+           -0.01732249            -0.02851372            -0.03176978 
+          AwayOddsOpen         rainfall_clean         away_score_for 
+           -0.05413613            -0.06190488            -0.06313146 
+          HomeLineOpen    last_five_days_rain                  round 
+           -0.06717077            -0.08122135            -0.08681637 
+              max_temp               min_temp        away_ladder_pos 
+           -0.09200801            -0.13811543            -0.15435393 
+          HomeOddsOpen              odds_diff            temperature 
+           -0.15999933            -0.16722767            -0.20128979 
+       home_ladder_pos 
+           -0.27541679 </code></pre>
+</div>
+</div>
+<p>While all correlations appear to be fairly weak, the following observations can be made:</p>
+<ul>
+<li><p>The average experience (<code>home_mean_experience</code>) for the home team, calculated as the average games played by each player at each game they play in, yields the highest Pearson correlation with attendance of 0.264</p></li>
+<li><p>The Home team’s percentage (scores for / scores against) also have a correlation above 0.2 at 0.236</p></li>
+<li><p>The number of wins the home team had in their last three games had a Pearson correlation of 0.175, while the correlation of away team’s average playing experience was 0.159</p></li>
+<li><p>Strangely, the home team’s ladder position had a negative correlation, with a Pearson correlation of -0.273. The away team’s ladder position also had a negative correlation of -0.150</p></li>
+<li><p>Betting data shows some relationships; as the <code>HomeOddsOpen</code> increase, the <code>attendance</code> tends to decrease, which is somewhat expected. The <code>odds_diff</code> variable (the difference between the home teams opening odds and the away teams) also has a weak negative relationship (correlation -0.168)</p></li>
+<li><p>Weather data shows some relationships. As expected, the maximum temperation and rainfall, both on the day and the accumulation of last five day’s rainfall has a negative relationship with attendance (-0.091, -0.081 and -0.65 respectively)</p></li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="building-the-model" class="level1">
+<h1>Building the model</h1>
+<p>In any project that aims to build a machine learning model to predict the outcome of some response variable, it’s important to hold out a subset of your data when training the model. These two sets are generally referred to as training and test sets. The training set is what you pass to the model to build, and then the resulting predictions are made on the data the model hasn’t “seen”, to best mimic real life examples.</p>
+<p>In this case, the model will be trained on data from the 2013 to 2018 seasons inclusive (<code>afl_pre_2019</code>), with the predictions then made on 2019 data that the model hasn’t seen, <code>afl_2019</code>. This is done to ensure the model doesn’t “overfit” the data. Models that overfit the data generally perform worse on unseen accurrences.</p>
+<section id="things-that-were-attempted-but-not-included-in-the-model" class="level2">
+<h2 class="anchored" data-anchor-id="things-that-were-attempted-but-not-included-in-the-model">Things that were attempted but not included in the model</h2>
+<p>The following features were thought to have some validity but when run through the model were found to have no predictive power:</p>
+<ul>
+<li>The number of wins the teams had in their last three games didn’t contribute</li>
+<li>The rainfall on the day had no predictive power (however the total rainfall for the five days leading up to game day did)</li>
+<li>Milestone games made the model perform worse</li>
+</ul>
+</section>
+<section id="whats-missing-would-be-good-to-have" class="level2">
+<h2 class="anchored" data-anchor-id="whats-missing-would-be-good-to-have">What’s missing / would be good to have</h2>
+<p>There is some information that wasn’t available publicly (or I didn’t try to get) which may prove handy in any future modelling work. These include:</p>
+<ul>
+<li>Ticket pricing for games during each season to explore the effect ticket pricing has on attendance</li>
+<li>Whether tickets were given away to fans for games and whether that had an impact on attendances</li>
+<li>Any social media posts / newspaper text analysis regarding teams / topical matters involving players playing in games, etc</li>
+</ul>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>afl_pre_2019 <span class="ot">&lt;-</span> data_for_model <span class="sc">%&gt;%</span> <span class="fu">filter</span>(season <span class="sc">&lt;</span> <span class="dv">2019</span>, season <span class="sc">&gt;=</span> <span class="dv">2013</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>afl_2019 <span class="ot">&lt;-</span> data_for_model <span class="sc">%&gt;%</span> <span class="fu">filter</span>(season <span class="sc">==</span> <span class="dv">2019</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="baseline-model" class="level2">
+<h2 class="anchored" data-anchor-id="baseline-model">Baseline Model</h2>
+<p>Before building a model to predict games, we want a baseline model to be able to compare to. The temptation would be there to use the average crowd for each game as a baseline, but the different venue capacities make this less than relevant. As a result, to calculate the baseline model, I will use the median attendance for each vanue (taking the average of the venues labelled “Other” as a whole), for each home-away team combo. For example, Collingwood(H) vs Essendon(A) is different to Essendon(H) vs Collingwood(A). The median is used because of the slightly skewed nature of AFL crowds.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>median_attendances <span class="ot">&lt;-</span> afl_pre_2019 <span class="sc">%&gt;%</span> </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(team1, team2, venue) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">baseline_attendance =</span> <span class="fu">median</span>(attendance)) <span class="sc">%&gt;%</span> <span class="fu">ungroup</span>()</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>baseline <span class="ot">&lt;-</span> afl_2019 <span class="sc">%&gt;%</span> <span class="fu">select</span>(team1, team2, venue, attendance) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(median_attendances, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"team1"</span>, <span class="st">"team2"</span>, <span class="st">"venue"</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(baseline_attendance))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Using the average attendances per ground as our baseline, an RMSE of 6,816 and a mean absolute error of 4,958 is achieved. Any model that is built from here needs to be better than this.</p>
+</section>
+<section id="transforming-response-variable" class="level2">
+<h2 class="anchored" data-anchor-id="transforming-response-variable">Transforming Response Variable</h2>
+<p>Because of the somewhat skewed nature of our response variable, it might be wise to undergo some sort of transformation to normalise it more. A log transformation is routinely used to “unskew” data. Below is the result of log transforming the attendance variable.</p>
+<p>It looks less skewed than the non-transformed variable, however (<em>spoiler alert</em>), the models performed worse with attendance being log transformed.</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/attendance_transformed-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+</section>
+<section id="feature-selection-using-stepwise-method" class="level1">
+<h1>Feature Selection Using Stepwise Method</h1>
+<p>A popular method to select which features go into a model is using stepwise regression. This can either be performed:</p>
+<ul>
+<li><em>forward</em>, where variables are added one by one, with only those that improve the model’s explainability (R-squared) retained,</li>
+<li><em>backward</em>, which starts with all variables, then removes them if they don’t add value to the model’s explainability, or</li>
+<li><em>both</em>, which is an ensemble of both <em>forward</em> and <em>backward</em> feature selection.</li>
+</ul>
+<p>Using stepwise in <em>both</em> directions maximised the model’s Adjusted R-squared measure at 0.87.</p>
+<p>When performing linear regression, we want to ensure there is no collinearity between the variables. One way to asses this is to calculate the Variable Inflation Factor (VIF). This is made easy with the <code>vif</code> function in the <code>car</code> package. A VIF above 5 is considered to be too high.</p>
+<p>While the round the game is played is just over 5 (5.7), we will keep this in, however <code>odds_diff</code> and <code>home_score_for</code> will be removed from the full model selected using stepwise and re-run.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>full_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(attendance <span class="sc">~</span> ., <span class="at">data =</span> afl_pre_2019)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Set seed for reproducibility</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>step.model <span class="ot">&lt;-</span> MASS<span class="sc">::</span><span class="fu">stepAIC</span>(full_model, <span class="at">direction =</span> <span class="st">"both"</span>, </span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>                      <span class="at">trace =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>car<span class="sc">::</span><span class="fu">vif</span>(step.model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>                                     GVIF Df GVIF^(1/(2*Df))
+team1                        3.760325e+07 17        1.670324
+team2                        8.911787e+00 17        1.066449
+round                        3.249472e+01  1        5.700414
+venue                        1.490291e+07  9        2.503312
+game_time                    3.502667e+00 11        1.058633
+home_milestone               1.077704e+00  1        1.038125
+rainfall_clean               1.600109e+00  1        1.264954
+min_temp                     2.442144e+00  1        1.562736
+max_temp                     2.943632e+00  1        1.715702
+last_five_days_rain          1.624607e+00  1        1.274601
+HomeOddsOpen                 7.850335e+01  1        8.860212
+AwayOddsOpen                 1.469414e+02  1       12.121938
+HomeLineOpen                 1.017707e+01  1        3.190152
+odds_diff                    1.645084e+02  1       12.826085
+rivalry_game                 1.682047e+00  1        1.296937
+split_round                  1.097575e+00  1        1.047652
+last_results                 1.901405e+00  3        1.113044
+is_same_state                2.561134e+00  1        1.600354
+home_season_points           1.171072e+01  1        3.422093
+home_score_for               4.401100e+01  1        6.634079
+away_season_points           1.013471e+01  1        3.183506
+away_ladder_pos              8.299211e+00  1        2.880835
+teams_in_eight               1.384744e+01  3        1.549631
+home_team_finals_last_season 1.855485e+00  1        1.362162</code></pre>
+</div>
+</div>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># the backward selection model include a variable with hi collinearity (VIF = 12). Will recreate model without odds_diff</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>full_model_clean <span class="ot">&lt;-</span> <span class="fu">lm</span>(attendance <span class="sc">~</span> team1 <span class="sc">+</span> team2 <span class="sc">+</span> round <span class="sc">+</span> venue <span class="sc">+</span> game_time <span class="sc">+</span> </span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    home_milestone <span class="sc">+</span> rainfall_clean <span class="sc">+</span> min_temp <span class="sc">+</span> max_temp <span class="sc">+</span> last_five_days_rain <span class="sc">+</span> </span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    HomeOddsOpen <span class="sc">+</span> AwayOddsOpen <span class="sc">+</span> HomeLineOpen <span class="sc">+</span> </span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    rivalry_game <span class="sc">+</span> split_round <span class="sc">+</span> last_results <span class="sc">+</span> is_same_state <span class="sc">+</span> </span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    home_season_points <span class="sc">+</span> away_season_points <span class="sc">+</span> </span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    away_ladder_pos <span class="sc">+</span> teams_in_eight <span class="sc">+</span> home_team_finals_last_season, </span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> afl_pre_2019)</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="co"># summary(full_model_clean)</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>car<span class="sc">::</span><span class="fu">vif</span>(full_model_clean)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>                                     GVIF Df GVIF^(1/(2*Df))
+team1                        3.221921e+07 17        1.662750
+team2                        8.429548e+00 17        1.064706
+round                        1.151616e+01  1        3.393547
+venue                        1.470969e+07  9        2.501498
+game_time                    3.423992e+00 11        1.057540
+home_milestone               1.074063e+00  1        1.036370
+rainfall_clean               1.588738e+00  1        1.260451
+min_temp                     2.440252e+00  1        1.562131
+max_temp                     2.939080e+00  1        1.714374
+last_five_days_rain          1.623319e+00  1        1.274095
+HomeOddsOpen                 2.900135e+00  1        1.702978
+AwayOddsOpen                 3.400223e+00  1        1.843969
+HomeLineOpen                 9.825720e+00  1        3.134600
+rivalry_game                 1.680106e+00  1        1.296189
+split_round                  1.096713e+00  1        1.047241
+last_results                 1.885393e+00  3        1.111477
+is_same_state                2.559836e+00  1        1.599949
+home_season_points           7.899789e+00  1        2.810656
+away_season_points           9.963380e+00  1        3.156482
+away_ladder_pos              8.290049e+00  1        2.879245
+teams_in_eight               1.339704e+01  3        1.541114
+home_team_finals_last_season 1.848796e+00  1        1.359704</code></pre>
+</div>
+</div>
+<p>The cleaned model’s Adjusted R-squared is 0.8652, while the RMSE was 6,474 and MAE 4,855. These results better the baseline model, but only just.</p>
+</section>
+<section id="best-model" class="level1">
+<h1>Best model:</h1>
+<p>Determining the “best” model is an interesting exercise. If the explainability powers of the model is what we’re after, then we want to maximise the Adjusted R-squared metric. This analysis is aimed at maximising the success of predicting crowds, and as such, the Root Mean Squared Error (RMSE) or Mean Absolute Error (MAE) are the metrics we’re going to focus on. Both measures can be related back to the response variable - attendance - the difference being that MAE is the average absolute error of the model (difference between prediction and actual), while the RMSE penalises the model the larger the error.</p>
+<p>For both RMSE and MAE, the below model results in the lowest RMSE and MAE when applied to the 2019 season games.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>fit_lm <span class="ot">&lt;-</span> <span class="fu">lm</span>(attendance <span class="sc">~</span> team1 <span class="sc">+</span> team2 <span class="sc">+</span> round <span class="sc">+</span> venue <span class="sc">+</span> game_time <span class="sc">+</span> <span class="fu">I</span>(HomeLineOpen <span class="sc">*</span> home_ladder_pos) <span class="sc">+</span> rivalry_game <span class="sc">+</span> last_results <span class="sc">+</span> last_five_days_rain <span class="sc">+</span> max_temp <span class="sc">+</span> min_temp <span class="sc">+</span> home_mean_experience <span class="sc">+</span> away_mean_experience <span class="sc">+</span> is_same_state <span class="sc">+</span> home_score_for <span class="sc">+</span> <span class="fu">I</span>(home_percentage <span class="sc">*</span> home_ladder_pos) <span class="sc">+</span> <span class="fu">I</span>(home_wins_last_three <span class="sc">*</span> round) <span class="sc">+</span> round <span class="sc">*</span> finals_last_season, <span class="at">data =</span> afl_pre_2019)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit_lm)<span class="sc">$</span>adj.r.squared</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.8582593</code></pre>
+</div>
+</div>
+<p>The Adjusted R-Squared of the model is 0.858, indicating that almost 86% of the variablility in AFL attendances in the training set (2013-2018) is explained by the model.</p>
+<p><strong>Interaction Terms</strong></p>
+<p>Features were not only used on their own in this model. Interaction terms wera also employed. The following features were combined to form a feature and gave the model a boost in predictive power:</p>
+<ul>
+<li><code>I(HomeLineOpen * home_ladder_pos)</code></li>
+<li><code>I(home_percentage * home_ladder_pos)</code></li>
+<li><code>I(home_wins_last_three * round)</code></li>
+<li><code>round * finals_last_season</code></li>
+</ul>
+<section id="analysing-the-best-model" class="level2">
+<h2 class="anchored" data-anchor-id="analysing-the-best-model">Analysing the best model</h2>
+<p>The first thing we want to do is ensure the residuals are normally distributed to satisfy the condition of normality for linear models.</p>
+<p>The below histogram suggests that the errors are fairly normally distributed and centred around zero. A good sign.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> <span class="fu">data.frame</span>(fit_lm<span class="sc">$</span>residuals), <span class="fu">aes</span>(<span class="at">x=</span> fit_lm.residuals)) <span class="sc">+</span> </span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>() <span class="sc">+</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"ERRORS ARE CENTRED AROUND ZERO"</span>) <span class="sc">+</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">labels =</span> comma, <span class="at">name =</span> <span class="st">"Model Residuals"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/residuals_plot-1.png" class="img-fluid" width="672"></p>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ggsave("plots/prediction_plots/errors_hist.png", width = 30, height = 22, units = "cm")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Then we can look at the coefficients of each of the predictor variables.</p>
+<p>To make inspecting these easier, the <code>broom</code> package was used. Using the <code>tidy()</code> function, the results of the summary lm output are nicely displayed in a DF.</p>
+<p>The coefficients for each of the predictor variables (other than home and away teams) are displayed below.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> broom<span class="sc">::</span><span class="fu">tidy</span>(fit_lm) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">p.value =</span> <span class="fu">round</span>(p.value, <span class="dv">5</span>))</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>a <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">str_detect</span>(term, <span class="st">"team1"</span>), <span class="sc">!</span><span class="fu">str_detect</span>(term, <span class="st">"team2"</span>)) <span class="sc">%&gt;%</span>  </span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  kableExtra<span class="sc">::</span><span class="fu">kable</span>(<span class="at">format =</span> <span class="st">"html"</span>, <span class="at">escape =</span> F) <span class="sc">%&gt;%</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  kableExtra<span class="sc">::</span><span class="fu">kable_styling</span>(<span class="st">"striped"</span>, <span class="at">full_width =</span> F) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+
+<table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
+ <thead>
+  <tr>
+   <th style="text-align:left;"> term </th>
+   <th style="text-align:right;"> estimate </th>
+   <th style="text-align:right;"> std.error </th>
+   <th style="text-align:right;"> statistic </th>
+   <th style="text-align:right;"> p.value </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> (Intercept) </td>
+   <td style="text-align:right;"> 61007.772536 </td>
+   <td style="text-align:right;"> 7066.622895 </td>
+   <td style="text-align:right;"> 8.6332288 </td>
+   <td style="text-align:right;"> 0.00000 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> round </td>
+   <td style="text-align:right;"> -628.797448 </td>
+   <td style="text-align:right;"> 147.199874 </td>
+   <td style="text-align:right;"> -4.2717255 </td>
+   <td style="text-align:right;"> 0.00002 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> venueCarrara </td>
+   <td style="text-align:right;"> -9384.433835 </td>
+   <td style="text-align:right;"> 4893.988254 </td>
+   <td style="text-align:right;"> -1.9175432 </td>
+   <td style="text-align:right;"> 0.05543 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> venueDocklands </td>
+   <td style="text-align:right;"> 2025.790428 </td>
+   <td style="text-align:right;"> 1843.347042 </td>
+   <td style="text-align:right;"> 1.0989740 </td>
+   <td style="text-align:right;"> 0.27202 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> venueGabba </td>
+   <td style="text-align:right;"> -12078.813180 </td>
+   <td style="text-align:right;"> 7915.867406 </td>
+   <td style="text-align:right;"> -1.5258989 </td>
+   <td style="text-align:right;"> 0.12732 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> venueKardinia Park </td>
+   <td style="text-align:right;"> -790.290125 </td>
+   <td style="text-align:right;"> 2477.093571 </td>
+   <td style="text-align:right;"> -0.3190393 </td>
+   <td style="text-align:right;"> 0.74976 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> venueM.C.G. </td>
+   <td style="text-align:right;"> 14604.069479 </td>
+   <td style="text-align:right;"> 1859.992224 </td>
+   <td style="text-align:right;"> 7.8516831 </td>
+   <td style="text-align:right;"> 0.00000 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> venueOther </td>
+   <td style="text-align:right;"> -11316.633901 </td>
+   <td style="text-align:right;"> 1521.161777 </td>
+   <td style="text-align:right;"> -7.4394677 </td>
+   <td style="text-align:right;"> 0.00000 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> venuePerth Stadium </td>
+   <td style="text-align:right;"> 2344.181828 </td>
+   <td style="text-align:right;"> 2119.734512 </td>
+   <td style="text-align:right;"> 1.1058846 </td>
+   <td style="text-align:right;"> 0.26902 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> venueS.C.G. </td>
+   <td style="text-align:right;"> -6985.844583 </td>
+   <td style="text-align:right;"> 2854.176355 </td>
+   <td style="text-align:right;"> -2.4475869 </td>
+   <td style="text-align:right;"> 0.01454 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> venueSydney Showground </td>
+   <td style="text-align:right;"> -13915.330942 </td>
+   <td style="text-align:right;"> 2344.860834 </td>
+   <td style="text-align:right;"> -5.9343952 </td>
+   <td style="text-align:right;"> 0.00000 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> game_timeFri Evening </td>
+   <td style="text-align:right;"> -14669.992661 </td>
+   <td style="text-align:right;"> 7858.171556 </td>
+   <td style="text-align:right;"> -1.8668456 </td>
+   <td style="text-align:right;"> 0.06219 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> game_timeFri Night </td>
+   <td style="text-align:right;"> -26232.422896 </td>
+   <td style="text-align:right;"> 6419.398624 </td>
+   <td style="text-align:right;"> -4.0864300 </td>
+   <td style="text-align:right;"> 0.00005 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> game_timeSat Afternoon </td>
+   <td style="text-align:right;"> -27517.789656 </td>
+   <td style="text-align:right;"> 6413.609760 </td>
+   <td style="text-align:right;"> -4.2905307 </td>
+   <td style="text-align:right;"> 0.00002 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> game_timeSat Evening </td>
+   <td style="text-align:right;"> -28587.419367 </td>
+   <td style="text-align:right;"> 6425.144735 </td>
+   <td style="text-align:right;"> -4.4493036 </td>
+   <td style="text-align:right;"> 0.00001 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> game_timeSat Night </td>
+   <td style="text-align:right;"> -27304.481145 </td>
+   <td style="text-align:right;"> 6416.346545 </td>
+   <td style="text-align:right;"> -4.2554561 </td>
+   <td style="text-align:right;"> 0.00002 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> game_timeSun Afternoon </td>
+   <td style="text-align:right;"> -28302.693645 </td>
+   <td style="text-align:right;"> 6410.217064 </td>
+   <td style="text-align:right;"> -4.4152473 </td>
+   <td style="text-align:right;"> 0.00001 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> game_timeSun Evening </td>
+   <td style="text-align:right;"> -30499.992506 </td>
+   <td style="text-align:right;"> 6441.388865 </td>
+   <td style="text-align:right;"> -4.7350025 </td>
+   <td style="text-align:right;"> 0.00000 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> game_timeSun Night </td>
+   <td style="text-align:right;"> -29709.469650 </td>
+   <td style="text-align:right;"> 6969.788830 </td>
+   <td style="text-align:right;"> -4.2626069 </td>
+   <td style="text-align:right;"> 0.00002 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> game_timeWeekday Afternoon </td>
+   <td style="text-align:right;"> -6264.436854 </td>
+   <td style="text-align:right;"> 6587.953778 </td>
+   <td style="text-align:right;"> -0.9508927 </td>
+   <td style="text-align:right;"> 0.34187 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> game_timeWeekday Evening </td>
+   <td style="text-align:right;"> -32666.780662 </td>
+   <td style="text-align:right;"> 8987.962304 </td>
+   <td style="text-align:right;"> -3.6345035 </td>
+   <td style="text-align:right;"> 0.00029 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> game_timeWeekday Night </td>
+   <td style="text-align:right;"> -24296.860101 </td>
+   <td style="text-align:right;"> 6490.825702 </td>
+   <td style="text-align:right;"> -3.7432618 </td>
+   <td style="text-align:right;"> 0.00019 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> I(HomeLineOpen * home_ladder_pos) </td>
+   <td style="text-align:right;"> -3.929212 </td>
+   <td style="text-align:right;"> 0.897336 </td>
+   <td style="text-align:right;"> -4.3787523 </td>
+   <td style="text-align:right;"> 0.00001 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> rivalry_gameRivalry </td>
+   <td style="text-align:right;"> 4243.471176 </td>
+   <td style="text-align:right;"> 1103.664170 </td>
+   <td style="text-align:right;"> 3.8448935 </td>
+   <td style="text-align:right;"> 0.00013 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> last_resultsboth_won </td>
+   <td style="text-align:right;"> 3278.290173 </td>
+   <td style="text-align:right;"> 599.102681 </td>
+   <td style="text-align:right;"> 5.4720005 </td>
+   <td style="text-align:right;"> 0.00000 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> last_resultsonly_away_team_won </td>
+   <td style="text-align:right;"> 1354.077316 </td>
+   <td style="text-align:right;"> 536.942587 </td>
+   <td style="text-align:right;"> 2.5218289 </td>
+   <td style="text-align:right;"> 0.01181 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> last_resultsonly_home_team_won </td>
+   <td style="text-align:right;"> 1381.030990 </td>
+   <td style="text-align:right;"> 594.706552 </td>
+   <td style="text-align:right;"> 2.3222058 </td>
+   <td style="text-align:right;"> 0.02040 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> last_five_days_rain </td>
+   <td style="text-align:right;"> -44.287937 </td>
+   <td style="text-align:right;"> 12.297250 </td>
+   <td style="text-align:right;"> -3.6014505 </td>
+   <td style="text-align:right;"> 0.00033 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> max_temp </td>
+   <td style="text-align:right;"> 310.452321 </td>
+   <td style="text-align:right;"> 61.108889 </td>
+   <td style="text-align:right;"> 5.0803137 </td>
+   <td style="text-align:right;"> 0.00000 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> min_temp </td>
+   <td style="text-align:right;"> -125.802409 </td>
+   <td style="text-align:right;"> 59.279520 </td>
+   <td style="text-align:right;"> -2.1221901 </td>
+   <td style="text-align:right;"> 0.03404 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> home_mean_experience </td>
+   <td style="text-align:right;"> 25.443372 </td>
+   <td style="text-align:right;"> 14.678437 </td>
+   <td style="text-align:right;"> 1.7333843 </td>
+   <td style="text-align:right;"> 0.08331 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> away_mean_experience </td>
+   <td style="text-align:right;"> 45.390519 </td>
+   <td style="text-align:right;"> 14.339468 </td>
+   <td style="text-align:right;"> 3.1654256 </td>
+   <td style="text-align:right;"> 0.00159 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> is_same_stateyes </td>
+   <td style="text-align:right;"> 8151.587887 </td>
+   <td style="text-align:right;"> 601.638591 </td>
+   <td style="text-align:right;"> 13.5489778 </td>
+   <td style="text-align:right;"> 0.00000 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> home_score_for </td>
+   <td style="text-align:right;"> 7.394136 </td>
+   <td style="text-align:right;"> 1.692602 </td>
+   <td style="text-align:right;"> 4.3685025 </td>
+   <td style="text-align:right;"> 0.00001 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> I(home_percentage * home_ladder_pos) </td>
+   <td style="text-align:right;"> -294.795766 </td>
+   <td style="text-align:right;"> 66.179029 </td>
+   <td style="text-align:right;"> -4.4545193 </td>
+   <td style="text-align:right;"> 0.00001 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> I(home_wins_last_three * round) </td>
+   <td style="text-align:right;"> 3.645874 </td>
+   <td style="text-align:right;"> 19.738164 </td>
+   <td style="text-align:right;"> 0.1847119 </td>
+   <td style="text-align:right;"> 0.85349 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> finals_last_seasonboth_played </td>
+   <td style="text-align:right;"> 1691.406848 </td>
+   <td style="text-align:right;"> 1188.541482 </td>
+   <td style="text-align:right;"> 1.4230945 </td>
+   <td style="text-align:right;"> 0.15499 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> finals_last_seasonhome_only_played </td>
+   <td style="text-align:right;"> 953.657176 </td>
+   <td style="text-align:right;"> 1235.936253 </td>
+   <td style="text-align:right;"> 0.7716071 </td>
+   <td style="text-align:right;"> 0.44051 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> finals_last_seasonneither_played </td>
+   <td style="text-align:right;"> 482.072356 </td>
+   <td style="text-align:right;"> 1101.460684 </td>
+   <td style="text-align:right;"> 0.4376664 </td>
+   <td style="text-align:right;"> 0.66171 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> round:finals_last_seasonboth_played </td>
+   <td style="text-align:right;"> 17.403974 </td>
+   <td style="text-align:right;"> 83.889701 </td>
+   <td style="text-align:right;"> 0.2074626 </td>
+   <td style="text-align:right;"> 0.83569 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> round:finals_last_seasonhome_only_played </td>
+   <td style="text-align:right;"> -13.710531 </td>
+   <td style="text-align:right;"> 82.253765 </td>
+   <td style="text-align:right;"> -0.1666858 </td>
+   <td style="text-align:right;"> 0.86765 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> round:finals_last_seasonneither_played </td>
+   <td style="text-align:right;"> 21.455146 </td>
+   <td style="text-align:right;"> 76.032301 </td>
+   <td style="text-align:right;"> 0.2821846 </td>
+   <td style="text-align:right;"> 0.77785 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>actual_2019crowds <span class="ot">&lt;-</span> afl_2019<span class="sc">$</span>attendance</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="co"># fit linear model </span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>afl_2019<span class="sc">$</span>predicted_attendance <span class="ot">&lt;-</span> <span class="fu">predict</span>(fit_lm, afl_2019)</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="co"># put a floor on AFL attendances - surely the AFL doesn't let the crowd fall below 6,000</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>afl_2019<span class="sc">$</span>predicted_attendance <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(afl_2019<span class="sc">$</span>predicted_attendance <span class="sc">&lt;</span> <span class="dv">6000</span>, <span class="dv">6000</span>, afl_2019<span class="sc">$</span>predicted_attendance)</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate the errors</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>error <span class="ot">&lt;-</span> afl_2019<span class="sc">$</span>predicted_attendance <span class="sc">-</span> afl_2019<span class="sc">$</span>attendance</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Then we want to annalyse how well the model fit the relationship. This can be achieved by plotting the actual vs predicted values on a scatterplot.</p>
+<p>I can be seen that the linear model does a fairly good job on average. There model did under-predict some of the larger drawing games, while also predicting an attendance of over 30,000 to the Hawthorn vs GWS game at the MCG in round 8, which only drew 14,636 fans.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>afl_2019 <span class="sc">%&gt;%</span> </span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>attendance, <span class="at">y=</span> predicted_attendance)) <span class="sc">+</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">slope =</span> <span class="dv">1</span>, <span class="at">intercept=</span><span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"MODEL UNDER-PREDICTED SOME</span><span class="sc">\n</span><span class="st">LARGE DRAWING GAMES"</span>) <span class="sc">+</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">labels =</span> comma, <span class="at">name =</span> <span class="st">"Actual Attendance"</span>) <span class="sc">+</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> comma, <span class="at">name =</span> <span class="st">"Predicted Attendance"</span>) <span class="sc">+</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="at">geom =</span> <span class="st">"text"</span>, <span class="at">x=</span><span class="dv">83000</span>, <span class="at">y=</span> <span class="dv">55000</span>, <span class="at">label =</span> <span class="st">"Model under-predicted</span><span class="sc">\n</span><span class="st">on these games"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/pred_v_actual-1.png" class="img-fluid" width="960"></p>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ggsave("plots/prediction_plots/actual_v_pred.png", width = 30, height = 22, units = "cm")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>We can also look at how the model performed predicting crowds at each of the venues.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>afl_2019 <span class="sc">%&gt;%</span> </span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">error =</span> predicted_attendance <span class="sc">-</span> attendance) <span class="sc">%&gt;%</span> </span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span> error)) <span class="sc">+</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>() <span class="sc">+</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> venue, <span class="at">scales =</span> <span class="st">"free_y"</span>, <span class="at">ncol =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">labels =</span> comma, <span class="at">name =</span> <span class="st">"Error"</span>) <span class="sc">+</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Exploring Errors by Venue"</span>) <span class="sc">+</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.y =</span> <span class="fu">element_blank</span>(), <span class="at">axis.title.y =</span> <span class="fu">element_blank</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/venue_errors-1.png" class="img-fluid" width="672"></p>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ggsave("plots/prediction_plots/venue_errors.png", width = 30, height = 22, units = "cm")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>The model tended to over-predict attendances at the Gabba, Perth Stadium, Sydney Showgrounds and even the MCG, while it under-predicted at Carrara and “Other”.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste0</span>(<span class="st">"RMSE: "</span>, <span class="fu">sqrt</span>(<span class="fu">mean</span>(error<span class="sc">^</span><span class="dv">2</span>, <span class="at">na.rm =</span> T))))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "RMSE: 6601.69023180541"</code></pre>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste0</span>(<span class="st">"MAE: "</span>, <span class="fu">mean</span>(<span class="fu">abs</span>(error), <span class="at">na.rm =</span> T)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "MAE: 4881.5087837533"</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="overall-performance-of-the-model" class="level1">
+<h1>Overall Performance of the Model</h1>
+<p>The final model selected achieved an RMSE of 5,953 and MAE of 4,466, meaning that on average, the model is off by just under 4,500 fans when predicting attendances. When compared to the baseline model (RMSE of 6,816 and a MAE of 4,958), this model betters the baseline by over 500 people on average, but also doesn’t have as many extreme errors.</p>
+</section>
+<section id="conclusion" class="level1">
+<h1>Conclusion</h1>
+<p>Hopefully you’ve made it to here!</p>
+<p>I’d love to hear from you with any feedback / corrections / etc in the comments or get in <a href="https://www.linkedin.com/in/jason-zivkovic-4a0a1926/">touch</a>.</p>
+<p>Thanks!</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

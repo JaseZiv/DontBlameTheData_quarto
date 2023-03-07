@@ -1,0 +1,10 @@
+---
+title: "bettRtab"
+image: "bettRtab_hex.png"
+---
+
+![](bettRtab_hex.png)
+
+This package is designed to allow users to obtain clean and tidy [TAB](https://www.tab.com.au/) betting markets for both racing and sports. It gives users the ability to access data more efficiently.
+
+The vignette for the package offers a full description of the package and the functions available, and can be found [here](https://jaseziv.github.io/bettRtab/).

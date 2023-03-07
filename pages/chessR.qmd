@@ -1,0 +1,10 @@
+---
+title: "chessR"
+image: "chessR_hex.png"
+---
+
+![](chessR_hex.png)
+
+The `chessR` package is designed to allow users to extract their game data and other data from popular online chess platforms, including [chess.com](www.chess.com) and [Lichess](www.lichess.org). The websites offer a very convenient set of APIs to be able to access date through.
+
+The vignette for the package offers a full description of the package and the functions available, and can be found [here](https://jaseziv.github.io/chessR/articles/using_chessR_package.html).

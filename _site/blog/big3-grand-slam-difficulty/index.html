@@ -1,0 +1,3219 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.269">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Jason Zivkovic">
+<meta name="dcterms.date" content="2023-02-02">
+
+<title>Don’t Blame the Data - Rating the Difficulty of the Big 3’s Grand Slam Wins</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../favicon.ico" rel="icon">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+<script type="text/javascript">
+
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-145056765-1', 'auto');
+
+ga('send', {
+  hitType: 'pageview',
+  'anonymizeIp': true,
+});
+</script>
+
+
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../icon.jpg" alt="" class="navbar-logo">
+    </a>
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Don’t Blame the Data</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../blog.html">
+ <span class="menu-text">Blog</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-projects" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Projects</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-projects">    
+        <li>
+    <a class="dropdown-item" href="../../pages/worldfootballR.html">
+ <span class="dropdown-text">worldfootballR</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/chessR.html">
+ <span class="dropdown-text">chessR</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/nblR.html">
+ <span class="dropdown-text">nblR</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/bettRtab.html">
+ <span class="dropdown-text">bettRtab</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="https://nbl-r-shiny.herokuapp.com">
+ <span class="menu-text">NBL Win Probability App</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/JaseZiv"><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/jaseziv"><i class="bi bi-twitter" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://linkedin.com/in/jason-zivkovic-4a0a1926/"><i class="bi bi-linkedin" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Rating the Difficulty of the Big 3’s Grand Slam Wins</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">R</div>
+                <div class="quarto-category">elo</div>
+                <div class="quarto-category">tennis analytics</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Jason Zivkovic </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">February 2, 2023</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<div class="cell">
+
+</div>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>As the current (2023) Australian Open came to a close with Novak Djokovic winning a record equaling 22nd Grand Slam, the expected discourse on who is the best player of all time is back on the agenda. One discussion thread centers around the ease of Djokovic run to the 2023 Australian Open title, and that maybe this title isn’t worth as many as others (listen to the the Wharton Moneyball podcast talk about it at around the 84 minute mark <a href="https://play.acast.com/s/5b69f70c0a0eca0c20692176/63d14f7eabbd0e0010ab69ba?seek=84">here</a>).</p>
+<p>This post won’t be about which player is the best of all time - that’s already been done ad nauseam - but what it will aim to do is better understand the difficulty of each of the big three’s grand slams wins and whether we can infer anything from that.</p>
+<p>I’ve tried to answer this question using some numbers. The main metric being used in this analysis is <a href="https://en.wikipedia.org/wiki/Elo_rating_system">Elo ratings</a>. I’m not going to go into the guts of the Elo rating system, other than to say that it performs exceptionally well in explaining skill levels of players in competitive head to head matches and predicting the outcome of these games using the difference in each players’ rating. Specifically for this analysis, when we refer to the Elo rating, we’re referring to the player’s relevant pre-tournament surface-specific Elo rating.</p>
+<p>There are a number of ways that this could be achieved. Presented in this post are only a few ways to do that. I’d be really keen for some engagement on this post on whether you agree/disagree with the methods employed and where the holes are in these methods used.</p>
+<p>To freshen our memories, below are the slam wins each of the big three have achieved over the different slams:</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/slam_summary-1.png" class="img-fluid" width="960"></p>
+</div>
+</div>
+<section id="the-data" class="level3">
+<h3 class="anchored" data-anchor-id="the-data">The Data</h3>
+<p>All completed Grand Slams since the beginning of 2001 up until the end of the 2023 Australia Open have been analysed for this post. That’s 88 grand slams, with the notable exception of the COVID-19 forced cancellation of the 2020 Wimbledon event.</p>
+</section>
+<section id="acknowledgements" class="level3">
+<h3 class="anchored" data-anchor-id="acknowledgements">Acknowledgements</h3>
+<p>Before we dive in to the analysis, I need to offer thanks to a few people. First, Elo data was obtained from the brilliant site <a href="https://www.ultimatetennisstatistics.com/">Ultimate Tennis Statistics</a>. Elo ratings specific to the surface being played on has been used. Their calculations on coming up with an elo rating is explained <a href="https://www.ultimatetennisstatistics.com/eloRatings#">here</a>.</p>
+<p>Next, I’d love to thank Jeff Sackmann for his brilliant Tennis Data repository, especially for the ATP results data found <a href="https://github.com/JeffSackmann/tennis_atp">here</a>.</p>
+<p>Big thanks to Andrew Whelan (who has a brilliant site <a href="https://www.wheeloratings.com/">Wheelo Ratings</a> providing statistics, records and Elo ratings for a number of sports) for being a sounding board, as have some great colleagues at work.</p>
+<p>Finally, there have been many inspirations for this post, including the thought-provoking discussions had on the Wharton Moneyball podcast anytime tennis is brought up.</p>
+<hr>
+</section>
+</section>
+<section id="analysis" class="level2">
+<h2 class="anchored" data-anchor-id="analysis">Analysis</h2>
+<p>To get started and to understand the Elo ratings of players, we can take a look at the distribution of surface-specific Elo ratings for players playing in grand slams.</p>
+<p>The peaks for all tournaments at 1,500 needs explaining - when a player enters a tournament, they may not necessarily have played enough on the surface, so as a default these players are given a rating of 1,500 for this analysis (Ultimate Tennis Statistics starts a player off on a rating of 1,500 also).</p>
+<p>The distribution of Elo ratings appear to be distributed fairly similarly across the four grand slams. There are more players who have had an Elo of 1,500 for Wimbledon, but other than that, the differences are fairly negligible.</p>
+<p>Important to note with the distribution of each tournaments, having a pre-tournament Elo rating greater than 2,250 (two standard deviations from the mean) is pretty rare, and even rarer still for a player to have an Elo rating higher than 2,250 <strong>that isn’t one of the big 3</strong>.</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/tourn_dist-1.png" class="img-fluid" width="960"></p>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/big_3_dist-1.png" class="img-fluid" width="960"></p>
+</div>
+</div>
+<section id="elo-criticism" class="level3">
+<h3 class="anchored" data-anchor-id="elo-criticism">Elo Criticism</h3>
+<p>One (probably valid) criticism of Elo ratings is that the average Elo rating can change over time and across eras so may not be comparable over time (e.g.&nbsp;an Elo rating of 2,000 in 2005 may not be equivalent to 2,000 in 2023). This needs to be considered when assessing the results in the below sections.</p>
+<p>To get an idea of how these ratings have changed over time, the average Elo rating of competitors at each grand slam is plotted below. Important to note that the y-axis scale (Elo ratings) doesn’t start at zero, so the fluctuations are accentuated.</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/elo_time-1.png" class="img-fluid" width="960"></p>
+</div>
+</div>
+<p>Looking at individual grand slams and the distribution of Elo ratings of the opponents of the big three in their grand slam wins, we can see that they typically have faced very similar rated players. Federer’s median opponent Elo rating in his tournament wins has been sightly the highest of the three (2,014, Djokovic 2,012 and Nadal 2,002), however his average (arithmetic mean) is slightly lower at 1,992 than that of Djokovic (2,004). Nadal has both the lowest median and average opponent Elo in his grand slam wins. This is because Federer hasn’t played as many high rated outliers as Djokovic has (and to a lesser extent Nadal).</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/elo_opp_big3-1.png" class="img-fluid" width="960"></p>
+</div>
+</div>
+<hr>
+</section>
+<section id="standardising-elo" class="level3">
+<h3 class="anchored" data-anchor-id="standardising-elo">Standardising Elo</h3>
+<p>A potential flaw in using the Elo ratings of each tournament is that it doesn’t normalise for the distribution of talent (Elo ratings) over time. Some year’s tournaments may see more higher rated players competing, while other tournaments may contain weaker fields. When comparing across different time periods, it might be better to attempt to standardise each opponents’ strength rating.</p>
+<p>One way to do this is to calculate the <a href="https://en.wikipedia.org/wiki/Standard_score">standard score (z-score)</a> for each player’s rating, which essentially ranks the players rating within the confines of the distribution of the space selected - in this case each tournament over the entire 22 and a bit years. I won’t go into the full details of the z-score, however a simple way to think about it is a z-score of zero indicates the opponent’s Elo rating is average. The higher it goes above zero, the better the Elo rating is historically (conversely the further below zero it goes the worse the Elo rating).</p>
+<p>For example, Stafanos Tsitsipas’s pre 2023 Aus Open Elo rating was 2,176, which gives a z-score of 1.62 for the 2023 Aus Open, however the z-score for all Aus Opens over the period analysed is 1.57. Given that his historical z-score is slightly lower suggests that the 2023 Aus Open may have been generally weaker overall than other years.</p>
+<p>We can then sum these historical z-scores up for each tournament and give a comparable strength score for each grand slam win. Put simply, the higher this number is, the tougher the opponents faced for their respective winning tournaments.</p>
+<p>To compare each of the big three over their respective winning grand slams, we can take an average tournament z-score of opponents ratings to see which of the three had tougher tournament opponents.</p>
+<p>This method shows that Djokovic has beaten the historically toughest opponents on average during his 22 grand slams. The average total z-score of his opponents has been 5.7, followed by Federer’s 5.3. Nadal lags behind the three at 4.9, indicating that his 22 grand slams may have been slightly easier (relative of course) on average than the other big three.</p>
+<p><br></p>
+<div class="cell">
+<div class="cell-output-display">
+
+<div id="ivterytebl" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>@import url("https://fonts.googleapis.com/css2?family=Overlock:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+html {
+  font-family: Overlock, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+:where(#ivterytebl) .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+:where(#ivterytebl) .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+:where(#ivterytebl) .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+:where(#ivterytebl) .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+:where(#ivterytebl) .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+:where(#ivterytebl) .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+:where(#ivterytebl) .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+:where(#ivterytebl) .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+:where(#ivterytebl) .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+:where(#ivterytebl) .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+:where(#ivterytebl) .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+:where(#ivterytebl) .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+:where(#ivterytebl) .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+:where(#ivterytebl) .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+:where(#ivterytebl) .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+:where(#ivterytebl) .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+:where(#ivterytebl) .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+:where(#ivterytebl) .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#ivterytebl) .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+:where(#ivterytebl) .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+:where(#ivterytebl) .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#ivterytebl) .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+:where(#ivterytebl) .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+:where(#ivterytebl) .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+:where(#ivterytebl) .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#ivterytebl) .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+:where(#ivterytebl) .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+:where(#ivterytebl) .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+:where(#ivterytebl) .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+:where(#ivterytebl) .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-left: 4px;
+  padding-right: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#ivterytebl) .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+:where(#ivterytebl) .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#ivterytebl) .gt_left {
+  text-align: left;
+}
+
+:where(#ivterytebl) .gt_center {
+  text-align: center;
+}
+
+:where(#ivterytebl) .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+:where(#ivterytebl) .gt_font_normal {
+  font-weight: normal;
+}
+
+:where(#ivterytebl) .gt_font_bold {
+  font-weight: bold;
+}
+
+:where(#ivterytebl) .gt_font_italic {
+  font-style: italic;
+}
+
+:where(#ivterytebl) .gt_super {
+  font-size: 65%;
+}
+
+:where(#ivterytebl) .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 75%;
+  vertical-align: 0.4em;
+}
+
+:where(#ivterytebl) .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+:where(#ivterytebl) .gt_indent_1 {
+  text-indent: 5px;
+}
+
+:where(#ivterytebl) .gt_indent_2 {
+  text-indent: 10px;
+}
+
+:where(#ivterytebl) .gt_indent_3 {
+  text-indent: 15px;
+}
+
+:where(#ivterytebl) .gt_indent_4 {
+  text-indent: 20px;
+}
+
+:where(#ivterytebl) .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table">
+  
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="border-top-width: 2px; border-top-style: solid; border-top-color: #000000; border-bottom-width: 2px; border-bottom-style: solid; border-bottom-color: #000000; font-weight: bold;" scope="col" id="Name">Name</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="border-top-width: 2px; border-top-style: solid; border-top-color: #000000; border-bottom-width: 2px; border-bottom-style: solid; border-bottom-color: #000000; font-weight: bold;" scope="col" id="Average Tournament Strength">Average Tournament Strength</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td headers="player_name" class="gt_row gt_left">NOVAK DJOKOVIC</td>
+<td headers="avg_win_strength" class="gt_row gt_right">5.722</td></tr>
+    <tr><td headers="player_name" class="gt_row gt_left">RAFAEL NADAL</td>
+<td headers="avg_win_strength" class="gt_row gt_right">4.905</td></tr>
+    <tr><td headers="player_name" class="gt_row gt_left">ROGER FEDERER</td>
+<td headers="avg_win_strength" class="gt_row gt_right">5.342</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="expected-win-probability" class="level3">
+<h3 class="anchored" data-anchor-id="expected-win-probability">Expected Win Probability</h3>
+<p>Instead of using the raw Elo ratings and standardising them, we can also infer each of the big three’s win probability using their’s and their opponent’s Elo ratings.</p>
+<p>To do this, we first need to calculate the win probability of each match given each player’s Elo rating. For example, the win probability for Djokovic (Elo=2,452) in his fourth round match against Alex De Minaur (Elo=2,076) was 89.7%. From here, we take the <a href="https://en.wikipedia.org/wiki/Product_(mathematics)">product</a> of each win probability and come up with an overall win probability. For example, Djokovic’s 2023 Aus Open win probabilities for each of his matches were 97.5%, 99.6%, 93.1%, 89.7%, 86.7%, 91.4%, 83.0% from his first round match to the final, respectively. Multiplying each of these win probabilities give us a total win probability of 53.3%. The closer we get to 100%, the more we expect that player to have won the tournament. This can also be a simple place holder for the strength of each tournament win - closer to 100%, the easier their run was.</p>
+<p>Under this method, we can see that Djokovic’s 2008 Australian Open win (his first grand slam) was the least expected win of all 64 slams these three have won with an expected win probability of 3.24%. Additionally, three of the five least expected slam wins have been by Djokovic. Federer’s first grand slam (Wimbledon 2003) was really close to being the least expected (3.55%).</p>
+<p><br></p>
+<div class="cell">
+<div class="cell-output-display">
+
+<div id="nqqshmhodf" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>@import url("https://fonts.googleapis.com/css2?family=Overlock:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+html {
+  font-family: Overlock, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+:where(#nqqshmhodf) .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+:where(#nqqshmhodf) .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+:where(#nqqshmhodf) .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+:where(#nqqshmhodf) .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+:where(#nqqshmhodf) .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+:where(#nqqshmhodf) .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+:where(#nqqshmhodf) .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+:where(#nqqshmhodf) .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+:where(#nqqshmhodf) .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+:where(#nqqshmhodf) .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+:where(#nqqshmhodf) .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+:where(#nqqshmhodf) .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+:where(#nqqshmhodf) .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+:where(#nqqshmhodf) .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+:where(#nqqshmhodf) .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+:where(#nqqshmhodf) .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+:where(#nqqshmhodf) .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+:where(#nqqshmhodf) .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#nqqshmhodf) .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+:where(#nqqshmhodf) .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+:where(#nqqshmhodf) .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#nqqshmhodf) .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+:where(#nqqshmhodf) .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+:where(#nqqshmhodf) .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+:where(#nqqshmhodf) .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#nqqshmhodf) .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+:where(#nqqshmhodf) .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+:where(#nqqshmhodf) .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+:where(#nqqshmhodf) .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+:where(#nqqshmhodf) .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-left: 4px;
+  padding-right: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#nqqshmhodf) .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+:where(#nqqshmhodf) .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#nqqshmhodf) .gt_left {
+  text-align: left;
+}
+
+:where(#nqqshmhodf) .gt_center {
+  text-align: center;
+}
+
+:where(#nqqshmhodf) .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+:where(#nqqshmhodf) .gt_font_normal {
+  font-weight: normal;
+}
+
+:where(#nqqshmhodf) .gt_font_bold {
+  font-weight: bold;
+}
+
+:where(#nqqshmhodf) .gt_font_italic {
+  font-style: italic;
+}
+
+:where(#nqqshmhodf) .gt_super {
+  font-size: 65%;
+}
+
+:where(#nqqshmhodf) .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 75%;
+  vertical-align: 0.4em;
+}
+
+:where(#nqqshmhodf) .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+:where(#nqqshmhodf) .gt_indent_1 {
+  text-indent: 5px;
+}
+
+:where(#nqqshmhodf) .gt_indent_2 {
+  text-indent: 10px;
+}
+
+:where(#nqqshmhodf) .gt_indent_3 {
+  text-indent: 15px;
+}
+
+:where(#nqqshmhodf) .gt_indent_4 {
+  text-indent: 20px;
+}
+
+:where(#nqqshmhodf) .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table">
+  <thead class="gt_header">
+    <tr>
+      <td colspan="4" class="gt_heading gt_title gt_font_normal gt_bottom_border" style=""><strong>LEAST PROBABLE TOURNAMENT WINS</strong></td>
+    </tr>
+    
+  </thead>
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="border-top-width: 2px; border-top-style: solid; border-top-color: #000000; border-bottom-width: 2px; border-bottom-style: solid; border-bottom-color: #000000; font-weight: bold;" scope="col" id="Year">Year</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="border-top-width: 2px; border-top-style: solid; border-top-color: #000000; border-bottom-width: 2px; border-bottom-style: solid; border-bottom-color: #000000; font-weight: bold;" scope="col" id="Slam">Slam</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="border-top-width: 2px; border-top-style: solid; border-top-color: #000000; border-bottom-width: 2px; border-bottom-style: solid; border-bottom-color: #000000; font-weight: bold;" scope="col" id="Name">Name</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="border-top-width: 2px; border-top-style: solid; border-top-color: #000000; border-bottom-width: 2px; border-bottom-style: solid; border-bottom-color: #000000; font-weight: bold;" scope="col" id="Tournament Win Probability">Tournament Win Probability</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td headers="tourney_year" class="gt_row gt_right">2008</td>
+<td headers="tourney_name" class="gt_row gt_left">Australian Open</td>
+<td headers="player_name" class="gt_row gt_left">NOVAK DJOKOVIC</td>
+<td headers="tournament_win_prob" class="gt_row gt_right">3.24%</td></tr>
+    <tr><td headers="tourney_year" class="gt_row gt_right">2003</td>
+<td headers="tourney_name" class="gt_row gt_left">Wimbledon</td>
+<td headers="player_name" class="gt_row gt_left">ROGER FEDERER</td>
+<td headers="tournament_win_prob" class="gt_row gt_right">3.55%</td></tr>
+    <tr><td headers="tourney_year" class="gt_row gt_right">2011</td>
+<td headers="tourney_name" class="gt_row gt_left">Wimbledon</td>
+<td headers="player_name" class="gt_row gt_left">NOVAK DJOKOVIC</td>
+<td headers="tournament_win_prob" class="gt_row gt_right">5.51%</td></tr>
+    <tr><td headers="tourney_year" class="gt_row gt_right">2008</td>
+<td headers="tourney_name" class="gt_row gt_left">Wimbledon</td>
+<td headers="player_name" class="gt_row gt_left">RAFAEL NADAL</td>
+<td headers="tournament_win_prob" class="gt_row gt_right">6.92%</td></tr>
+    <tr><td headers="tourney_year" class="gt_row gt_right">2011</td>
+<td headers="tourney_name" class="gt_row gt_left">Australian Open</td>
+<td headers="player_name" class="gt_row gt_left">NOVAK DJOKOVIC</td>
+<td headers="tournament_win_prob" class="gt_row gt_right">10.25%</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+</div>
+</div>
+<p><br></p>
+<p>Without looking deeply at Djokovic’s 2008 Australian Open run and only looking at his final opponent (France’s Jo Wilfried Tsonga), it would be easy to believe that with an expected win probability in that final of 86.9% that this was an easy title win. Unpacking this a little deeper shows that he needed to get through Australia’s own Lleyton Hewitt in the round of 16 with a win probability of 67.5% (better than a coin flip), David Ferrer in the quarters at 54.2% (basically a coin flip) and Federer at 14.2% (a heavy underdog) in the semi-final before he had a chance to play in the final.</p>
+<p><br></p>
+<div class="cell">
+<div class="cell-output-display">
+
+<div id="iwmkqtsqne" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>@import url("https://fonts.googleapis.com/css2?family=Overlock:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+html {
+  font-family: Overlock, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+:where(#iwmkqtsqne) .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+:where(#iwmkqtsqne) .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+:where(#iwmkqtsqne) .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+:where(#iwmkqtsqne) .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+:where(#iwmkqtsqne) .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+:where(#iwmkqtsqne) .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+:where(#iwmkqtsqne) .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+:where(#iwmkqtsqne) .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+:where(#iwmkqtsqne) .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+:where(#iwmkqtsqne) .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+:where(#iwmkqtsqne) .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+:where(#iwmkqtsqne) .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+:where(#iwmkqtsqne) .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+:where(#iwmkqtsqne) .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+:where(#iwmkqtsqne) .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+:where(#iwmkqtsqne) .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+:where(#iwmkqtsqne) .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+:where(#iwmkqtsqne) .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#iwmkqtsqne) .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+:where(#iwmkqtsqne) .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+:where(#iwmkqtsqne) .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#iwmkqtsqne) .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+:where(#iwmkqtsqne) .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+:where(#iwmkqtsqne) .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+:where(#iwmkqtsqne) .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#iwmkqtsqne) .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+:where(#iwmkqtsqne) .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+:where(#iwmkqtsqne) .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+:where(#iwmkqtsqne) .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+:where(#iwmkqtsqne) .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-left: 4px;
+  padding-right: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#iwmkqtsqne) .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+:where(#iwmkqtsqne) .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#iwmkqtsqne) .gt_left {
+  text-align: left;
+}
+
+:where(#iwmkqtsqne) .gt_center {
+  text-align: center;
+}
+
+:where(#iwmkqtsqne) .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+:where(#iwmkqtsqne) .gt_font_normal {
+  font-weight: normal;
+}
+
+:where(#iwmkqtsqne) .gt_font_bold {
+  font-weight: bold;
+}
+
+:where(#iwmkqtsqne) .gt_font_italic {
+  font-style: italic;
+}
+
+:where(#iwmkqtsqne) .gt_super {
+  font-size: 65%;
+}
+
+:where(#iwmkqtsqne) .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 75%;
+  vertical-align: 0.4em;
+}
+
+:where(#iwmkqtsqne) .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+:where(#iwmkqtsqne) .gt_indent_1 {
+  text-indent: 5px;
+}
+
+:where(#iwmkqtsqne) .gt_indent_2 {
+  text-indent: 10px;
+}
+
+:where(#iwmkqtsqne) .gt_indent_3 {
+  text-indent: 15px;
+}
+
+:where(#iwmkqtsqne) .gt_indent_4 {
+  text-indent: 20px;
+}
+
+:where(#iwmkqtsqne) .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table">
+  <thead class="gt_header">
+    <tr>
+      <td colspan="5" class="gt_heading gt_title gt_font_normal gt_bottom_border" style=""><strong>DJOKOVIC'S 2008 AUSTRALIAN OPEN OPPONENTS</strong></td>
+    </tr>
+    
+  </thead>
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="border-top-width: 2px; border-top-style: solid; border-top-color: #000000; border-bottom-width: 2px; border-bottom-style: solid; border-bottom-color: #000000; font-weight: bold;" scope="col" id="Year">Year</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="border-top-width: 2px; border-top-style: solid; border-top-color: #000000; border-bottom-width: 2px; border-bottom-style: solid; border-bottom-color: #000000; font-weight: bold;" scope="col" id="Slam">Slam</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="border-top-width: 2px; border-top-style: solid; border-top-color: #000000; border-bottom-width: 2px; border-bottom-style: solid; border-bottom-color: #000000; font-weight: bold;" scope="col" id="Round">Round</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="border-top-width: 2px; border-top-style: solid; border-top-color: #000000; border-bottom-width: 2px; border-bottom-style: solid; border-bottom-color: #000000; font-weight: bold;" scope="col" id="Opponent">Opponent</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="border-top-width: 2px; border-top-style: solid; border-top-color: #000000; border-bottom-width: 2px; border-bottom-style: solid; border-bottom-color: #000000; font-weight: bold;" scope="col" id="Match Win Probability">Match Win Probability</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td headers="tourney_year" class="gt_row gt_right">2008</td>
+<td headers="tourney_name" class="gt_row gt_left">Australian Open</td>
+<td headers="round" class="gt_row gt_left">R128</td>
+<td headers="opp_name" class="gt_row gt_left">BENJAMIN BECKER</td>
+<td headers="elo_win_prob" class="gt_row gt_right" style="background-color: rgba(85,131,175,0.6); color: #FFFFFF;">89.05%</td></tr>
+    <tr><td headers="tourney_year" class="gt_row gt_right">2008</td>
+<td headers="tourney_name" class="gt_row gt_left">Australian Open</td>
+<td headers="round" class="gt_row gt_left">R64</td>
+<td headers="opp_name" class="gt_row gt_left">SIMONE BOLELLI</td>
+<td headers="elo_win_prob" class="gt_row gt_right" style="background-color: rgba(70,130,180,0.6); color: #FFFFFF;">91.86%</td></tr>
+    <tr><td headers="tourney_year" class="gt_row gt_right">2008</td>
+<td headers="tourney_name" class="gt_row gt_left">Australian Open</td>
+<td headers="round" class="gt_row gt_left">R32</td>
+<td headers="opp_name" class="gt_row gt_left">SAM QUERREY</td>
+<td headers="elo_win_prob" class="gt_row gt_right" style="background-color: rgba(92,132,173,0.6); color: #FFFFFF;">87.43%</td></tr>
+    <tr><td headers="tourney_year" class="gt_row gt_right">2008</td>
+<td headers="tourney_name" class="gt_row gt_left">Australian Open</td>
+<td headers="round" class="gt_row gt_left">R16</td>
+<td headers="opp_name" class="gt_row gt_left">LLEYTON HEWITT</td>
+<td headers="elo_win_prob" class="gt_row gt_right" style="background-color: rgba(154,140,139,0.6); color: #FFFFFF;">67.50%</td></tr>
+    <tr><td headers="tourney_year" class="gt_row gt_right">2008</td>
+<td headers="tourney_name" class="gt_row gt_left">Australian Open</td>
+<td headers="round" class="gt_row gt_left">QF</td>
+<td headers="opp_name" class="gt_row gt_left">DAVID FERRER</td>
+<td headers="elo_win_prob" class="gt_row gt_right" style="background-color: rgba(183,146,115,0.6); color: #FFFFFF;">54.16%</td></tr>
+    <tr><td headers="tourney_year" class="gt_row gt_right">2008</td>
+<td headers="tourney_name" class="gt_row gt_left">Australian Open</td>
+<td headers="round" class="gt_row gt_left">SF</td>
+<td headers="opp_name" class="gt_row gt_left">ROGER FEDERER</td>
+<td headers="elo_win_prob" class="gt_row gt_right" style="background-color: rgba(255,165,0,0.6); color: #000000;">14.23%</td></tr>
+    <tr><td headers="tourney_year" class="gt_row gt_right">2008</td>
+<td headers="tourney_name" class="gt_row gt_left">Australian Open</td>
+<td headers="round" class="gt_row gt_left">F</td>
+<td headers="opp_name" class="gt_row gt_left">JO-WILFRIED TSONGA</td>
+<td headers="elo_win_prob" class="gt_row gt_right" style="background-color: rgba(94,132,172,0.6); color: #FFFFFF;">86.92%</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+</div>
+</div>
+<p><br></p>
+<p>Conversely, Djokovic’s 2022 Wimbledon title was the most expected of all the big three’s grand slams, with a tournament win probability of 85.7%. Djokovic’s 2021 Wimbledon title was the fifth most expected title (72.1%).</p>
+<p><br></p>
+<div class="cell">
+<div class="cell-output-display">
+
+<div id="bobfdzcgrf" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>@import url("https://fonts.googleapis.com/css2?family=Overlock:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+html {
+  font-family: Overlock, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+:where(#bobfdzcgrf) .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+:where(#bobfdzcgrf) .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+:where(#bobfdzcgrf) .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+:where(#bobfdzcgrf) .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+:where(#bobfdzcgrf) .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+:where(#bobfdzcgrf) .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+:where(#bobfdzcgrf) .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+:where(#bobfdzcgrf) .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+:where(#bobfdzcgrf) .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+:where(#bobfdzcgrf) .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+:where(#bobfdzcgrf) .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+:where(#bobfdzcgrf) .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+:where(#bobfdzcgrf) .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+:where(#bobfdzcgrf) .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+:where(#bobfdzcgrf) .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+:where(#bobfdzcgrf) .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+:where(#bobfdzcgrf) .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+:where(#bobfdzcgrf) .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#bobfdzcgrf) .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+:where(#bobfdzcgrf) .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+:where(#bobfdzcgrf) .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#bobfdzcgrf) .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+:where(#bobfdzcgrf) .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+:where(#bobfdzcgrf) .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+:where(#bobfdzcgrf) .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#bobfdzcgrf) .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+:where(#bobfdzcgrf) .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+:where(#bobfdzcgrf) .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+:where(#bobfdzcgrf) .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+:where(#bobfdzcgrf) .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-left: 4px;
+  padding-right: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#bobfdzcgrf) .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+:where(#bobfdzcgrf) .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#bobfdzcgrf) .gt_left {
+  text-align: left;
+}
+
+:where(#bobfdzcgrf) .gt_center {
+  text-align: center;
+}
+
+:where(#bobfdzcgrf) .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+:where(#bobfdzcgrf) .gt_font_normal {
+  font-weight: normal;
+}
+
+:where(#bobfdzcgrf) .gt_font_bold {
+  font-weight: bold;
+}
+
+:where(#bobfdzcgrf) .gt_font_italic {
+  font-style: italic;
+}
+
+:where(#bobfdzcgrf) .gt_super {
+  font-size: 65%;
+}
+
+:where(#bobfdzcgrf) .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 75%;
+  vertical-align: 0.4em;
+}
+
+:where(#bobfdzcgrf) .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+:where(#bobfdzcgrf) .gt_indent_1 {
+  text-indent: 5px;
+}
+
+:where(#bobfdzcgrf) .gt_indent_2 {
+  text-indent: 10px;
+}
+
+:where(#bobfdzcgrf) .gt_indent_3 {
+  text-indent: 15px;
+}
+
+:where(#bobfdzcgrf) .gt_indent_4 {
+  text-indent: 20px;
+}
+
+:where(#bobfdzcgrf) .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table">
+  <thead class="gt_header">
+    <tr>
+      <td colspan="4" class="gt_heading gt_title gt_font_normal gt_bottom_border" style=""><strong>MOST PROBABLE TOURNAMENT WINS</strong></td>
+    </tr>
+    
+  </thead>
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="border-top-width: 2px; border-top-style: solid; border-top-color: #000000; border-bottom-width: 2px; border-bottom-style: solid; border-bottom-color: #000000; font-weight: bold;" scope="col" id="Year">Year</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="border-top-width: 2px; border-top-style: solid; border-top-color: #000000; border-bottom-width: 2px; border-bottom-style: solid; border-bottom-color: #000000; font-weight: bold;" scope="col" id="Slam">Slam</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="border-top-width: 2px; border-top-style: solid; border-top-color: #000000; border-bottom-width: 2px; border-bottom-style: solid; border-bottom-color: #000000; font-weight: bold;" scope="col" id="Name">Name</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="border-top-width: 2px; border-top-style: solid; border-top-color: #000000; border-bottom-width: 2px; border-bottom-style: solid; border-bottom-color: #000000; font-weight: bold;" scope="col" id="Tournament Win Probability">Tournament Win Probability</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td headers="tourney_year" class="gt_row gt_right">2022</td>
+<td headers="tourney_name" class="gt_row gt_left">Wimbledon</td>
+<td headers="player_name" class="gt_row gt_left">NOVAK DJOKOVIC</td>
+<td headers="tournament_win_prob" class="gt_row gt_right">85.66%</td></tr>
+    <tr><td headers="tourney_year" class="gt_row gt_right">2006</td>
+<td headers="tourney_name" class="gt_row gt_left">Australian Open</td>
+<td headers="player_name" class="gt_row gt_left">ROGER FEDERER</td>
+<td headers="tournament_win_prob" class="gt_row gt_right">81.58%</td></tr>
+    <tr><td headers="tourney_year" class="gt_row gt_right">2010</td>
+<td headers="tourney_name" class="gt_row gt_left">Roland Garros</td>
+<td headers="player_name" class="gt_row gt_left">RAFAEL NADAL</td>
+<td headers="tournament_win_prob" class="gt_row gt_right">80.30%</td></tr>
+    <tr><td headers="tourney_year" class="gt_row gt_right">2007</td>
+<td headers="tourney_name" class="gt_row gt_left">Australian Open</td>
+<td headers="player_name" class="gt_row gt_left">ROGER FEDERER</td>
+<td headers="tournament_win_prob" class="gt_row gt_right">73.33%</td></tr>
+    <tr><td headers="tourney_year" class="gt_row gt_right">2021</td>
+<td headers="tourney_name" class="gt_row gt_left">Wimbledon</td>
+<td headers="player_name" class="gt_row gt_left">NOVAK DJOKOVIC</td>
+<td headers="tournament_win_prob" class="gt_row gt_right">72.08%</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+</div>
+</div>
+<p><br></p>
+<p>Not hard to believe when we look at his run in that tournament - his lowest individual match win probability came in the final (92.5%), where he defeated Australia’s very erratic Nick Kyrgios. Other than that, it looked a very soft title.</p>
+<p><br></p>
+<div class="cell">
+<div class="cell-output-display">
+
+<div id="ybyviusoin" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>@import url("https://fonts.googleapis.com/css2?family=Overlock:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+html {
+  font-family: Overlock, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+:where(#ybyviusoin) .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+:where(#ybyviusoin) .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+:where(#ybyviusoin) .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+:where(#ybyviusoin) .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+:where(#ybyviusoin) .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+:where(#ybyviusoin) .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+:where(#ybyviusoin) .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+:where(#ybyviusoin) .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+:where(#ybyviusoin) .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+:where(#ybyviusoin) .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+:where(#ybyviusoin) .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+:where(#ybyviusoin) .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+:where(#ybyviusoin) .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+:where(#ybyviusoin) .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+:where(#ybyviusoin) .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+:where(#ybyviusoin) .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+:where(#ybyviusoin) .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+:where(#ybyviusoin) .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#ybyviusoin) .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+:where(#ybyviusoin) .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+:where(#ybyviusoin) .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#ybyviusoin) .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+:where(#ybyviusoin) .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+:where(#ybyviusoin) .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+:where(#ybyviusoin) .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#ybyviusoin) .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+:where(#ybyviusoin) .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+:where(#ybyviusoin) .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+:where(#ybyviusoin) .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+:where(#ybyviusoin) .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-left: 4px;
+  padding-right: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#ybyviusoin) .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+:where(#ybyviusoin) .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#ybyviusoin) .gt_left {
+  text-align: left;
+}
+
+:where(#ybyviusoin) .gt_center {
+  text-align: center;
+}
+
+:where(#ybyviusoin) .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+:where(#ybyviusoin) .gt_font_normal {
+  font-weight: normal;
+}
+
+:where(#ybyviusoin) .gt_font_bold {
+  font-weight: bold;
+}
+
+:where(#ybyviusoin) .gt_font_italic {
+  font-style: italic;
+}
+
+:where(#ybyviusoin) .gt_super {
+  font-size: 65%;
+}
+
+:where(#ybyviusoin) .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 75%;
+  vertical-align: 0.4em;
+}
+
+:where(#ybyviusoin) .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+:where(#ybyviusoin) .gt_indent_1 {
+  text-indent: 5px;
+}
+
+:where(#ybyviusoin) .gt_indent_2 {
+  text-indent: 10px;
+}
+
+:where(#ybyviusoin) .gt_indent_3 {
+  text-indent: 15px;
+}
+
+:where(#ybyviusoin) .gt_indent_4 {
+  text-indent: 20px;
+}
+
+:where(#ybyviusoin) .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table">
+  <thead class="gt_header">
+    <tr>
+      <td colspan="5" class="gt_heading gt_title gt_font_normal gt_bottom_border" style=""><strong>DJOKOVIC'S 2022 WIMBLEDON OPPONENTS</strong></td>
+    </tr>
+    
+  </thead>
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="border-top-width: 2px; border-top-style: solid; border-top-color: #000000; border-bottom-width: 2px; border-bottom-style: solid; border-bottom-color: #000000; font-weight: bold;" scope="col" id="Year">Year</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="border-top-width: 2px; border-top-style: solid; border-top-color: #000000; border-bottom-width: 2px; border-bottom-style: solid; border-bottom-color: #000000; font-weight: bold;" scope="col" id="Slam">Slam</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="border-top-width: 2px; border-top-style: solid; border-top-color: #000000; border-bottom-width: 2px; border-bottom-style: solid; border-bottom-color: #000000; font-weight: bold;" scope="col" id="Round">Round</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="border-top-width: 2px; border-top-style: solid; border-top-color: #000000; border-bottom-width: 2px; border-bottom-style: solid; border-bottom-color: #000000; font-weight: bold;" scope="col" id="Opponent">Opponent</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="border-top-width: 2px; border-top-style: solid; border-top-color: #000000; border-bottom-width: 2px; border-bottom-style: solid; border-bottom-color: #000000; font-weight: bold;" scope="col" id="Match Win Probability">Match Win Probability</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td headers="tourney_year" class="gt_row gt_right">2022</td>
+<td headers="tourney_name" class="gt_row gt_left">Wimbledon</td>
+<td headers="round" class="gt_row gt_left">R128</td>
+<td headers="opp_name" class="gt_row gt_left">SOON WOO KWON</td>
+<td headers="elo_win_prob" class="gt_row gt_right">98.74%</td></tr>
+    <tr><td headers="tourney_year" class="gt_row gt_right">2022</td>
+<td headers="tourney_name" class="gt_row gt_left">Wimbledon</td>
+<td headers="round" class="gt_row gt_left">R64</td>
+<td headers="opp_name" class="gt_row gt_left">THANASI KOKKINAKIS</td>
+<td headers="elo_win_prob" class="gt_row gt_right">99.72%</td></tr>
+    <tr><td headers="tourney_year" class="gt_row gt_right">2022</td>
+<td headers="tourney_name" class="gt_row gt_left">Wimbledon</td>
+<td headers="round" class="gt_row gt_left">R32</td>
+<td headers="opp_name" class="gt_row gt_left">MIOMIR KECMANOVIC</td>
+<td headers="elo_win_prob" class="gt_row gt_right">97.82%</td></tr>
+    <tr><td headers="tourney_year" class="gt_row gt_right">2022</td>
+<td headers="tourney_name" class="gt_row gt_left">Wimbledon</td>
+<td headers="round" class="gt_row gt_left">R16</td>
+<td headers="opp_name" class="gt_row gt_left">TIM VAN RIJTHOVEN</td>
+<td headers="elo_win_prob" class="gt_row gt_right">99.72%</td></tr>
+    <tr><td headers="tourney_year" class="gt_row gt_right">2022</td>
+<td headers="tourney_name" class="gt_row gt_left">Wimbledon</td>
+<td headers="round" class="gt_row gt_left">QF</td>
+<td headers="opp_name" class="gt_row gt_left">JANNIK SINNER</td>
+<td headers="elo_win_prob" class="gt_row gt_right">99.72%</td></tr>
+    <tr><td headers="tourney_year" class="gt_row gt_right">2022</td>
+<td headers="tourney_name" class="gt_row gt_left">Wimbledon</td>
+<td headers="round" class="gt_row gt_left">SF</td>
+<td headers="opp_name" class="gt_row gt_left">CAMERON NORRIE</td>
+<td headers="elo_win_prob" class="gt_row gt_right">96.70%</td></tr>
+    <tr><td headers="tourney_year" class="gt_row gt_right">2022</td>
+<td headers="tourney_name" class="gt_row gt_left">Wimbledon</td>
+<td headers="round" class="gt_row gt_left">F</td>
+<td headers="opp_name" class="gt_row gt_left">NICK KYRGIOS</td>
+<td headers="elo_win_prob" class="gt_row gt_right">92.48%</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+</div>
+</div>
+<p><br></p>
+<p>While it was neat looking at individual slams in the above section, we can aggregate all the tournament win probabilities to better understand how well each have done in getting to the amount of slams they’ve won given how many they were expected to have won.</p>
+<p>Of the three, Federer’s average tournament win probability over his 20 slam wins was the highest, averaging 44.3% win probability. If we were to sum up all of the individual tournament win probabilities and arrive at an expected number of wins, we can see that Federer was in fact expected to have won more slams than Djokovic if the slams they won were repeated over and over again.</p>
+<p>Similarly, Rafa’s average win probability was a touch lower than Federer’s, but given he has won two more slams, his expected wins are even higher than Djokovic’s.</p>
+<p><br></p>
+<div class="cell">
+<div class="cell-output-display">
+
+<div id="lxdlxijzzd" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>@import url("https://fonts.googleapis.com/css2?family=Overlock:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+html {
+  font-family: Overlock, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+:where(#lxdlxijzzd) .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+:where(#lxdlxijzzd) .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+:where(#lxdlxijzzd) .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+:where(#lxdlxijzzd) .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+:where(#lxdlxijzzd) .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+:where(#lxdlxijzzd) .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+:where(#lxdlxijzzd) .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+:where(#lxdlxijzzd) .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+:where(#lxdlxijzzd) .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+:where(#lxdlxijzzd) .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+:where(#lxdlxijzzd) .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+:where(#lxdlxijzzd) .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+:where(#lxdlxijzzd) .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+:where(#lxdlxijzzd) .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+:where(#lxdlxijzzd) .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+:where(#lxdlxijzzd) .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+:where(#lxdlxijzzd) .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+:where(#lxdlxijzzd) .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#lxdlxijzzd) .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+:where(#lxdlxijzzd) .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+:where(#lxdlxijzzd) .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#lxdlxijzzd) .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+:where(#lxdlxijzzd) .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+:where(#lxdlxijzzd) .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+:where(#lxdlxijzzd) .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#lxdlxijzzd) .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+:where(#lxdlxijzzd) .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+:where(#lxdlxijzzd) .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+:where(#lxdlxijzzd) .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+:where(#lxdlxijzzd) .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-left: 4px;
+  padding-right: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#lxdlxijzzd) .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+:where(#lxdlxijzzd) .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#lxdlxijzzd) .gt_left {
+  text-align: left;
+}
+
+:where(#lxdlxijzzd) .gt_center {
+  text-align: center;
+}
+
+:where(#lxdlxijzzd) .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+:where(#lxdlxijzzd) .gt_font_normal {
+  font-weight: normal;
+}
+
+:where(#lxdlxijzzd) .gt_font_bold {
+  font-weight: bold;
+}
+
+:where(#lxdlxijzzd) .gt_font_italic {
+  font-style: italic;
+}
+
+:where(#lxdlxijzzd) .gt_super {
+  font-size: 65%;
+}
+
+:where(#lxdlxijzzd) .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 75%;
+  vertical-align: 0.4em;
+}
+
+:where(#lxdlxijzzd) .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+:where(#lxdlxijzzd) .gt_indent_1 {
+  text-indent: 5px;
+}
+
+:where(#lxdlxijzzd) .gt_indent_2 {
+  text-indent: 10px;
+}
+
+:where(#lxdlxijzzd) .gt_indent_3 {
+  text-indent: 15px;
+}
+
+:where(#lxdlxijzzd) .gt_indent_4 {
+  text-indent: 20px;
+}
+
+:where(#lxdlxijzzd) .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table">
+  <thead class="gt_header">
+    <tr>
+      <td colspan="5" class="gt_heading gt_title gt_font_normal" style=""><strong>PERFORMANCE AGAINST EXPECTATION</strong></td>
+    </tr>
+    <tr>
+      <td colspan="5" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border" style="">Comparing the big 3s expected wins and their actual wins</td>
+    </tr>
+  </thead>
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="border-top-width: 2px; border-top-style: solid; border-top-color: #000000; border-bottom-width: 2px; border-bottom-style: solid; border-bottom-color: #000000; font-weight: bold;" scope="col" id="Name">Name</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="border-top-width: 2px; border-top-style: solid; border-top-color: #000000; border-bottom-width: 2px; border-bottom-style: solid; border-bottom-color: #000000; font-weight: bold;" scope="col" id="Number Slams">Number Slams</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="border-top-width: 2px; border-top-style: solid; border-top-color: #000000; border-bottom-width: 2px; border-bottom-style: solid; border-bottom-color: #000000; font-weight: bold;" scope="col" id="Average Tourney Win Probability<sup class=&quot;gt_footnote_marks&quot;>1</sup>">Average Tourney Win Probability<sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="border-top-width: 2px; border-top-style: solid; border-top-color: #000000; border-bottom-width: 2px; border-bottom-style: solid; border-bottom-color: #000000; font-weight: bold;" scope="col" id="Expected Wins<sup class=&quot;gt_footnote_marks&quot;>2</sup>">Expected Wins<sup class="gt_footnote_marks">2</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="border-top-width: 2px; border-top-style: solid; border-top-color: #000000; border-bottom-width: 2px; border-bottom-style: solid; border-bottom-color: #000000; font-weight: bold;" scope="col" id="Wins above Expected<sup class=&quot;gt_footnote_marks&quot;>3</sup>">Wins above Expected<sup class="gt_footnote_marks">3</sup></th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td headers="player_name" class="gt_row gt_left">NOVAK DJOKOVIC</td>
+<td headers="n" class="gt_row gt_right">22</td>
+<td headers="avg_win_prob" class="gt_row gt_right">36.50%</td>
+<td headers="expected_wins" class="gt_row gt_right">8.03</td>
+<td headers="wins_above_expected" class="gt_row gt_right">13.97</td></tr>
+    <tr><td headers="player_name" class="gt_row gt_left">RAFAEL NADAL</td>
+<td headers="n" class="gt_row gt_right">22</td>
+<td headers="avg_win_prob" class="gt_row gt_right">42.61%</td>
+<td headers="expected_wins" class="gt_row gt_right">9.38</td>
+<td headers="wins_above_expected" class="gt_row gt_right">12.62</td></tr>
+    <tr><td headers="player_name" class="gt_row gt_left">ROGER FEDERER</td>
+<td headers="n" class="gt_row gt_right">20</td>
+<td headers="avg_win_prob" class="gt_row gt_right">44.28%</td>
+<td headers="expected_wins" class="gt_row gt_right">8.86</td>
+<td headers="wins_above_expected" class="gt_row gt_right">11.14</td></tr>
+  </tbody>
+  
+  <tfoot class="gt_footnotes">
+    <tr>
+      <td class="gt_footnote" colspan="5"><sup class="gt_footnote_marks">1</sup> The average of all winning slam's win probabilities</td>
+    </tr>
+    <tr>
+      <td class="gt_footnote" colspan="5"><sup class="gt_footnote_marks">2</sup> Calculated as the sum of all tournament win probabilities (<strong>only for the tournaments they won</strong>)</td>
+    </tr>
+    <tr>
+      <td class="gt_footnote" colspan="5"><sup class="gt_footnote_marks">3</sup> The difference between the slams win total minus the Expected Wins</td>
+    </tr>
+  </tfoot>
+</table>
+</div>
+</div>
+</div>
+<p><br></p>
+<p>It’s also interesting to note how each of the big three’s expected tournament win probabilities have changed over their career.</p>
+<p>Pre-2020, Nadal has consistently been expected to win at a higher rate than the other two - most likely a result of his Roland Garros dominance. That win probability has been dropping on average in recent years as he’s started winning on his “least” preferred surfaces. Conversely, Djokovic’s win probability has been increasing over time.</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/win_prob_time-1.png" class="img-fluid" width="960"></p>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="finishing-up" class="level2">
+<h2 class="anchored" data-anchor-id="finishing-up">Finishing Up</h2>
+<p>So what does this tell us?</p>
+<p>In this post I’ve tried to use Elo to quantify the difficulty rating of each superstar’s phenomenal achievements in getting to the number of slams they have individually. Again, as stated at the very beginning of this post, this is in no way an attempt to rank the big three - far from it.</p>
+<p>We did however see that the metrics used in this post would suggest that it’s not true that Djokovic’s has had an easy ride during his 22 grand slams wins. They have been quite the opposite on both fronts; the opponents he’s faced over his 22 wins seemingly rated more highly than that of Nadal and Federer, while also having outperformed his expected win probability by a greater margin than that of the other big three.</p>
+<p>While it’s a shame the majestic Roger Federer ever needed to retire, I’m really excited to continue to enjoy the once in a lifetime experience of seeing multiple transcendent stars continue to dominate their sport concurrently.</p>
+<p>Would love feedback on the post and have holes poked in it wherever they need poking!</p>
+<p>Thanks!</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

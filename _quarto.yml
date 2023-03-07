@@ -1,0 +1,43 @@
+project:
+  type: website
+  resources: 
+    - "img"
+
+website:
+  title: "Don't Blame the Data"
+  site-url: "https://www.dontblamethedata.com/"
+  description: "This is Jason Zivkovic's personal Blog."
+  favicon: "favicon.ico"
+  image: "icon.jpg"
+  #cookie-consent: true
+  google-analytics: "UA-145056765-1"
+  navbar:
+    logo: "icon.jpg"
+    left:
+      - text: "Blog"
+        href: blog.qmd
+      - text: "Projects"
+        menu:
+          - pages/worldfootballR.qmd
+          - pages/chessR.qmd
+          - pages/nblR.qmd
+          - pages/bettRtab.qmd
+      - text: "NBL Win Probability App"
+        href: https://nbl-r-shiny.herokuapp.com
+    right:
+      - icon: github
+        href: https://github.com/JaseZiv
+      - icon: twitter
+        href: https://twitter.com/jaseziv
+      - icon: linkedin
+        href: https://linkedin.com/in/jason-zivkovic-4a0a1926/
+      
+        
+format:
+  html:
+    theme: [simplex, theme.scss]
+    code-fold: true
+    toc-depth: 3
+
+editor: visual
+

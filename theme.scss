@@ -1,0 +1,18 @@
+/*-- scss:defaults --*/
+// use simplex as the base
+$theme: "simplex" !default;
+
+
+/*-- scss:rules --*/
+// ensure the the h1 title in the title block banner is white
+h1.title, .title.h1 {
+  color: #000000;
+}
+
+.quarto-title-block default page-columns page-full{
+    color: #000000;
+}
+
+quarto-title column-page {
+    color: #000000;
+}

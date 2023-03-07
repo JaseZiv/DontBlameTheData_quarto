@@ -1,0 +1,14 @@
+[
+  {
+    "listing": "/blog.html",
+    "items": [
+      "/blog/deploy-r-shiny-heroku-docker-github-actions/index.html",
+      "/blog/big3-grand-slam-difficulty/index.html",
+      "/blog/extract-data-using-worldfootballR/index.html",
+      "/blog/first-open-source-contribution/index.html",
+      "/blog/simplifying-afl-tipping/index.html",
+      "/blog/building-a-linear-regression-model-in-r-to-predict-afl-crowds/index.html",
+      "/blog/using-data-to-determine-which-afl-fans-jump-onthe-bandwagon/index.html"
+    ]
+  }
+]

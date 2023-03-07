@@ -1,0 +1,10 @@
+---
+title: "worldfootballR"
+image: "worldfootballR_hex.png"
+---
+
+![](worldfootballR_hex.png)
+
+The `worldfootballR` package is designed to allow users to extract world football (soccer) data from very popular and thorough websites fbref.com, transfermarkt.com and understat.com.
+
+The vignette for the package offers a full description of the package and the functions available, and can be found [here](https://jaseziv.github.io/worldfootballR/).
