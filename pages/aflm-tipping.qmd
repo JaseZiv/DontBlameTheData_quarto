@@ -3,16 +3,11 @@ title: "AFLM Tipping"
 description: "Predicting AFL Men's match results weekly for the Squiggle tipping competition"
 ---
 
-```{r, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, include = FALSE, warning = FALSE, message = FALSE)
-```
 
-```{r setup, include=FALSE}
+```{r}
 library(dplyr)
 library(gt)
-```
 
-```{r theme, include=FALSE}
 sysfonts::font_add_google(name = "Overlock", family = "Overlock")
 showtext::showtext_auto()
 
@@ -62,9 +57,8 @@ gt_theme <- function(data) {
       data_row.padding = px(5)
     ) 
 }
-```
 
-```{r tipping_table, include=FALSE}
+
 dat <- read.csv("https://github.com/JaseZiv/AFL-Tips/releases/download/Tips/AFL_tips_2023.csv")
 
 
@@ -96,10 +90,4 @@ tab <- dat %>%
 
 tab
 
-# dat %>%
-#   select(-HomeWinProbability, -AwayWinProbability) %>%
-#   mutate(`Home vs Away` = paste0(Home, " vs ", Away)) %>% 
-#   mutate(who_winner = ifelse(PredictedWinner == Home, "home", "away")) %>% 
-#   select(-Home, -Away, -Season) %>% 
-#   select(Round, `Home vs Away`, PredictedWinner, WinProbability, PredictedMargin)
 ```

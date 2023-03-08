@@ -41,6 +41,8 @@ format:
     theme: [simplex, theme.scss]
     code-fold: true
     toc-depth: 3
+    warning: false
+    message: false
 
 editor: visual
 
