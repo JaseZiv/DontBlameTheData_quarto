@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.269">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Jason Zivkovic">
+<meta name="dcterms.date" content="2021-01-10">
+<meta name="description" content="Using the worldfootballR R package to analyse Liverpool expected goals in the EPL">
+
+<title>Don’t Blame the Data - Expected Goals and Liverpool - An Intro to worldfootballR</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../favicon.ico" rel="icon">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+<script type="text/javascript">
+
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-145056765-1', 'auto');
+
+ga('send', {
+  hitType: 'pageview',
+  'anonymizeIp': true,
+});
+</script>
+
+
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../icon.jpg" alt="" class="navbar-logo">
+    </a>
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Don’t Blame the Data</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../blog.html">
+ <span class="menu-text">Blog</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-models" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Models</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-models">    
+        <li>
+    <a class="dropdown-item" href="../../pages/aflm-tipping.html">
+ <span class="dropdown-text">AFLM Tipping</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-projects" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Projects</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-projects">    
+        <li>
+    <a class="dropdown-item" href="../../pages/worldfootballR.html">
+ <span class="dropdown-text">worldfootballR</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/chessR.html">
+ <span class="dropdown-text">chessR</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/nblR.html">
+ <span class="dropdown-text">nblR</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../pages/bettRtab.html">
+ <span class="dropdown-text">bettRtab</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="https://nbl-r-shiny.herokuapp.com">
+ <span class="menu-text">NBL Win Probability App</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/JaseZiv"><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/jaseziv"><i class="bi bi-twitter" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://linkedin.com/in/jason-zivkovic-4a0a1926/"><i class="bi bi-linkedin" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Expected Goals and Liverpool - An Intro to worldfootballR</h1>
+                  <div>
+        <div class="description">
+          Using the worldfootballR R package to analyse Liverpool expected goals in the EPL
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">worldfootballR</div>
+                <div class="quarto-category">soccer</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Jason Zivkovic </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">January 10, 2021</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<p>This post continues a series of posts that aims to showcase the new <a href="https://github.com/JaseZiv/worldfootballR"><code>worldfootballR</code></a> R package for extracting world football (soccer) data from popular data site fbref.com.</p>
+<p><a href="https://jaseziv.github.io/worldfootballR/"><img src="worldfootballR_hex.png" width="100" height="100"></a></p>
+<p>This post will aim to analyse expected goals and actual goals, primarily focusing on Liverpool.</p>
+<p>This season sees Liverpool in a struggle with a few teams in the hope of going back-to-back. I want to see if there is a difference in how the Reds are scoring this season as opposed to the last few seasons.</p>
+<hr>
+<section id="extract-data-using-worldfootballr" class="level1">
+<h1>Extract Data Using <code>worldfootballR</code></h1>
+<p>As always, we first start by installing the package if you haven’t already done so and loading any libraries necessary for the analysis.</p>
+<pre><code>devtools::install_github("JaseZiv/worldfootballR")
+library(tidyverse)
+library(worldfootballR)</code></pre>
+<div class="cell">
+
+</div>
+<p>To get match results, including goals and xG data, we can use the function <code>fb_match_results()</code>. Because we want it for the Men’s Premier League, we pass the following values to the function’s arguments:</p>
+<pre><code>xg_data &lt;- fb_match_results(country = "ENG", gender = "M", season_end_year = c(2018:2021))</code></pre>
+<div class="cell">
+
+</div>
+<p>We can also see what the data looks like:</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 1,520
+Columns: 19
+$ Competition_Name &lt;chr&gt; "Premier League", "Premier League", "Premier League",…
+$ Gender           &lt;chr&gt; "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M"…
+$ Country          &lt;chr&gt; "ENG", "ENG", "ENG", "ENG", "ENG", "ENG", "ENG", "ENG…
+$ Season_End_Year  &lt;int&gt; 2018, 2018, 2018, 2018, 2018, 2018, 2018, 2018, 2018,…
+$ Round            &lt;lgl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N…
+$ Wk               &lt;int&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2,…
+$ Day              &lt;chr&gt; "Fri", "Sat", "Sat", "Sat", "Sat", "Sat", "Sat", "Sat…
+$ Date             &lt;date&gt; 2017-08-11, 2017-08-12, 2017-08-12, 2017-08-12, 2017…
+$ Time             &lt;chr&gt; "19:45", "12:30", "15:00", "15:00", "15:00", "15:00",…
+$ Home             &lt;chr&gt; "Arsenal", "Watford", "West Brom", "Everton", "Southa…
+$ HomeGoals        &lt;dbl&gt; 4, 3, 1, 1, 0, 2, 0, 0, 0, 4, 0, 3, 2, 0, 0, 1, 1, 1,…
+$ Home_xG          &lt;dbl&gt; 2.1, 2.0, 1.2, 0.4, 2.1, 1.0, 1.0, 0.5, 0.5, 2.1, 0.4…
+$ Away             &lt;chr&gt; "Leicester City", "Liverpool", "Bournemouth", "Stoke …
+$ AwayGoals        &lt;dbl&gt; 3, 3, 0, 0, 0, 3, 3, 2, 2, 0, 4, 2, 0, 2, 1, 0, 0, 0,…
+$ Away_xG          &lt;dbl&gt; 1.6, 3.0, 0.4, 0.3, 0.4, 0.8, 1.7, 1.6, 2.2, 0.6, 2.6…
+$ Attendance       &lt;dbl&gt; 59387, 20407, 25011, 39045, 31447, 41616, 25448, 3041…
+$ Venue            &lt;chr&gt; "Emirates Stadium", "Vicarage Road Stadium", "The Haw…
+$ Referee          &lt;chr&gt; "Mike Dean", "Anthony Taylor", "Robert Madley", "Niel…
+$ Notes            &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N…</code></pre>
+</div>
+</div>
+<p>To get season league tables (which contains goals scored for and against, and expected goals), we can use the <code>get_season_team_stats()</code> functions, and pass the following values to the function arguments:</p>
+<pre><code>end_season_summary &lt;- fb_season_team_stats(country = "ENG", gender = "M", season_end_year = c(2018:2021), stat_type = "league_table")</code></pre>
+<div class="cell">
+
+</div>
+<p>And inspect the data:</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 80
+Columns: 24
+$ Competition_Name &lt;chr&gt; "Premier League", "Premier League", "Premier League",…
+$ Gender           &lt;chr&gt; "M", "M", "M", "M", "M", "M", "M", "M", "M", "M", "M"…
+$ Country          &lt;chr&gt; "ENG", "ENG", "ENG", "ENG", "ENG", "ENG", "ENG", "ENG…
+$ Season_End_Year  &lt;int&gt; 2020, 2020, 2020, 2020, 2020, 2020, 2020, 2020, 2020,…
+$ Squad            &lt;chr&gt; "Arsenal", "Aston Villa", "Bournemouth", "Brighton", …
+$ Team_or_Opponent &lt;chr&gt; "team", "team", "team", "team", "team", "team", "team…
+$ Rk               &lt;int&gt; 8, 17, 18, 15, 10, 4, 14, 12, 5, 1, 2, 3, 13, 20, 9, …
+$ MP               &lt;int&gt; 38, 38, 38, 38, 38, 38, 38, 38, 38, 38, 38, 38, 38, 3…
+$ W                &lt;int&gt; 14, 9, 9, 9, 15, 20, 11, 13, 18, 32, 26, 18, 11, 5, 1…
+$ D                &lt;int&gt; 14, 8, 7, 14, 9, 6, 10, 10, 8, 3, 3, 12, 11, 6, 12, 7…
+$ L                &lt;int&gt; 10, 21, 22, 15, 14, 12, 17, 15, 12, 3, 9, 8, 16, 27, …
+$ GF               &lt;int&gt; 56, 41, 40, 39, 43, 69, 31, 44, 67, 85, 102, 66, 38, …
+$ GA               &lt;int&gt; 48, 67, 65, 54, 50, 54, 50, 56, 41, 33, 35, 36, 58, 7…
+$ GDiff            &lt;int&gt; 8, -26, -25, -15, -7, 15, -19, -12, 26, 52, 67, 30, -…
+$ Pts              &lt;int&gt; 56, 35, 34, 41, 54, 66, 43, 49, 62, 99, 81, 66, 44, 2…
+$ xG               &lt;dbl&gt; 49.2, 40.1, 42.7, 41.2, 43.9, 66.6, 34.0, 49.3, 61.6,…
+$ xGA              &lt;dbl&gt; 56.6, 65.9, 57.5, 54.5, 48.3, 37.9, 51.3, 48.4, 44.5,…
+$ xGDiff           &lt;dbl&gt; -7.3, -25.8, -14.8, -13.3, -4.4, 28.6, -17.3, 0.9, 17…
+$ xGDiff.90        &lt;dbl&gt; -0.19, -0.68, -0.39, -0.35, -0.12, 0.75, -0.46, 0.02,…
+$ Attendance       &lt;chr&gt; "47,589", "28,505", "7,745", "22,369", "15,995", "32,…
+$ Top.Team.Scorer  &lt;chr&gt; "Pierre-Emerick Aubameyang - 22", "Jack Grealish - 8"…
+$ Goalkeeper       &lt;chr&gt; "Bernd Leno", "Tom Heaton", "Aaron Ramsdale", "Mathew…
+$ Notes            &lt;chr&gt; "→ UEFA Europa League via cup win 2", "", "Relegated"…
+$ Last.5           &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N…</code></pre>
+</div>
+</div>
+<hr>
+</section>
+<section id="the-analysis" class="level1">
+<h1>The Analysis</h1>
+<p>So what are expected goals? From <a href="https://www.optasports.com/services/analytics/advanced-metrics/">Opta Sports</a>;</p>
+<blockquote class="blockquote">
+<p>EXPECTED GOALS (XG) MEASURES THE QUALITY OF A SHOT BASED ON SEVERAL VARIABLES SUCH AS ASSIST TYPE, SHOT ANGLE AND DISTANCE FROM GOAL, WHETHER IT WAS A HEADED SHOT AND WHETHER IT WAS DEFINED AS A BIG CHANCE. <br><br>ADDING UP A PLAYER OR TEAM’S EXPECTED GOALS CAN GIVE US AN INDICATION OF HOW MANY GOALS A PLAYER OR TEAM SHOULD HAVE SCORED ON AVERAGE, GIVEN THE SHOTS THEY HAVE TAKEN.</p>
+</blockquote>
+<p>Why are we focusing on expected goals in this post?</p>
+<p>Well it can be seen below that for the 2017/18 to 2019/20 seasons, the more teams scored above their expected goals tally, the more points they tended to finish the season on, indicating a fairly strong positive relationship.</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/xg_wins_cor-1.png" class="img-fluid" width="960"></p>
+</div>
+</div>
+<section id="how-are-the-reds-tracking" class="level2">
+<h2 class="anchored" data-anchor-id="how-are-the-reds-tracking">How are the Reds tracking?</h2>
+<p>Which leads us to Liverpool. Below we can chart Liverpool’s cumulative progress after each match played for the last four seasons and can see that in each of the three seasons before the current season, the Reds outperformed their expected goals tally, with last season’s championship team exceeding their expected goals total for the whole season.</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/liv_xg-1.png" class="img-fluid" width="960"></p>
+</div>
+</div>
+<p>This current season, other than the 7-0 drubbing (xG of 2.2) against Crystal Palace at Selhurst Park, Liverpool’s goals tally has closely tracked the expected goals. The Reds marksmen just aren’t able to convert those guilt edge chances this season, which might explain the struggle at the top.</p>
+</section>
+</section>
+<section id="wrap-up" class="level1">
+<h1>Wrap Up</h1>
+<p>This was the second post in a series of analyses that will make use of various data extraction functions in the worldfootballR package.</p>
+<p>Here we saw that Liverpool appeared to have regressed to the mean somewhat and are struggling to score much higher than they’re expected, based on their shots taken. This is in contrast to the previous three seasons, where the goals scored outpaced the expected goals.</p>
+<p>As always, any questions/comments about the piece or the R package, feel free to reach out through the regular channels.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

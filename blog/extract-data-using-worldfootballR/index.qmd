@@ -2,6 +2,7 @@
 title: "ANALYSE FOOTBALL (SOCCER) DATA IN R WITH ZERO R EXPERIENCE"
 author: "Jason Zivkovic"
 date: "2021-06-05"
+description: "Going from absolutely zero R coding experience to being able to extract data using the R package worldfootballR."
 categories: [R, worldfootballR]
 image: "r_worldfootballR_post_hero.png"
 ---

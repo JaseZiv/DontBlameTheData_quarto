@@ -1,6 +1,5 @@
 ---
-title: "About Me"
-image: profile.jpg
+page-layout: full
 about:
   template: jolla
   links:
@@ -15,22 +14,140 @@ about:
       href: https://github.com/JaseZiv
 ---
 
-My name is Jason Zivkovic and I'm a Data Scientist from Melbourne, Australia, working at the Reece Group.
+::: grid
+::: {.g-col-12 .g-col-md-6}
+![](profile.jpg)
+:::
 
-Some of my passions include web scraping, package and app development, statistical modeling, sports analytics and data visualisation.
-
-The bulk of my programming is done using the R programming language, with some Python thrown in.
-
-------------------------------------------------------------------------
-
-## What you will find here
+::: {.g-col-12 .g-col-md-6}
+My name is Jason Zivkovic and I'm a Data Scientist from Melbourne, Australia, working at the Reece Group. Some of my passions include web scraping, package and app development, statistical modeling, sports analytics and data visualisation. You can find me on [Twitter](https://twitter.com/jaseziv) or [GitHub](https://github.com/JaseZiv) and [LinkedIn](https://linkedin.com/in/jason-zivkovic-4a0a1926/).
 
 This blog will be mainly about R programming, mainly through sports, but will touch on other parts of life also, using data visualisations to tell the story. What I can promise though is it will be filled with my own selfish pleasures. I hope they align with my readers' interests.
 
-Some of the sports that will be included include Australian Rules Football (AFL), Basketball, American Football, World Football (Soccer) and many more.
-
-The one constant is that the data will tell the story.
-
-If you don't agree with it, please, please don't blame the data.
+The one constant is that the data will tell the story. If you don't agree with it, please, please don't blame the data.
 
 Importantly, all views expressed here are my own.
+
+To get started, you can check out my most popular content below.
+:::
+
+::: {.g-col-12 .g-col-md-5 .g-start-md-2}
+# R Libraries Created
+
+[<img src="pages/worldfootballR_hex.png" width="100" height="100"/>](https://jaseziv.github.io/worldfootballR/) [<img src="pages/chessR_hex.png" width="100" height="100"/>](https://jaseziv.github.io/chessR/)
+
+[<img src="pages/nblR_hex.png" href="https://jaseziv.github.io/worldfootballR/" width="100" height="100"/>](https://jaseziv.github.io/nblR/) [<img src="pages/bettRtab_hex.png" href="https://jaseziv.github.io/worldfootballR/" width="100" height="100"/>](https://jaseziv.github.io/bettRtab/)
+:::
+
+::: {.g-col-12 .g-col-md-5}
+# Apps and Blog Posts
+
+-   [Win Probability App for the NBL](https://nbl-r-shiny.herokuapp.com/)
+-   [Rating the Difficulty of the Big 3's Grand Slam Wins](http://localhost:3615/blog/big3-grand-slam-difficulty/)
+-   [Deploying R Shiny Apps to Heroku](http://localhost:3615/blog/deploy-r-shiny-heroku-docker-github-actions/)
+-   [Set up R and get using `worldfootballR`](http://localhost:3615/blog/extract-data-using-worldfootballR/)
+:::
+:::
+
+# AFL Tips
+
+```{r setup, include=FALSE}
+library(dplyr)
+library(gt)
+```
+
+```{r theme, include=FALSE}
+sysfonts::font_add_google(name = "Overlock", family = "Overlock")
+showtext::showtext_auto()
+
+gt_theme <- function(data) {
+  data %>%
+    # tab_style(
+    #   locations = cells_column_labels(),
+    #   style     = list(
+    #     #Give a thick border below
+    #     cell_borders(sides = c("bottom"), weight = px(2)),
+    #     #Make text bold
+    #     cell_text(weight = "bold")
+    #   )
+    # ) %>%
+    # tab_style(
+    #   locations = cells_column_labels(),
+    #   style     = list(
+    #     #Give a thick border below
+    #     cell_borders(sides = c("bottom"), weight = px(2)),
+    #     #Make text bold
+    #     cell_text(weight = "bold")
+    #   )
+    # ) %>%
+    # opt_all_caps() %>%
+    #Use the Chivo font
+    #Note the great 'google_font' function in 'gt' that removes the need to pre-load fonts
+    opt_table_font(
+      font = list(
+        google_font("Overlock"),
+        default_fonts()
+      )
+    ) %>%
+     tab_options(
+      heading.title.font.size = 40,
+      heading.padding = px(15),
+      column_labels.background.color = "#585d63",
+      table_body.hlines.color = "lightgrey",
+      table.border.top.width = px(3),
+      table.border.top.color = "transparent",
+      table.border.bottom.color = "transparent",
+      table.border.bottom.width = px(3),
+      column_labels.border.top.width = px(3),
+      column_labels.border.top.color = "transparent",
+      column_labels.border.bottom.width = px(3),
+      column_labels.border.bottom.color = "transparent",
+      row.striping.background_color = "lightgrey",
+      data_row.padding = px(5)
+    ) 
+}
+```
+
+```{r tipping_table, include=FALSE}
+dat <- read.csv("https://github.com/JaseZiv/AFL-Tips/releases/download/Tips/AFL_tips_2023.csv")
+
+
+tab <- dat %>%
+  select(-HomeWinProbability, -AwayWinProbability) %>%
+  mutate(`Home vs Away` = paste0(Home, " vs ", Away)) %>% 
+  mutate(who_winner = ifelse(PredictedWinner == Home, "home", "away")) %>% 
+  select(-Home, -Away, -Season) %>% 
+  select(Round, `Home vs Away`, PredictedWinner, WinProbability, PredictedMargin) %>% 
+  gt() %>%
+  fmt_percent(columns = c(WinProbability)) %>% 
+  cols_label(
+    WinProbability = "Win Probability",
+    PredictedWinner = "Predicted Winner",
+    PredictedMargin = "Predicted Margin"
+  ) %>% 
+  tab_header(
+    title = "2023 AFL Men's Round Predictions"
+  ) %>% 
+   tab_style(
+      style = list(
+        cell_text(color = "#3a3d42", weight = "bold")
+      ),
+      locations = cells_body(
+        columns = PredictedWinner
+      )
+    ) %>% 
+  gt_theme()
+
+tab
+
+# dat %>%
+#   select(-HomeWinProbability, -AwayWinProbability) %>%
+#   mutate(`Home vs Away` = paste0(Home, " vs ", Away)) %>% 
+#   mutate(who_winner = ifelse(PredictedWinner == Home, "home", "away")) %>% 
+#   select(-Home, -Away, -Season) %>% 
+#   select(Round, `Home vs Away`, PredictedWinner, WinProbability, PredictedMargin)
+```
+```{r}
+
+```
+

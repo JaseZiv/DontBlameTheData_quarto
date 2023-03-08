@@ -16,6 +16,9 @@ website:
     left:
       - text: "Blog"
         href: blog.qmd
+      - text: "Models"
+        menu:
+          - pages/aflm-tipping.qmd
       - text: "Projects"
         menu:
           - pages/worldfootballR.qmd

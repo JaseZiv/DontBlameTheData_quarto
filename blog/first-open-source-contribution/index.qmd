@@ -2,6 +2,7 @@
 title: "The Agony and the Ecstasy of my first open source contribution"
 author: "Jason Zivkovic"
 date: "2019-12-16"
+description: "My first open source contribution wasn't all smooth sailing, but it sure was thoroughly rewarding"
 categories: [R, fitzRoy]
 image: "process.png"
 ---
@@ -18,12 +19,9 @@ The following is a glimpse at the journey, and will be explained in this post:
 
 ![](process.png)
 
-
 What this post won't be is an exhaustive step-by-step guide of every touch point, rather a medium-high level summary.
 
-
-> *Life is not meant to be easy, my child; but take courage: it can be delightful.* 
->- George Bernard Shaw
+> *Life is not meant to be easy, my child; but take courage: it can be delightful.* - George Bernard Shaw
 
 With George's words in mind, I thought time to push myself to jump in.
 
@@ -55,15 +53,15 @@ The function was modified somewhat though to take advantage of the `get_match_re
 
 With that in mind, the function written takes in three arguments, all of which have the option of being blank, as well as specified:
 
-* `match_results_df` - A data frame extracted using `get_match_results()`, 
-* `season_round` - The round of the season the user wants the ladder for, 
-* `season` - The season the ladder is required for.
+-   `match_results_df` - A data frame extracted using `get_match_results()`,
+-   `season_round` - The round of the season the user wants the ladder for,
+-   `season` - The season the ladder is required for.
 
 If these are all left blank, the function will return the ladder for every round of every season since the 1897 season.
 
 Having the function written was one thing, it also required roxygen notes, that are returned to the user in the help docs of the function. Hadley's [R Packages](http://r-pkgs.had.co.nz/man.html) book does a good job explaining these.
 
-***
+------------------------------------------------------------------------
 
 ## I'm ready to be a contributor
 
@@ -79,7 +77,6 @@ My initial thoughts? What the is this?!
 
 Bit of googling, ok, it's a VIM editor. Easy. Write a commit message and then all should be good... WAIT?! How do I get out of this screen?! Bit more googling and after typing `:WQ`, we're ready to rock.
 
-
 ## What. Am. I. Doing?!!
 
 Ok so things were looking good. I'd committed my changes, all checks passed, happy days.
@@ -90,4 +87,4 @@ The `Master` of my forked repo was two commits behind my branch `Ladder`, which 
 
 Finally I can say I have successfully made my first contribution to an open source project. I hope that users of this package find the function useful and as with everything, can find improvements to make it even better.
 
-***
+------------------------------------------------------------------------

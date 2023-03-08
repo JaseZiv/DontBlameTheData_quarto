@@ -2,6 +2,7 @@
 title: "Deploying an R Shiny App on Heroku via GitHub Actions and Dockerfile to Access Private GitHub Repositories"
 author: "Jason Zivkovic"
 date: "2023-02-24"
+description: 'Deploying an R Shiny App on Heroku when Github Secrets are Needed to access private GitHub repositories'
 categories: [R, Shiny, Heroku, GitHub Actions, Docker]
 image: "deployment.jpeg"
 ---

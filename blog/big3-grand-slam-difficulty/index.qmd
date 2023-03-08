@@ -2,10 +2,10 @@
 title: "Rating the Difficulty of the Big 3's Grand Slam Wins"
 author: "Jason Zivkovic"
 date: "2023-02-02"
+description: 'Using Elo to understand the difficulty of the Big 3 grand slam wins'
 categories: [R, elo, tennis analytics]
 image: "win_prob_time-1.png"
 ---
-
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE, fig.width = 10)
@@ -216,10 +216,9 @@ big3_winners_grand_slams <- winners_grand_slams_raw %>%
 
 ```
 
-
 ## Introduction
 
-As the current (2023) Australian Open came to a close with Novak Djokovic winning a record equaling 22nd Grand Slam, the expected discourse on who is the best player of all time is back on the agenda. One discussion thread centers around the ease of Djokovic run to the 2023 Australian Open title, and that maybe this title isn't worth as many as others (listen to the the Wharton Moneyball podcast talk about it at around the 84 minute mark [here](https://play.acast.com/s/5b69f70c0a0eca0c20692176/63d14f7eabbd0e0010ab69ba?seek=84)). 
+As the current (2023) Australian Open came to a close with Novak Djokovic winning a record equaling 22nd Grand Slam, the expected discourse on who is the best player of all time is back on the agenda. One discussion thread centers around the ease of Djokovic run to the 2023 Australian Open title, and that maybe this title isn't worth as many as others (listen to the the Wharton Moneyball podcast talk about it at around the 84 minute mark [here](https://play.acast.com/s/5b69f70c0a0eca0c20692176/63d14f7eabbd0e0010ab69ba?seek=84)).
 
 This post won't be about which player is the best of all time - that's already been done ad nauseam - but what it will aim to do is better understand the difficulty of each of the big three's grand slams wins and whether we can infer anything from that.
 
@@ -243,7 +242,6 @@ big3_winners_grand_slams %>%
   theme(legend.position = "none")
 ```
 
-
 ### The Data
 
 All completed Grand Slams since the beginning of 2001 up until the end of the 2023 Australia Open have been analysed for this post. That's 88 grand slams, with the notable exception of the COVID-19 forced cancellation of the 2020 Wimbledon event.
@@ -256,12 +254,11 @@ Next, I'd love to thank Jeff Sackmann for his brilliant Tennis Data repository, 
 
 Big thanks to Andrew Whelan (who has a brilliant site [Wheelo Ratings](https://www.wheeloratings.com/) providing statistics, records and Elo ratings for a number of sports) for being a sounding board, as have some great colleagues at work.
 
-Finally, there have been many inspirations for this post,  including the thought-provoking discussions had on the Wharton Moneyball podcast anytime tennis is brought up.
+Finally, there have been many inspirations for this post, including the thought-provoking discussions had on the Wharton Moneyball podcast anytime tennis is brought up.
 
-***
+------------------------------------------------------------------------
 
 ## Analysis
-
 
 To get started and to understand the Elo ratings of players, we can take a look at the distribution of surface-specific Elo ratings for players playing in grand slams.
 
@@ -270,7 +267,6 @@ The peaks for all tournaments at 1,500 needs explaining - when a player enters a
 The distribution of Elo ratings appear to be distributed fairly similarly across the four grand slams. There are more players who have had an Elo of 1,500 for Wimbledon, but other than that, the differences are fairly negligible.
 
 Important to note with the distribution of each tournaments, having a pre-tournament Elo rating greater than 2,250 (two standard deviations from the mean) is pretty rare, and even rarer still for a player to have an Elo rating higher than 2,250 **that isn't one of the big 3**.
-
 
 ```{r tourn_dist, fig.height=8}
 median_tourn <- grand_slams_long %>% 
@@ -304,7 +300,6 @@ grand_slams_long %>%
 
 ```
 
-
 ### Elo Criticism
 
 One (probably valid) criticism of Elo ratings is that the average Elo rating can change over time and across eras so may not be comparable over time (e.g. an Elo rating of 2,000 in 2005 may not be equivalent to 2,000 in 2023). This needs to be considered when assessing the results in the below sections.
@@ -327,13 +322,7 @@ grand_slams_long %>%
   
 ```
 
-
-
-
-
-
 Looking at individual grand slams and the distribution of Elo ratings of the opponents of the big three in their grand slam wins, we can see that they typically have faced very similar rated players. Federer's median opponent Elo rating in his tournament wins has been sightly the highest of the three (2,014, Djokovic 2,012 and Nadal 2,002), however his average (arithmetic mean) is slightly lower at 1,992 than that of Djokovic (2,004). Nadal has both the lowest median and average opponent Elo in his grand slam wins. This is because Federer hasn't played as many high rated outliers as Djokovic has (and to a lesser extent Nadal).
-
 
 ```{r elo_opp_big3}
 winners_grand_slams_raw %>%
@@ -348,9 +337,7 @@ winners_grand_slams_raw %>%
 
 ```
 
-
-***
-
+------------------------------------------------------------------------
 
 ### Standardising Elo
 
@@ -386,14 +373,13 @@ big3_winners_grand_slams %>%
 
 ```
 
-***
+------------------------------------------------------------------------
 
 ### Expected Win Probability
 
 Instead of using the raw Elo ratings and standardising them, we can also infer each of the big three's win probability using their's and their opponent's Elo ratings.
 
 To do this, we first need to calculate the win probability of each match given each player's Elo rating. For example, the win probability for Djokovic (Elo=2,452) in his fourth round match against Alex De Minaur (Elo=2,076) was 89.7%. From here, we take the [product](https://en.wikipedia.org/wiki/Product_(mathematics)) of each win probability and come up with an overall win probability. For example, Djokovic's 2023 Aus Open win probabilities for each of his matches were 97.5%, 99.6%, 93.1%, 89.7%, 86.7%, 91.4%, 83.0% from his first round match to the final, respectively. Multiplying each of these win probabilities give us a total win probability of 53.3%. The closer we get to 100%, the more we expect that player to have won the tournament. This can also be a simple place holder for the strength of each tournament win - closer to 100%, the easier their run was.
-
 
 Under this method, we can see that Djokovic's 2008 Australian Open win (his first grand slam) was the least expected win of all 64 slams these three have won with an expected win probability of 3.24%. Additionally, three of the five least expected slam wins have been by Djokovic. Federer's first grand slam (Wimbledon 2003) was really close to being the least expected (3.55%).
 
@@ -423,7 +409,6 @@ big3_winners_grand_slams %>%
 Without looking deeply at Djokovic's 2008 Australian Open run and only looking at his final opponent (France's Jo Wilfried Tsonga), it would be easy to believe that with an expected win probability in that final of 86.9% that this was an easy title win. Unpacking this a little deeper shows that he needed to get through Australia's own Lleyton Hewitt in the round of 16 with a win probability of 67.5% (better than a coin flip), David Ferrer in the quarters at 54.2% (basically a coin flip) and Federer at 14.2% (a heavy underdog) in the semi-final before he had a chance to play in the final.
 
 <br>
-
 
 ```{r djoker_ao}
 winners_grand_slams_raw %>% 
@@ -577,8 +562,7 @@ big3_winners_grand_slams %>%
   theme(legend.position = "none")
 ```
 
-
-***
+------------------------------------------------------------------------
 
 ## Finishing Up
 
@@ -588,9 +572,7 @@ In this post I've tried to use Elo to quantify the difficulty rating of each sup
 
 We did however see that the metrics used in this post would suggest that it's not true that Djokovic's has had an easy ride during his 22 grand slams wins. They have been quite the opposite on both fronts; the opponents he's faced over his 22 wins seemingly rated more highly than that of Nadal and Federer, while also having outperformed his expected win probability by a greater margin than that of the other big three.
 
-
 While it's a shame the majestic Roger Federer ever needed to retire, I'm really excited to continue to enjoy the once in a lifetime experience of seeing multiple transcendent stars continue to dominate their sport concurrently.
-
 
 Would love feedback on the post and have holes poked in it wherever they need poking!
 
