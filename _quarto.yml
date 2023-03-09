@@ -16,17 +16,17 @@ website:
     left:
       - text: "Blog"
         href: blog.qmd
-      - text: "Models"
-        menu:
-          - pages/aflm-tipping.qmd
       - text: "Projects"
         menu:
+          - pages/win_prob_app.qmd
           - pages/worldfootballR.qmd
           - pages/chessR.qmd
           - pages/nblR.qmd
           - pages/bettRtab.qmd
-      - text: "NBL Win Probability App"
-        href: https://nbl-r-shiny.herokuapp.com
+      - text: "Models"
+        menu:
+          - pages/aflm-tipping.qmd
+          - pages/nbl-predictions.qmd
     right:
       - icon: github
         href: https://github.com/JaseZiv

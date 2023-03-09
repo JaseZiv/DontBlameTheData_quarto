@@ -8,3 +8,8 @@ image: "worldfootballR_hex.png"
 The `worldfootballR` package is designed to allow users to extract world football (soccer) data from very popular and thorough websites fbref.com, transfermarkt.com and understat.com.
 
 The vignette for the package offers a full description of the package and the functions available, and can be found [here](https://jaseziv.github.io/worldfootballR/).
+
+
+If you wanted to show your support and contribute to server time and data storage costs, feel free to send a small donation through the link below.
+
+<a href="https://www.buymeacoffee.com/jaseziv83A" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Coffee (Server Time)" height="41" width="174"></a>

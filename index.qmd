@@ -14,12 +14,12 @@ about:
       href: https://github.com/JaseZiv
 ---
 
-::: grid
+::: {.grid}
 ::: {.g-col-12 .g-col-md-6}
 ![](profile.jpg)
 :::
 
-::: {.g-col-12 .g-col-md-6}
+::: {#aboout-text .g-col-12 .g-col-md-6}
 My name is Jason Zivkovic and I'm a Data Scientist from Melbourne, Australia, working at the Reece Group. Some of my passions include web scraping, package and app development, statistical modeling, sports analytics and data visualisation. You can find me on [Twitter](https://twitter.com/jaseziv) or [GitHub](https://github.com/JaseZiv) and [LinkedIn](https://linkedin.com/in/jason-zivkovic-4a0a1926/).
 
 This blog will be mainly about R programming, mainly through sports, but will touch on other parts of life also, using data visualisations to tell the story. What I can promise though is it will be filled with my own selfish pleasures. I hope they align with my readers' interests.

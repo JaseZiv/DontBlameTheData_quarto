@@ -2,70 +2,78 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://www.dontblamethedata.com/index.html</loc>
-    <lastmod>2023-03-08T09:58:34.925Z</lastmod>
+    <lastmod>2023-03-09T10:04:39.504Z</lastmod>
   </url>
   <url>
     <loc>https://www.dontblamethedata.com/blog/liverpools-early-substitutions-worldfootballR/index.html</loc>
-    <lastmod>2023-03-08T09:58:35.483Z</lastmod>
+    <lastmod>2023-03-09T10:04:40.054Z</lastmod>
   </url>
   <url>
     <loc>https://www.dontblamethedata.com/blog/top-domestic-soccer-leagues-passing/index.html</loc>
-    <lastmod>2023-03-08T09:58:36.089Z</lastmod>
+    <lastmod>2023-03-09T10:04:40.725Z</lastmod>
   </url>
   <url>
     <loc>https://www.dontblamethedata.com/blog/building-a-linear-regression-model-in-r-to-predict-afl-crowds/index.html</loc>
-    <lastmod>2023-03-08T09:58:37.151Z</lastmod>
+    <lastmod>2023-03-09T10:04:41.828Z</lastmod>
   </url>
   <url>
     <loc>https://www.dontblamethedata.com/blog/simplifying-afl-tipping/index.html</loc>
-    <lastmod>2023-03-08T09:58:37.541Z</lastmod>
+    <lastmod>2023-03-09T10:04:42.256Z</lastmod>
   </url>
   <url>
     <loc>https://www.dontblamethedata.com/blog/extract-data-using-worldfootballR/index.html</loc>
-    <lastmod>2023-03-08T09:58:38.412Z</lastmod>
+    <lastmod>2023-03-09T10:04:43.108Z</lastmod>
   </url>
   <url>
     <loc>https://www.dontblamethedata.com/blog/big3-grand-slam-difficulty/index.html</loc>
-    <lastmod>2023-03-08T09:58:39.818Z</lastmod>
+    <lastmod>2023-03-09T10:04:44.565Z</lastmod>
   </url>
   <url>
     <loc>https://www.dontblamethedata.com/blog/liverpool-expected-goals-worldfootballR/index.html</loc>
-    <lastmod>2023-03-08T09:58:40.224Z</lastmod>
+    <lastmod>2023-03-09T10:04:44.940Z</lastmod>
   </url>
   <url>
     <loc>https://www.dontblamethedata.com/blog/using-data-to-determine-which-afl-fans-jump-onthe-bandwagon/index.html</loc>
-    <lastmod>2023-03-08T09:58:40.696Z</lastmod>
+    <lastmod>2023-03-09T10:04:45.441Z</lastmod>
   </url>
   <url>
     <loc>https://www.dontblamethedata.com/blog/deploy-r-shiny-heroku-docker-github-actions/index.html</loc>
-    <lastmod>2023-03-08T09:58:41.416Z</lastmod>
+    <lastmod>2023-03-09T10:04:46.185Z</lastmod>
   </url>
   <url>
     <loc>https://www.dontblamethedata.com/blog/first-open-source-contribution/index.html</loc>
-    <lastmod>2023-03-08T09:58:41.843Z</lastmod>
+    <lastmod>2023-03-09T10:04:46.632Z</lastmod>
   </url>
   <url>
     <loc>https://www.dontblamethedata.com/pages/aflm-tipping.html</loc>
-    <lastmod>2023-03-08T09:58:47.967Z</lastmod>
+    <lastmod>2023-03-09T10:04:52.878Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.dontblamethedata.com/pages/nbl-predictions.html</loc>
+    <lastmod>2023-03-09T10:04:59.086Z</lastmod>
   </url>
   <url>
     <loc>https://www.dontblamethedata.com/pages/worldfootballR.html</loc>
-    <lastmod>2023-03-08T09:58:48.294Z</lastmod>
+    <lastmod>2023-03-09T10:04:59.379Z</lastmod>
   </url>
   <url>
     <loc>https://www.dontblamethedata.com/pages/chessR.html</loc>
-    <lastmod>2023-03-08T09:58:48.583Z</lastmod>
+    <lastmod>2023-03-09T10:04:59.702Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.dontblamethedata.com/pages/win_prob_app.html</loc>
+    <lastmod>2023-03-09T10:05:00.016Z</lastmod>
   </url>
   <url>
     <loc>https://www.dontblamethedata.com/pages/bettRtab.html</loc>
-    <lastmod>2023-03-08T09:58:48.910Z</lastmod>
+    <lastmod>2023-03-09T10:05:00.314Z</lastmod>
   </url>
   <url>
     <loc>https://www.dontblamethedata.com/pages/nblR.html</loc>
-    <lastmod>2023-03-08T09:58:49.222Z</lastmod>
+    <lastmod>2023-03-09T10:05:00.631Z</lastmod>
   </url>
   <url>
     <loc>https://www.dontblamethedata.com/blog.html</loc>
-    <lastmod>2023-03-08T09:58:49.767Z</lastmod>
+    <lastmod>2023-03-09T10:05:01.148Z</lastmod>
   </url>
 </urlset>

@@ -1,0 +1,2047 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.269">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="description" content="Predicting NBL Men’s match results weekly for the 2022-2023 season">
+
+<title>Don’t Blame the Data - NBL 2023 Match Predictions</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../favicon.ico" rel="icon">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+<script type="text/javascript">
+
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-145056765-1', 'auto');
+
+ga('send', {
+  hitType: 'pageview',
+  'anonymizeIp': true,
+});
+</script>
+
+
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a href="../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../icon.jpg" alt="" class="navbar-logo">
+    </a>
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Don’t Blame the Data</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../blog.html">
+ <span class="menu-text">Blog</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-projects" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Projects</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-projects">    
+        <li>
+    <a class="dropdown-item" href="../pages/win_prob_app.html">
+ <span class="dropdown-text">NBL WinProbability App</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../pages/worldfootballR.html">
+ <span class="dropdown-text">worldfootballR</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../pages/chessR.html">
+ <span class="dropdown-text">chessR</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../pages/nblR.html">
+ <span class="dropdown-text">nblR</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../pages/bettRtab.html">
+ <span class="dropdown-text">bettRtab</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-models" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Models</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-models">    
+        <li>
+    <a class="dropdown-item" href="../pages/aflm-tipping.html">
+ <span class="dropdown-text">AFLM Tipping</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../pages/nbl-predictions.html">
+ <span class="dropdown-text">NBL 2023 Match Predictions</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/JaseZiv"><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/jaseziv"><i class="bi bi-twitter" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://linkedin.com/in/jason-zivkovic-4a0a1926/"><i class="bi bi-linkedin" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content page-columns page-full" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">NBL 2023 Match Predictions</h1>
+</div>
+
+<div>
+  <div class="description">
+    Predicting NBL Men’s match results weekly for the 2022-2023 season
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<div class="cell">
+
+</div>
+<div class="column-page">
+<div class="cell">
+<div class="cell-output-display">
+
+<div id="mlulaxpdny" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>@import url("https://fonts.googleapis.com/css2?family=Overlock:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+html {
+  font-family: Overlock, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#mlulaxpdny thead, #mlulaxpdny tbody, #mlulaxpdny tfoot, #mlulaxpdny tr, #mlulaxpdny td, #mlulaxpdny th {
+  border-style: none;
+}
+
+#mlulaxpdny p {
+  margin: 0;
+  padding: 0;
+}
+
+#mlulaxpdny .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: 100%;
+  border-top-style: solid;
+  border-top-width: 3px;
+  border-top-color: rgba(255, 255, 255, 0);
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 3px;
+  border-bottom-color: rgba(255, 255, 255, 0);
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#mlulaxpdny .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#mlulaxpdny .gt_title {
+  color: #333333;
+  font-size: 40px;
+  font-weight: initial;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#mlulaxpdny .gt_subtitle {
+  color: #333333;
+  font-size: 30px;
+  font-weight: initial;
+  padding-top: 14px;
+  padding-bottom: 16px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#mlulaxpdny .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#mlulaxpdny .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#mlulaxpdny .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 3px;
+  border-top-color: rgba(255, 255, 255, 0);
+  border-bottom-style: solid;
+  border-bottom-width: 3px;
+  border-bottom-color: rgba(255, 255, 255, 0);
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#mlulaxpdny .gt_col_heading {
+  color: #FFFFFF;
+  background-color: #585D63;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#mlulaxpdny .gt_column_spanner_outer {
+  color: #FFFFFF;
+  background-color: #585D63;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#mlulaxpdny .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#mlulaxpdny .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#mlulaxpdny .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 3px;
+  border-bottom-color: rgba(255, 255, 255, 0);
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#mlulaxpdny .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#mlulaxpdny .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#mlulaxpdny .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#mlulaxpdny .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#mlulaxpdny .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#mlulaxpdny .gt_row {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#mlulaxpdny .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#mlulaxpdny .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#mlulaxpdny .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#mlulaxpdny .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#mlulaxpdny .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#mlulaxpdny .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#mlulaxpdny .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#mlulaxpdny .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#mlulaxpdny .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#mlulaxpdny .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#mlulaxpdny .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#mlulaxpdny .gt_striped {
+  background-color: #D3D3D3;
+}
+
+#mlulaxpdny .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#mlulaxpdny .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#mlulaxpdny .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#mlulaxpdny .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#mlulaxpdny .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#mlulaxpdny .gt_left {
+  text-align: left;
+}
+
+#mlulaxpdny .gt_center {
+  text-align: center;
+}
+
+#mlulaxpdny .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#mlulaxpdny .gt_font_normal {
+  font-weight: normal;
+}
+
+#mlulaxpdny .gt_font_bold {
+  font-weight: bold;
+}
+
+#mlulaxpdny .gt_font_italic {
+  font-style: italic;
+}
+
+#mlulaxpdny .gt_super {
+  font-size: 65%;
+}
+
+#mlulaxpdny .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#mlulaxpdny .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#mlulaxpdny .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#mlulaxpdny .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#mlulaxpdny .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#mlulaxpdny .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#mlulaxpdny .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+  <thead>
+    <tr class="gt_heading">
+      <td colspan="8" class="gt_heading gt_title gt_font_normal" style="">2022-2023 NBL Men's Match Predictions</td>
+    </tr>
+    <tr class="gt_heading">
+      <td colspan="8" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border" style="">Model Accuracy: 62.3%</td>
+    </tr>
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Date">Date</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="Round">Round</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="Home">Home</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="Away">Away</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="Venue">Venue</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Margin">Margin</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="Home Win">Home Win</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Home Probability">Home Probability</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td headers="match_time" class="gt_row gt_right">2023-03-15</td>
+<td headers="round_number" class="gt_row gt_left">Championship 5</td>
+<td headers="home_team_name" class="gt_row gt_left">Sydney Kings</td>
+<td headers="away_team_name" class="gt_row gt_left">New Zealand Breakers</td>
+<td headers="venue_name" class="gt_row gt_left">Qudos Bank Arena</td>
+<td headers="Margin" class="gt_row gt_right">NA</td>
+<td headers="HomeWin" class="gt_row gt_center">NA</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">65.21%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2023-03-12</td>
+<td headers="round_number" class="gt_row gt_left">Championship 4</td>
+<td headers="home_team_name" class="gt_row gt_left">New Zealand Breakers</td>
+<td headers="away_team_name" class="gt_row gt_left">Sydney Kings</td>
+<td headers="venue_name" class="gt_row gt_left">Spark Arena</td>
+<td headers="Margin" class="gt_row gt_right">NA</td>
+<td headers="HomeWin" class="gt_row gt_center">NA</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">52.20%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2023-03-10</td>
+<td headers="round_number" class="gt_row gt_left">Championship 3</td>
+<td headers="home_team_name" class="gt_row gt_left">Sydney Kings</td>
+<td headers="away_team_name" class="gt_row gt_left">New Zealand Breakers</td>
+<td headers="venue_name" class="gt_row gt_left">Qudos Bank Arena</td>
+<td headers="Margin" class="gt_row gt_right">NA</td>
+<td headers="HomeWin" class="gt_row gt_center">NA</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">68.10%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2023-03-05</td>
+<td headers="round_number" class="gt_row gt_left">Championship 2</td>
+<td headers="home_team_name" class="gt_row gt_left">New Zealand Breakers</td>
+<td headers="away_team_name" class="gt_row gt_left">Sydney Kings</td>
+<td headers="venue_name" class="gt_row gt_left">Spark Arena</td>
+<td headers="Margin" class="gt_row gt_right">-7</td>
+<td headers="HomeWin" class="gt_row gt_center">0</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">79.87%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2023-03-03</td>
+<td headers="round_number" class="gt_row gt_left">Championship 1</td>
+<td headers="home_team_name" class="gt_row gt_left">Sydney Kings</td>
+<td headers="away_team_name" class="gt_row gt_left">New Zealand Breakers</td>
+<td headers="venue_name" class="gt_row gt_left">Qudos Bank Arena</td>
+<td headers="Margin" class="gt_row gt_right">-8</td>
+<td headers="HomeWin" class="gt_row gt_center">0</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">72.08%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2023-02-19</td>
+<td headers="round_number" class="gt_row gt_left">Playoffs 1</td>
+<td headers="home_team_name" class="gt_row gt_left">New Zealand Breakers</td>
+<td headers="away_team_name" class="gt_row gt_left">Tasmania JackJumpers</td>
+<td headers="venue_name" class="gt_row gt_left">Spark Arena</td>
+<td headers="Margin" class="gt_row gt_right">15</td>
+<td headers="HomeWin" class="gt_row gt_center">1</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">69.76%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2023-02-19</td>
+<td headers="round_number" class="gt_row gt_left">Playoffs 2</td>
+<td headers="home_team_name" class="gt_row gt_left">Sydney Kings</td>
+<td headers="away_team_name" class="gt_row gt_left">Cairns Taipans</td>
+<td headers="venue_name" class="gt_row gt_left">Qudos Bank Arena</td>
+<td headers="Margin" class="gt_row gt_right">15</td>
+<td headers="HomeWin" class="gt_row gt_center">1</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">65.20%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2023-02-17</td>
+<td headers="round_number" class="gt_row gt_left">Playoffs 2</td>
+<td headers="home_team_name" class="gt_row gt_left">Cairns Taipans</td>
+<td headers="away_team_name" class="gt_row gt_left">Sydney Kings</td>
+<td headers="venue_name" class="gt_row gt_left">Cairns Convention Centre</td>
+<td headers="Margin" class="gt_row gt_right">11</td>
+<td headers="HomeWin" class="gt_row gt_center">1</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">56.29%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2023-02-16</td>
+<td headers="round_number" class="gt_row gt_left">Playoffs 1</td>
+<td headers="home_team_name" class="gt_row gt_left">Tasmania JackJumpers</td>
+<td headers="away_team_name" class="gt_row gt_left">New Zealand Breakers</td>
+<td headers="venue_name" class="gt_row gt_left">MyState Bank Arena</td>
+<td headers="Margin" class="gt_row gt_right">11</td>
+<td headers="HomeWin" class="gt_row gt_center">1</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">51.48%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2023-02-15</td>
+<td headers="round_number" class="gt_row gt_left">Playoffs 2</td>
+<td headers="home_team_name" class="gt_row gt_left">Sydney Kings</td>
+<td headers="away_team_name" class="gt_row gt_left">Cairns Taipans</td>
+<td headers="venue_name" class="gt_row gt_left">Qudos Bank Arena</td>
+<td headers="Margin" class="gt_row gt_right">8</td>
+<td headers="HomeWin" class="gt_row gt_center">1</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">39.10%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2023-02-12</td>
+<td headers="round_number" class="gt_row gt_left">Playoffs 1</td>
+<td headers="home_team_name" class="gt_row gt_left">New Zealand Breakers</td>
+<td headers="away_team_name" class="gt_row gt_left">Tasmania JackJumpers</td>
+<td headers="venue_name" class="gt_row gt_left">Spark Arena</td>
+<td headers="Margin" class="gt_row gt_right">20</td>
+<td headers="HomeWin" class="gt_row gt_center">1</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">56.41%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2023-02-12</td>
+<td headers="round_number" class="gt_row gt_left">Elimination</td>
+<td headers="home_team_name" class="gt_row gt_left">Cairns Taipans</td>
+<td headers="away_team_name" class="gt_row gt_left">Perth Wildcats</td>
+<td headers="venue_name" class="gt_row gt_left">Cairns Convention Centre</td>
+<td headers="Margin" class="gt_row gt_right">13</td>
+<td headers="HomeWin" class="gt_row gt_center">1</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">58.52%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2023-02-09</td>
+<td headers="round_number" class="gt_row gt_left">Seeding</td>
+<td headers="home_team_name" class="gt_row gt_left">Cairns Taipans</td>
+<td headers="away_team_name" class="gt_row gt_left">Tasmania JackJumpers</td>
+<td headers="venue_name" class="gt_row gt_left">Cairns Convention Centre</td>
+<td headers="Margin" class="gt_row gt_right">-8</td>
+<td headers="HomeWin" class="gt_row gt_center">0</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">52.71%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2023-02-09</td>
+<td headers="round_number" class="gt_row gt_left">Play-In</td>
+<td headers="home_team_name" class="gt_row gt_left">South East Melbourne Phoenix</td>
+<td headers="away_team_name" class="gt_row gt_left">Perth Wildcats</td>
+<td headers="venue_name" class="gt_row gt_left">John Cain Arena</td>
+<td headers="Margin" class="gt_row gt_right">-7</td>
+<td headers="HomeWin" class="gt_row gt_center">0</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">77.70%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2023-02-05</td>
+<td headers="round_number" class="gt_row gt_left">18</td>
+<td headers="home_team_name" class="gt_row gt_left">Perth Wildcats</td>
+<td headers="away_team_name" class="gt_row gt_left">Sydney Kings</td>
+<td headers="venue_name" class="gt_row gt_left">RAC Arena</td>
+<td headers="Margin" class="gt_row gt_right">12</td>
+<td headers="HomeWin" class="gt_row gt_center">1</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">46.88%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2023-02-05</td>
+<td headers="round_number" class="gt_row gt_left">18</td>
+<td headers="home_team_name" class="gt_row gt_left">Melbourne United</td>
+<td headers="away_team_name" class="gt_row gt_left">Adelaide 36ers</td>
+<td headers="venue_name" class="gt_row gt_left">John Cain Arena</td>
+<td headers="Margin" class="gt_row gt_right">9</td>
+<td headers="HomeWin" class="gt_row gt_center">1</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">67.60%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2023-02-04</td>
+<td headers="round_number" class="gt_row gt_left">18</td>
+<td headers="home_team_name" class="gt_row gt_left">Brisbane Bullets</td>
+<td headers="away_team_name" class="gt_row gt_left">New Zealand Breakers</td>
+<td headers="venue_name" class="gt_row gt_left">Nissan Arena</td>
+<td headers="Margin" class="gt_row gt_right">-5</td>
+<td headers="HomeWin" class="gt_row gt_center">0</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">18.73%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2023-02-04</td>
+<td headers="round_number" class="gt_row gt_left">18</td>
+<td headers="home_team_name" class="gt_row gt_left">Illawarra Hawks</td>
+<td headers="away_team_name" class="gt_row gt_left">Tasmania JackJumpers</td>
+<td headers="venue_name" class="gt_row gt_left">WIN Entertainment Centre</td>
+<td headers="Margin" class="gt_row gt_right">-24</td>
+<td headers="HomeWin" class="gt_row gt_center">0</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">26.32%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2023-02-03</td>
+<td headers="round_number" class="gt_row gt_left">18</td>
+<td headers="home_team_name" class="gt_row gt_left">Perth Wildcats</td>
+<td headers="away_team_name" class="gt_row gt_left">Cairns Taipans</td>
+<td headers="venue_name" class="gt_row gt_left">RAC Arena</td>
+<td headers="Margin" class="gt_row gt_right">-13</td>
+<td headers="HomeWin" class="gt_row gt_center">0</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">59.88%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2023-02-03</td>
+<td headers="round_number" class="gt_row gt_left">18</td>
+<td headers="home_team_name" class="gt_row gt_left">Adelaide 36ers</td>
+<td headers="away_team_name" class="gt_row gt_left">Sydney Kings</td>
+<td headers="venue_name" class="gt_row gt_left">Adelaide Entertainment Centre</td>
+<td headers="Margin" class="gt_row gt_right">7</td>
+<td headers="HomeWin" class="gt_row gt_center">1</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">50.60%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2023-02-02</td>
+<td headers="round_number" class="gt_row gt_left">18</td>
+<td headers="home_team_name" class="gt_row gt_left">Illawarra Hawks</td>
+<td headers="away_team_name" class="gt_row gt_left">New Zealand Breakers</td>
+<td headers="venue_name" class="gt_row gt_left">WIN Entertainment Centre</td>
+<td headers="Margin" class="gt_row gt_right">-10</td>
+<td headers="HomeWin" class="gt_row gt_center">0</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">27.84%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2023-01-30</td>
+<td headers="round_number" class="gt_row gt_left">17</td>
+<td headers="home_team_name" class="gt_row gt_left">Cairns Taipans</td>
+<td headers="away_team_name" class="gt_row gt_left">Adelaide 36ers</td>
+<td headers="venue_name" class="gt_row gt_left">Cairns Convention Centre</td>
+<td headers="Margin" class="gt_row gt_right">-3</td>
+<td headers="HomeWin" class="gt_row gt_center">0</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">76.89%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2023-01-29</td>
+<td headers="round_number" class="gt_row gt_left">17</td>
+<td headers="home_team_name" class="gt_row gt_left">Sydney Kings</td>
+<td headers="away_team_name" class="gt_row gt_left">South East Melbourne Phoenix</td>
+<td headers="venue_name" class="gt_row gt_left">Qudos Bank Arena</td>
+<td headers="Margin" class="gt_row gt_right">5</td>
+<td headers="HomeWin" class="gt_row gt_center">1</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">62.51%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2023-01-29</td>
+<td headers="round_number" class="gt_row gt_left">17</td>
+<td headers="home_team_name" class="gt_row gt_left">Tasmania JackJumpers</td>
+<td headers="away_team_name" class="gt_row gt_left">Perth Wildcats</td>
+<td headers="venue_name" class="gt_row gt_left">MyState Bank Arena</td>
+<td headers="Margin" class="gt_row gt_right">8</td>
+<td headers="HomeWin" class="gt_row gt_center">1</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">48.74%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2023-01-28</td>
+<td headers="round_number" class="gt_row gt_left">17</td>
+<td headers="home_team_name" class="gt_row gt_left">Cairns Taipans</td>
+<td headers="away_team_name" class="gt_row gt_left">Brisbane Bullets</td>
+<td headers="venue_name" class="gt_row gt_left">Cairns Convention Centre</td>
+<td headers="Margin" class="gt_row gt_right">7</td>
+<td headers="HomeWin" class="gt_row gt_center">1</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">80.57%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2023-01-28</td>
+<td headers="round_number" class="gt_row gt_left">17</td>
+<td headers="home_team_name" class="gt_row gt_left">New Zealand Breakers</td>
+<td headers="away_team_name" class="gt_row gt_left">Melbourne United</td>
+<td headers="venue_name" class="gt_row gt_left">Spark Arena</td>
+<td headers="Margin" class="gt_row gt_right">6</td>
+<td headers="HomeWin" class="gt_row gt_center">1</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">36.32%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2023-01-27</td>
+<td headers="round_number" class="gt_row gt_left">17</td>
+<td headers="home_team_name" class="gt_row gt_left">Perth Wildcats</td>
+<td headers="away_team_name" class="gt_row gt_left">Illawarra Hawks</td>
+<td headers="venue_name" class="gt_row gt_left">RAC Arena</td>
+<td headers="Margin" class="gt_row gt_right">20</td>
+<td headers="HomeWin" class="gt_row gt_center">1</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">85.10%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2023-01-27</td>
+<td headers="round_number" class="gt_row gt_left">17</td>
+<td headers="home_team_name" class="gt_row gt_left">Tasmania JackJumpers</td>
+<td headers="away_team_name" class="gt_row gt_left">Sydney Kings</td>
+<td headers="venue_name" class="gt_row gt_left">MyState Bank Arena</td>
+<td headers="Margin" class="gt_row gt_right">-14</td>
+<td headers="HomeWin" class="gt_row gt_center">0</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">47.48%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2023-01-26</td>
+<td headers="round_number" class="gt_row gt_left">17</td>
+<td headers="home_team_name" class="gt_row gt_left">Brisbane Bullets</td>
+<td headers="away_team_name" class="gt_row gt_left">New Zealand Breakers</td>
+<td headers="venue_name" class="gt_row gt_left">Nissan Arena</td>
+<td headers="Margin" class="gt_row gt_right">-28</td>
+<td headers="HomeWin" class="gt_row gt_center">0</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">73.14%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2023-01-25</td>
+<td headers="round_number" class="gt_row gt_left">17</td>
+<td headers="home_team_name" class="gt_row gt_left">South East Melbourne Phoenix</td>
+<td headers="away_team_name" class="gt_row gt_left">Cairns Taipans</td>
+<td headers="venue_name" class="gt_row gt_left">State Basketball Centre</td>
+<td headers="Margin" class="gt_row gt_right">5</td>
+<td headers="HomeWin" class="gt_row gt_center">1</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">57.28%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2023-01-22</td>
+<td headers="round_number" class="gt_row gt_left">16</td>
+<td headers="home_team_name" class="gt_row gt_left">Sydney Kings</td>
+<td headers="away_team_name" class="gt_row gt_left">New Zealand Breakers</td>
+<td headers="venue_name" class="gt_row gt_left">Qudos Bank Arena</td>
+<td headers="Margin" class="gt_row gt_right">-5</td>
+<td headers="HomeWin" class="gt_row gt_center">0</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">73.36%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2023-01-22</td>
+<td headers="round_number" class="gt_row gt_left">16</td>
+<td headers="home_team_name" class="gt_row gt_left">South East Melbourne Phoenix</td>
+<td headers="away_team_name" class="gt_row gt_left">Perth Wildcats</td>
+<td headers="venue_name" class="gt_row gt_left">State Basketball Centre</td>
+<td headers="Margin" class="gt_row gt_right">21</td>
+<td headers="HomeWin" class="gt_row gt_center">1</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">56.71%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2023-01-21</td>
+<td headers="round_number" class="gt_row gt_left">16</td>
+<td headers="home_team_name" class="gt_row gt_left">Adelaide 36ers</td>
+<td headers="away_team_name" class="gt_row gt_left">Melbourne United</td>
+<td headers="venue_name" class="gt_row gt_left">Adelaide Entertainment Centre</td>
+<td headers="Margin" class="gt_row gt_right">-7</td>
+<td headers="HomeWin" class="gt_row gt_center">0</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">55.46%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2023-01-21</td>
+<td headers="round_number" class="gt_row gt_left">16</td>
+<td headers="home_team_name" class="gt_row gt_left">Illawarra Hawks</td>
+<td headers="away_team_name" class="gt_row gt_left">Brisbane Bullets</td>
+<td headers="venue_name" class="gt_row gt_left">WIN Entertainment Centre</td>
+<td headers="Margin" class="gt_row gt_right">-17</td>
+<td headers="HomeWin" class="gt_row gt_center">0</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">45.48%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2023-01-20</td>
+<td headers="round_number" class="gt_row gt_left">16</td>
+<td headers="home_team_name" class="gt_row gt_left">Perth Wildcats</td>
+<td headers="away_team_name" class="gt_row gt_left">Sydney Kings</td>
+<td headers="venue_name" class="gt_row gt_left">RAC Arena</td>
+<td headers="Margin" class="gt_row gt_right">7</td>
+<td headers="HomeWin" class="gt_row gt_center">1</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">60.73%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2023-01-20</td>
+<td headers="round_number" class="gt_row gt_left">16</td>
+<td headers="home_team_name" class="gt_row gt_left">Cairns Taipans</td>
+<td headers="away_team_name" class="gt_row gt_left">Tasmania JackJumpers</td>
+<td headers="venue_name" class="gt_row gt_left">Cairns Convention Centre</td>
+<td headers="Margin" class="gt_row gt_right">-8</td>
+<td headers="HomeWin" class="gt_row gt_center">0</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">63.83%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2023-01-19</td>
+<td headers="round_number" class="gt_row gt_left">16</td>
+<td headers="home_team_name" class="gt_row gt_left">Brisbane Bullets</td>
+<td headers="away_team_name" class="gt_row gt_left">Adelaide 36ers</td>
+<td headers="venue_name" class="gt_row gt_left">Nissan Arena</td>
+<td headers="Margin" class="gt_row gt_right">5</td>
+<td headers="HomeWin" class="gt_row gt_center">1</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">58.21%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2023-01-19</td>
+<td headers="round_number" class="gt_row gt_left">16</td>
+<td headers="home_team_name" class="gt_row gt_left">New Zealand Breakers</td>
+<td headers="away_team_name" class="gt_row gt_left">Illawarra Hawks</td>
+<td headers="venue_name" class="gt_row gt_left">Spark Arena</td>
+<td headers="Margin" class="gt_row gt_right">-2</td>
+<td headers="HomeWin" class="gt_row gt_center">0</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">71.89%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2023-01-18</td>
+<td headers="round_number" class="gt_row gt_left">16</td>
+<td headers="home_team_name" class="gt_row gt_left">Tasmania JackJumpers</td>
+<td headers="away_team_name" class="gt_row gt_left">South East Melbourne Phoenix</td>
+<td headers="venue_name" class="gt_row gt_left">Silverdome</td>
+<td headers="Margin" class="gt_row gt_right">-11</td>
+<td headers="HomeWin" class="gt_row gt_center">0</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">70.23%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2023-01-16</td>
+<td headers="round_number" class="gt_row gt_left">15</td>
+<td headers="home_team_name" class="gt_row gt_left">South East Melbourne Phoenix</td>
+<td headers="away_team_name" class="gt_row gt_left">Brisbane Bullets</td>
+<td headers="venue_name" class="gt_row gt_left">State Basketball Centre</td>
+<td headers="Margin" class="gt_row gt_right">-5</td>
+<td headers="HomeWin" class="gt_row gt_center">0</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">78.90%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2023-01-15</td>
+<td headers="round_number" class="gt_row gt_left">15</td>
+<td headers="home_team_name" class="gt_row gt_left">Sydney Kings</td>
+<td headers="away_team_name" class="gt_row gt_left">Illawarra Hawks</td>
+<td headers="venue_name" class="gt_row gt_left">Qudos Bank Arena</td>
+<td headers="Margin" class="gt_row gt_right">5</td>
+<td headers="HomeWin" class="gt_row gt_center">1</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">61.79%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2023-01-15</td>
+<td headers="round_number" class="gt_row gt_left">15</td>
+<td headers="home_team_name" class="gt_row gt_left">New Zealand Breakers</td>
+<td headers="away_team_name" class="gt_row gt_left">Cairns Taipans</td>
+<td headers="venue_name" class="gt_row gt_left">Spark Arena</td>
+<td headers="Margin" class="gt_row gt_right">-2</td>
+<td headers="HomeWin" class="gt_row gt_center">0</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">45.56%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2023-01-14</td>
+<td headers="round_number" class="gt_row gt_left">15</td>
+<td headers="home_team_name" class="gt_row gt_left">Perth Wildcats</td>
+<td headers="away_team_name" class="gt_row gt_left">Adelaide 36ers</td>
+<td headers="venue_name" class="gt_row gt_left">RAC Arena</td>
+<td headers="Margin" class="gt_row gt_right">15</td>
+<td headers="HomeWin" class="gt_row gt_center">1</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">72.28%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2023-01-14</td>
+<td headers="round_number" class="gt_row gt_left">15</td>
+<td headers="home_team_name" class="gt_row gt_left">Brisbane Bullets</td>
+<td headers="away_team_name" class="gt_row gt_left">Melbourne United</td>
+<td headers="venue_name" class="gt_row gt_left">Nissan Arena</td>
+<td headers="Margin" class="gt_row gt_right">-10</td>
+<td headers="HomeWin" class="gt_row gt_center">0</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">23.21%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2023-01-13</td>
+<td headers="round_number" class="gt_row gt_left">15</td>
+<td headers="home_team_name" class="gt_row gt_left">Cairns Taipans</td>
+<td headers="away_team_name" class="gt_row gt_left">Illawarra Hawks</td>
+<td headers="venue_name" class="gt_row gt_left">Cairns Convention Centre</td>
+<td headers="Margin" class="gt_row gt_right">5</td>
+<td headers="HomeWin" class="gt_row gt_center">1</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">84.81%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2023-01-12</td>
+<td headers="round_number" class="gt_row gt_left">15</td>
+<td headers="home_team_name" class="gt_row gt_left">Tasmania JackJumpers</td>
+<td headers="away_team_name" class="gt_row gt_left">Adelaide 36ers</td>
+<td headers="venue_name" class="gt_row gt_left">MyState Bank Arena</td>
+<td headers="Margin" class="gt_row gt_right">16</td>
+<td headers="HomeWin" class="gt_row gt_center">1</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">63.56%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2023-01-12</td>
+<td headers="round_number" class="gt_row gt_left">15</td>
+<td headers="home_team_name" class="gt_row gt_left">New Zealand Breakers</td>
+<td headers="away_team_name" class="gt_row gt_left">Melbourne United</td>
+<td headers="venue_name" class="gt_row gt_left">Christchurch Arena</td>
+<td headers="Margin" class="gt_row gt_right">-12</td>
+<td headers="HomeWin" class="gt_row gt_center">0</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">55.88%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2023-01-11</td>
+<td headers="round_number" class="gt_row gt_left">15</td>
+<td headers="home_team_name" class="gt_row gt_left">Brisbane Bullets</td>
+<td headers="away_team_name" class="gt_row gt_left">Sydney Kings</td>
+<td headers="venue_name" class="gt_row gt_left">Nissan Arena</td>
+<td headers="Margin" class="gt_row gt_right">-49</td>
+<td headers="HomeWin" class="gt_row gt_center">0</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">24.01%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2023-01-10</td>
+<td headers="round_number" class="gt_row gt_left">15</td>
+<td headers="home_team_name" class="gt_row gt_left">Perth Wildcats</td>
+<td headers="away_team_name" class="gt_row gt_left">New Zealand Breakers</td>
+<td headers="venue_name" class="gt_row gt_left">RAC Arena</td>
+<td headers="Margin" class="gt_row gt_right">3</td>
+<td headers="HomeWin" class="gt_row gt_center">1</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">63.27%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2023-01-10</td>
+<td headers="round_number" class="gt_row gt_left">15</td>
+<td headers="home_team_name" class="gt_row gt_left">Illawarra Hawks</td>
+<td headers="away_team_name" class="gt_row gt_left">Tasmania JackJumpers</td>
+<td headers="venue_name" class="gt_row gt_left">WIN Entertainment Centre</td>
+<td headers="Margin" class="gt_row gt_right">-3</td>
+<td headers="HomeWin" class="gt_row gt_center">0</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">45.59%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2023-01-08</td>
+<td headers="round_number" class="gt_row gt_left">14</td>
+<td headers="home_team_name" class="gt_row gt_left">Cairns Taipans</td>
+<td headers="away_team_name" class="gt_row gt_left">South East Melbourne Phoenix</td>
+<td headers="venue_name" class="gt_row gt_left">Cairns Convention Centre</td>
+<td headers="Margin" class="gt_row gt_right">9</td>
+<td headers="HomeWin" class="gt_row gt_center">1</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">63.23%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2023-01-08</td>
+<td headers="round_number" class="gt_row gt_left">14</td>
+<td headers="home_team_name" class="gt_row gt_left">Adelaide 36ers</td>
+<td headers="away_team_name" class="gt_row gt_left">New Zealand Breakers</td>
+<td headers="venue_name" class="gt_row gt_left">Adelaide Entertainment Centre</td>
+<td headers="Margin" class="gt_row gt_right">-2</td>
+<td headers="HomeWin" class="gt_row gt_center">0</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">69.56%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2023-01-07</td>
+<td headers="round_number" class="gt_row gt_left">14</td>
+<td headers="home_team_name" class="gt_row gt_left">Sydney Kings</td>
+<td headers="away_team_name" class="gt_row gt_left">Perth Wildcats</td>
+<td headers="venue_name" class="gt_row gt_left">Qudos Bank Arena</td>
+<td headers="Margin" class="gt_row gt_right">21</td>
+<td headers="HomeWin" class="gt_row gt_center">1</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">60.09%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2023-01-07</td>
+<td headers="round_number" class="gt_row gt_left">14</td>
+<td headers="home_team_name" class="gt_row gt_left">Tasmania JackJumpers</td>
+<td headers="away_team_name" class="gt_row gt_left">Melbourne United</td>
+<td headers="venue_name" class="gt_row gt_left">MyState Bank Arena</td>
+<td headers="Margin" class="gt_row gt_right">-7</td>
+<td headers="HomeWin" class="gt_row gt_center">0</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">70.24%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2023-01-06</td>
+<td headers="round_number" class="gt_row gt_left">14</td>
+<td headers="home_team_name" class="gt_row gt_left">Adelaide 36ers</td>
+<td headers="away_team_name" class="gt_row gt_left">Illawarra Hawks</td>
+<td headers="venue_name" class="gt_row gt_left">Adelaide Entertainment Centre</td>
+<td headers="Margin" class="gt_row gt_right">8</td>
+<td headers="HomeWin" class="gt_row gt_center">1</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">84.47%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2023-01-05</td>
+<td headers="round_number" class="gt_row gt_left">14</td>
+<td headers="home_team_name" class="gt_row gt_left">Brisbane Bullets</td>
+<td headers="away_team_name" class="gt_row gt_left">Cairns Taipans</td>
+<td headers="venue_name" class="gt_row gt_left">Nissan Arena</td>
+<td headers="Margin" class="gt_row gt_right">-26</td>
+<td headers="HomeWin" class="gt_row gt_center">0</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">37.57%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2023-01-04</td>
+<td headers="round_number" class="gt_row gt_left">14</td>
+<td headers="home_team_name" class="gt_row gt_left">Sydney Kings</td>
+<td headers="away_team_name" class="gt_row gt_left">South East Melbourne Phoenix</td>
+<td headers="venue_name" class="gt_row gt_left">Qudos Bank Arena</td>
+<td headers="Margin" class="gt_row gt_right">16</td>
+<td headers="HomeWin" class="gt_row gt_center">1</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">75.78%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2023-01-04</td>
+<td headers="round_number" class="gt_row gt_left">14</td>
+<td headers="home_team_name" class="gt_row gt_left">New Zealand Breakers</td>
+<td headers="away_team_name" class="gt_row gt_left">Perth Wildcats</td>
+<td headers="venue_name" class="gt_row gt_left">TSB Stadium</td>
+<td headers="Margin" class="gt_row gt_right">3</td>
+<td headers="HomeWin" class="gt_row gt_center">1</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">57.41%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2023-01-02</td>
+<td headers="round_number" class="gt_row gt_left">13</td>
+<td headers="home_team_name" class="gt_row gt_left">Illawarra Hawks</td>
+<td headers="away_team_name" class="gt_row gt_left">Cairns Taipans</td>
+<td headers="venue_name" class="gt_row gt_left">WIN Entertainment Centre</td>
+<td headers="Margin" class="gt_row gt_right">-7</td>
+<td headers="HomeWin" class="gt_row gt_center">0</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">32.41%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2023-01-01</td>
+<td headers="round_number" class="gt_row gt_left">13</td>
+<td headers="home_team_name" class="gt_row gt_left">Brisbane Bullets</td>
+<td headers="away_team_name" class="gt_row gt_left">Melbourne United</td>
+<td headers="venue_name" class="gt_row gt_left">Nissan Arena</td>
+<td headers="Margin" class="gt_row gt_right">-13</td>
+<td headers="HomeWin" class="gt_row gt_center">0</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">50.41%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2023-01-01</td>
+<td headers="round_number" class="gt_row gt_left">13</td>
+<td headers="home_team_name" class="gt_row gt_left">Tasmania JackJumpers</td>
+<td headers="away_team_name" class="gt_row gt_left">South East Melbourne Phoenix</td>
+<td headers="venue_name" class="gt_row gt_left">MyState Bank Arena</td>
+<td headers="Margin" class="gt_row gt_right">25</td>
+<td headers="HomeWin" class="gt_row gt_center">1</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">57.29%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-12-31</td>
+<td headers="round_number" class="gt_row gt_left">13</td>
+<td headers="home_team_name" class="gt_row gt_left">Cairns Taipans</td>
+<td headers="away_team_name" class="gt_row gt_left">Adelaide 36ers</td>
+<td headers="venue_name" class="gt_row gt_left">Cairns Convention Centre</td>
+<td headers="Margin" class="gt_row gt_right">3</td>
+<td headers="HomeWin" class="gt_row gt_center">1</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">48.22%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-12-31</td>
+<td headers="round_number" class="gt_row gt_left">13</td>
+<td headers="home_team_name" class="gt_row gt_left">Illawarra Hawks</td>
+<td headers="away_team_name" class="gt_row gt_left">Perth Wildcats</td>
+<td headers="venue_name" class="gt_row gt_left">WIN Entertainment Centre</td>
+<td headers="Margin" class="gt_row gt_right">-10</td>
+<td headers="HomeWin" class="gt_row gt_center">0</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">35.92%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-12-30</td>
+<td headers="round_number" class="gt_row gt_left">13</td>
+<td headers="home_team_name" class="gt_row gt_left">Sydney Kings</td>
+<td headers="away_team_name" class="gt_row gt_left">Tasmania JackJumpers</td>
+<td headers="venue_name" class="gt_row gt_left">Qudos Bank Arena</td>
+<td headers="Margin" class="gt_row gt_right">20</td>
+<td headers="HomeWin" class="gt_row gt_center">1</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">53.13%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-12-29</td>
+<td headers="round_number" class="gt_row gt_left">13</td>
+<td headers="home_team_name" class="gt_row gt_left">Adelaide 36ers</td>
+<td headers="away_team_name" class="gt_row gt_left">Brisbane Bullets</td>
+<td headers="venue_name" class="gt_row gt_left">Adelaide Entertainment Centre</td>
+<td headers="Margin" class="gt_row gt_right">3</td>
+<td headers="HomeWin" class="gt_row gt_center">1</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">79.47%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-12-27</td>
+<td headers="round_number" class="gt_row gt_left">12</td>
+<td headers="home_team_name" class="gt_row gt_left">Brisbane Bullets</td>
+<td headers="away_team_name" class="gt_row gt_left">Perth Wildcats</td>
+<td headers="venue_name" class="gt_row gt_left">Nissan Arena</td>
+<td headers="Margin" class="gt_row gt_right">4</td>
+<td headers="HomeWin" class="gt_row gt_center">1</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">30.22%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-12-26</td>
+<td headers="round_number" class="gt_row gt_left">12</td>
+<td headers="home_team_name" class="gt_row gt_left">Tasmania JackJumpers</td>
+<td headers="away_team_name" class="gt_row gt_left">New Zealand Breakers</td>
+<td headers="venue_name" class="gt_row gt_left">MyState Bank Arena</td>
+<td headers="Margin" class="gt_row gt_right">11</td>
+<td headers="HomeWin" class="gt_row gt_center">1</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">65.53%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-12-25</td>
+<td headers="round_number" class="gt_row gt_left">12</td>
+<td headers="home_team_name" class="gt_row gt_left">Sydney Kings</td>
+<td headers="away_team_name" class="gt_row gt_left">Melbourne United</td>
+<td headers="venue_name" class="gt_row gt_left">Qudos Bank Arena</td>
+<td headers="Margin" class="gt_row gt_right">21</td>
+<td headers="HomeWin" class="gt_row gt_center">1</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">54.41%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-12-24</td>
+<td headers="round_number" class="gt_row gt_left">12</td>
+<td headers="home_team_name" class="gt_row gt_left">Adelaide 36ers</td>
+<td headers="away_team_name" class="gt_row gt_left">South East Melbourne Phoenix</td>
+<td headers="venue_name" class="gt_row gt_left">Adelaide Entertainment Centre</td>
+<td headers="Margin" class="gt_row gt_right">6</td>
+<td headers="HomeWin" class="gt_row gt_center">1</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">25.26%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-12-23</td>
+<td headers="round_number" class="gt_row gt_left">12</td>
+<td headers="home_team_name" class="gt_row gt_left">Melbourne United</td>
+<td headers="away_team_name" class="gt_row gt_left">Cairns Taipans</td>
+<td headers="venue_name" class="gt_row gt_left">John Cain Arena</td>
+<td headers="Margin" class="gt_row gt_right">3</td>
+<td headers="HomeWin" class="gt_row gt_center">1</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">56.62%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-12-22</td>
+<td headers="round_number" class="gt_row gt_left">12</td>
+<td headers="home_team_name" class="gt_row gt_left">Tasmania JackJumpers</td>
+<td headers="away_team_name" class="gt_row gt_left">Illawarra Hawks</td>
+<td headers="venue_name" class="gt_row gt_left">MyState Bank Arena</td>
+<td headers="Margin" class="gt_row gt_right">27</td>
+<td headers="HomeWin" class="gt_row gt_center">1</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">72.22%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-12-21</td>
+<td headers="round_number" class="gt_row gt_left">12</td>
+<td headers="home_team_name" class="gt_row gt_left">Brisbane Bullets</td>
+<td headers="away_team_name" class="gt_row gt_left">South East Melbourne Phoenix</td>
+<td headers="venue_name" class="gt_row gt_left">Nissan Arena</td>
+<td headers="Margin" class="gt_row gt_right">-27</td>
+<td headers="HomeWin" class="gt_row gt_center">0</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">21.33%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-12-20</td>
+<td headers="round_number" class="gt_row gt_left">11</td>
+<td headers="home_team_name" class="gt_row gt_left">Cairns Taipans</td>
+<td headers="away_team_name" class="gt_row gt_left">Perth Wildcats</td>
+<td headers="venue_name" class="gt_row gt_left">Cairns Convention Centre</td>
+<td headers="Margin" class="gt_row gt_right">-22</td>
+<td headers="HomeWin" class="gt_row gt_center">0</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">42.27%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-12-19</td>
+<td headers="round_number" class="gt_row gt_left">11</td>
+<td headers="home_team_name" class="gt_row gt_left">Adelaide 36ers</td>
+<td headers="away_team_name" class="gt_row gt_left">Tasmania JackJumpers</td>
+<td headers="venue_name" class="gt_row gt_left">Adelaide Entertainment Centre</td>
+<td headers="Margin" class="gt_row gt_right">11</td>
+<td headers="HomeWin" class="gt_row gt_center">1</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">44.49%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-12-18</td>
+<td headers="round_number" class="gt_row gt_left">11</td>
+<td headers="home_team_name" class="gt_row gt_left">Melbourne United</td>
+<td headers="away_team_name" class="gt_row gt_left">Illawarra Hawks</td>
+<td headers="venue_name" class="gt_row gt_left">John Cain Arena</td>
+<td headers="Margin" class="gt_row gt_right">11</td>
+<td headers="HomeWin" class="gt_row gt_center">1</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">79.78%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-12-18</td>
+<td headers="round_number" class="gt_row gt_left">11</td>
+<td headers="home_team_name" class="gt_row gt_left">South East Melbourne Phoenix</td>
+<td headers="away_team_name" class="gt_row gt_left">Sydney Kings</td>
+<td headers="venue_name" class="gt_row gt_left">Gippsland Regional Indoor Sports Stadium</td>
+<td headers="Margin" class="gt_row gt_right">1</td>
+<td headers="HomeWin" class="gt_row gt_center">1</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">55.25%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-12-17</td>
+<td headers="round_number" class="gt_row gt_left">11</td>
+<td headers="home_team_name" class="gt_row gt_left">Adelaide 36ers</td>
+<td headers="away_team_name" class="gt_row gt_left">Brisbane Bullets</td>
+<td headers="venue_name" class="gt_row gt_left">Adelaide Entertainment Centre</td>
+<td headers="Margin" class="gt_row gt_right">31</td>
+<td headers="HomeWin" class="gt_row gt_center">1</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">63.77%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-12-17</td>
+<td headers="round_number" class="gt_row gt_left">11</td>
+<td headers="home_team_name" class="gt_row gt_left">Tasmania JackJumpers</td>
+<td headers="away_team_name" class="gt_row gt_left">Cairns Taipans</td>
+<td headers="venue_name" class="gt_row gt_left">MyState Bank Arena</td>
+<td headers="Margin" class="gt_row gt_right">-9</td>
+<td headers="HomeWin" class="gt_row gt_center">0</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">74.60%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-12-16</td>
+<td headers="round_number" class="gt_row gt_left">11</td>
+<td headers="home_team_name" class="gt_row gt_left">Illawarra Hawks</td>
+<td headers="away_team_name" class="gt_row gt_left">Sydney Kings</td>
+<td headers="venue_name" class="gt_row gt_left">WIN Entertainment Centre</td>
+<td headers="Margin" class="gt_row gt_right">-7</td>
+<td headers="HomeWin" class="gt_row gt_center">0</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">46.84%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-12-15</td>
+<td headers="round_number" class="gt_row gt_left">11</td>
+<td headers="home_team_name" class="gt_row gt_left">Melbourne United</td>
+<td headers="away_team_name" class="gt_row gt_left">South East Melbourne Phoenix</td>
+<td headers="venue_name" class="gt_row gt_left">John Cain Arena</td>
+<td headers="Margin" class="gt_row gt_right">16</td>
+<td headers="HomeWin" class="gt_row gt_center">1</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">40.90%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-12-14</td>
+<td headers="round_number" class="gt_row gt_left">11</td>
+<td headers="home_team_name" class="gt_row gt_left">Cairns Taipans</td>
+<td headers="away_team_name" class="gt_row gt_left">Brisbane Bullets</td>
+<td headers="venue_name" class="gt_row gt_left">Cairns Convention Centre</td>
+<td headers="Margin" class="gt_row gt_right">9</td>
+<td headers="HomeWin" class="gt_row gt_center">1</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">59.00%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-12-12</td>
+<td headers="round_number" class="gt_row gt_left">10</td>
+<td headers="home_team_name" class="gt_row gt_left">Perth Wildcats</td>
+<td headers="away_team_name" class="gt_row gt_left">Melbourne United</td>
+<td headers="venue_name" class="gt_row gt_left">RAC Arena</td>
+<td headers="Margin" class="gt_row gt_right">1</td>
+<td headers="HomeWin" class="gt_row gt_center">1</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">59.00%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-12-11</td>
+<td headers="round_number" class="gt_row gt_left">10</td>
+<td headers="home_team_name" class="gt_row gt_left">Sydney Kings</td>
+<td headers="away_team_name" class="gt_row gt_left">Tasmania JackJumpers</td>
+<td headers="venue_name" class="gt_row gt_left">Qudos Bank Arena</td>
+<td headers="Margin" class="gt_row gt_right">-8</td>
+<td headers="HomeWin" class="gt_row gt_center">0</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">66.89%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-12-11</td>
+<td headers="round_number" class="gt_row gt_left">10</td>
+<td headers="home_team_name" class="gt_row gt_left">South East Melbourne Phoenix</td>
+<td headers="away_team_name" class="gt_row gt_left">Adelaide 36ers</td>
+<td headers="venue_name" class="gt_row gt_left">John Cain Arena</td>
+<td headers="Margin" class="gt_row gt_right">18</td>
+<td headers="HomeWin" class="gt_row gt_center">1</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">69.04%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-12-10</td>
+<td headers="round_number" class="gt_row gt_left">10</td>
+<td headers="home_team_name" class="gt_row gt_left">Melbourne United</td>
+<td headers="away_team_name" class="gt_row gt_left">Brisbane Bullets</td>
+<td headers="venue_name" class="gt_row gt_left">John Cain Arena</td>
+<td headers="Margin" class="gt_row gt_right">16</td>
+<td headers="HomeWin" class="gt_row gt_center">1</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">63.08%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-12-10</td>
+<td headers="round_number" class="gt_row gt_left">10</td>
+<td headers="home_team_name" class="gt_row gt_left">Cairns Taipans</td>
+<td headers="away_team_name" class="gt_row gt_left">Illawarra Hawks</td>
+<td headers="venue_name" class="gt_row gt_left">Cairns Convention Centre</td>
+<td headers="Margin" class="gt_row gt_right">1</td>
+<td headers="HomeWin" class="gt_row gt_center">1</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">60.21%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-12-09</td>
+<td headers="round_number" class="gt_row gt_left">10</td>
+<td headers="home_team_name" class="gt_row gt_left">Adelaide 36ers</td>
+<td headers="away_team_name" class="gt_row gt_left">Perth Wildcats</td>
+<td headers="venue_name" class="gt_row gt_left">Adelaide Entertainment Centre</td>
+<td headers="Margin" class="gt_row gt_right">-8</td>
+<td headers="HomeWin" class="gt_row gt_center">0</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">68.53%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-12-08</td>
+<td headers="round_number" class="gt_row gt_left">10</td>
+<td headers="home_team_name" class="gt_row gt_left">South East Melbourne Phoenix</td>
+<td headers="away_team_name" class="gt_row gt_left">Illawarra Hawks</td>
+<td headers="venue_name" class="gt_row gt_left">John Cain Arena</td>
+<td headers="Margin" class="gt_row gt_right">39</td>
+<td headers="HomeWin" class="gt_row gt_center">1</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">64.84%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-12-08</td>
+<td headers="round_number" class="gt_row gt_left">10</td>
+<td headers="home_team_name" class="gt_row gt_left">New Zealand Breakers</td>
+<td headers="away_team_name" class="gt_row gt_left">Sydney Kings</td>
+<td headers="venue_name" class="gt_row gt_left">Spark Arena</td>
+<td headers="Margin" class="gt_row gt_right">-7</td>
+<td headers="HomeWin" class="gt_row gt_center">0</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">42.45%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-12-05</td>
+<td headers="round_number" class="gt_row gt_left">9</td>
+<td headers="home_team_name" class="gt_row gt_left">Illawarra Hawks</td>
+<td headers="away_team_name" class="gt_row gt_left">Melbourne United</td>
+<td headers="venue_name" class="gt_row gt_left">WIN Entertainment Centre</td>
+<td headers="Margin" class="gt_row gt_right">14</td>
+<td headers="HomeWin" class="gt_row gt_center">1</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">54.20%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-12-04</td>
+<td headers="round_number" class="gt_row gt_left">9</td>
+<td headers="home_team_name" class="gt_row gt_left">Brisbane Bullets</td>
+<td headers="away_team_name" class="gt_row gt_left">Tasmania JackJumpers</td>
+<td headers="venue_name" class="gt_row gt_left">Nissan Arena</td>
+<td headers="Margin" class="gt_row gt_right">-15</td>
+<td headers="HomeWin" class="gt_row gt_center">0</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">72.25%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-12-04</td>
+<td headers="round_number" class="gt_row gt_left">9</td>
+<td headers="home_team_name" class="gt_row gt_left">Sydney Kings</td>
+<td headers="away_team_name" class="gt_row gt_left">Adelaide 36ers</td>
+<td headers="venue_name" class="gt_row gt_left">Qudos Bank Arena</td>
+<td headers="Margin" class="gt_row gt_right">19</td>
+<td headers="HomeWin" class="gt_row gt_center">1</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">67.12%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-12-03</td>
+<td headers="round_number" class="gt_row gt_left">9</td>
+<td headers="home_team_name" class="gt_row gt_left">South East Melbourne Phoenix</td>
+<td headers="away_team_name" class="gt_row gt_left">Melbourne United</td>
+<td headers="venue_name" class="gt_row gt_left">John Cain Arena</td>
+<td headers="Margin" class="gt_row gt_right">6</td>
+<td headers="HomeWin" class="gt_row gt_center">1</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">76.98%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-12-03</td>
+<td headers="round_number" class="gt_row gt_left">9</td>
+<td headers="home_team_name" class="gt_row gt_left">New Zealand Breakers</td>
+<td headers="away_team_name" class="gt_row gt_left">Perth Wildcats</td>
+<td headers="venue_name" class="gt_row gt_left">Spark Arena</td>
+<td headers="Margin" class="gt_row gt_right">-8</td>
+<td headers="HomeWin" class="gt_row gt_center">0</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">70.38%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-12-02</td>
+<td headers="round_number" class="gt_row gt_left">9</td>
+<td headers="home_team_name" class="gt_row gt_left">Adelaide 36ers</td>
+<td headers="away_team_name" class="gt_row gt_left">Cairns Taipans</td>
+<td headers="venue_name" class="gt_row gt_left">Adelaide Entertainment Centre</td>
+<td headers="Margin" class="gt_row gt_right">3</td>
+<td headers="HomeWin" class="gt_row gt_center">1</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">34.71%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-12-01</td>
+<td headers="round_number" class="gt_row gt_left">9</td>
+<td headers="home_team_name" class="gt_row gt_left">Brisbane Bullets</td>
+<td headers="away_team_name" class="gt_row gt_left">Perth Wildcats</td>
+<td headers="venue_name" class="gt_row gt_left">Nissan Arena</td>
+<td headers="Margin" class="gt_row gt_right">11</td>
+<td headers="HomeWin" class="gt_row gt_center">1</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">63.22%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-12-01</td>
+<td headers="round_number" class="gt_row gt_left">9</td>
+<td headers="home_team_name" class="gt_row gt_left">New Zealand Breakers</td>
+<td headers="away_team_name" class="gt_row gt_left">South East Melbourne Phoenix</td>
+<td headers="venue_name" class="gt_row gt_left">Christchurch Arena</td>
+<td headers="Margin" class="gt_row gt_right">26</td>
+<td headers="HomeWin" class="gt_row gt_center">1</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">56.58%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-11-28</td>
+<td headers="round_number" class="gt_row gt_left">8</td>
+<td headers="home_team_name" class="gt_row gt_left">Cairns Taipans</td>
+<td headers="away_team_name" class="gt_row gt_left">Sydney Kings</td>
+<td headers="venue_name" class="gt_row gt_left">Cairns Convention Centre</td>
+<td headers="Margin" class="gt_row gt_right">6</td>
+<td headers="HomeWin" class="gt_row gt_center">1</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">35.64%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-11-27</td>
+<td headers="round_number" class="gt_row gt_left">8</td>
+<td headers="home_team_name" class="gt_row gt_left">South East Melbourne Phoenix</td>
+<td headers="away_team_name" class="gt_row gt_left">Illawarra Hawks</td>
+<td headers="venue_name" class="gt_row gt_left">John Cain Arena</td>
+<td headers="Margin" class="gt_row gt_right">34</td>
+<td headers="HomeWin" class="gt_row gt_center">1</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">79.87%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-11-27</td>
+<td headers="round_number" class="gt_row gt_left">8</td>
+<td headers="home_team_name" class="gt_row gt_left">New Zealand Breakers</td>
+<td headers="away_team_name" class="gt_row gt_left">Brisbane Bullets</td>
+<td headers="venue_name" class="gt_row gt_left">Spark Arena</td>
+<td headers="Margin" class="gt_row gt_right">37</td>
+<td headers="HomeWin" class="gt_row gt_center">1</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">74.11%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-11-26</td>
+<td headers="round_number" class="gt_row gt_left">8</td>
+<td headers="home_team_name" class="gt_row gt_left">Melbourne United</td>
+<td headers="away_team_name" class="gt_row gt_left">Tasmania JackJumpers</td>
+<td headers="venue_name" class="gt_row gt_left">John Cain Arena</td>
+<td headers="Margin" class="gt_row gt_right">-4</td>
+<td headers="HomeWin" class="gt_row gt_center">0</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">40.45%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-11-25</td>
+<td headers="round_number" class="gt_row gt_left">8</td>
+<td headers="home_team_name" class="gt_row gt_left">Cairns Taipans</td>
+<td headers="away_team_name" class="gt_row gt_left">New Zealand Breakers</td>
+<td headers="venue_name" class="gt_row gt_left">Cairns Convention Centre</td>
+<td headers="Margin" class="gt_row gt_right">-11</td>
+<td headers="HomeWin" class="gt_row gt_center">0</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">50.15%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-11-24</td>
+<td headers="round_number" class="gt_row gt_left">8</td>
+<td headers="home_team_name" class="gt_row gt_left">Perth Wildcats</td>
+<td headers="away_team_name" class="gt_row gt_left">Adelaide 36ers</td>
+<td headers="venue_name" class="gt_row gt_left">RAC Arena</td>
+<td headers="Margin" class="gt_row gt_right">-14</td>
+<td headers="HomeWin" class="gt_row gt_center">0</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">52.85%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-11-20</td>
+<td headers="round_number" class="gt_row gt_left">7</td>
+<td headers="home_team_name" class="gt_row gt_left">Sydney Kings</td>
+<td headers="away_team_name" class="gt_row gt_left">Illawarra Hawks</td>
+<td headers="venue_name" class="gt_row gt_left">Qudos Bank Arena</td>
+<td headers="Margin" class="gt_row gt_right">1</td>
+<td headers="HomeWin" class="gt_row gt_center">1</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">82.84%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-11-20</td>
+<td headers="round_number" class="gt_row gt_left">7</td>
+<td headers="home_team_name" class="gt_row gt_left">New Zealand Breakers</td>
+<td headers="away_team_name" class="gt_row gt_left">Adelaide 36ers</td>
+<td headers="venue_name" class="gt_row gt_left">The Trusts Arena</td>
+<td headers="Margin" class="gt_row gt_right">6</td>
+<td headers="HomeWin" class="gt_row gt_center">1</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">80.61%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-11-19</td>
+<td headers="round_number" class="gt_row gt_left">7</td>
+<td headers="home_team_name" class="gt_row gt_left">Brisbane Bullets</td>
+<td headers="away_team_name" class="gt_row gt_left">Cairns Taipans</td>
+<td headers="venue_name" class="gt_row gt_left">Nissan Arena</td>
+<td headers="Margin" class="gt_row gt_right">-8</td>
+<td headers="HomeWin" class="gt_row gt_center">0</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">43.92%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-11-19</td>
+<td headers="round_number" class="gt_row gt_left">7</td>
+<td headers="home_team_name" class="gt_row gt_left">South East Melbourne Phoenix</td>
+<td headers="away_team_name" class="gt_row gt_left">Melbourne United</td>
+<td headers="venue_name" class="gt_row gt_left">John Cain Arena</td>
+<td headers="Margin" class="gt_row gt_right">15</td>
+<td headers="HomeWin" class="gt_row gt_center">1</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">58.81%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-11-18</td>
+<td headers="round_number" class="gt_row gt_left">7</td>
+<td headers="home_team_name" class="gt_row gt_left">Tasmania JackJumpers</td>
+<td headers="away_team_name" class="gt_row gt_left">New Zealand Breakers</td>
+<td headers="venue_name" class="gt_row gt_left">Silverdome</td>
+<td headers="Margin" class="gt_row gt_right">-8</td>
+<td headers="HomeWin" class="gt_row gt_center">0</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">71.81%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-11-17</td>
+<td headers="round_number" class="gt_row gt_left">7</td>
+<td headers="home_team_name" class="gt_row gt_left">Perth Wildcats</td>
+<td headers="away_team_name" class="gt_row gt_left">South East Melbourne Phoenix</td>
+<td headers="venue_name" class="gt_row gt_left">RAC Arena</td>
+<td headers="Margin" class="gt_row gt_right">7</td>
+<td headers="HomeWin" class="gt_row gt_center">1</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">49.43%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-11-17</td>
+<td headers="round_number" class="gt_row gt_left">7</td>
+<td headers="home_team_name" class="gt_row gt_left">Melbourne United</td>
+<td headers="away_team_name" class="gt_row gt_left">Adelaide 36ers</td>
+<td headers="venue_name" class="gt_row gt_left">John Cain Arena</td>
+<td headers="Margin" class="gt_row gt_right">-5</td>
+<td headers="HomeWin" class="gt_row gt_center">0</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">75.28%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-11-06</td>
+<td headers="round_number" class="gt_row gt_left">6</td>
+<td headers="home_team_name" class="gt_row gt_left">Melbourne United</td>
+<td headers="away_team_name" class="gt_row gt_left">South East Melbourne Phoenix</td>
+<td headers="venue_name" class="gt_row gt_left">John Cain Arena</td>
+<td headers="Margin" class="gt_row gt_right">25</td>
+<td headers="HomeWin" class="gt_row gt_center">1</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">56.01%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-11-06</td>
+<td headers="round_number" class="gt_row gt_left">6</td>
+<td headers="home_team_name" class="gt_row gt_left">New Zealand Breakers</td>
+<td headers="away_team_name" class="gt_row gt_left">Sydney Kings</td>
+<td headers="venue_name" class="gt_row gt_left">Spark Arena</td>
+<td headers="Margin" class="gt_row gt_right">-4</td>
+<td headers="HomeWin" class="gt_row gt_center">0</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">66.23%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-11-05</td>
+<td headers="round_number" class="gt_row gt_left">6</td>
+<td headers="home_team_name" class="gt_row gt_left">Adelaide 36ers</td>
+<td headers="away_team_name" class="gt_row gt_left">Perth Wildcats</td>
+<td headers="venue_name" class="gt_row gt_left">Adelaide Entertainment Centre</td>
+<td headers="Margin" class="gt_row gt_right">-5</td>
+<td headers="HomeWin" class="gt_row gt_center">0</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">73.82%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-11-05</td>
+<td headers="round_number" class="gt_row gt_left">6</td>
+<td headers="home_team_name" class="gt_row gt_left">Tasmania JackJumpers</td>
+<td headers="away_team_name" class="gt_row gt_left">Brisbane Bullets</td>
+<td headers="venue_name" class="gt_row gt_left">MyState Bank Arena</td>
+<td headers="Margin" class="gt_row gt_right">-2</td>
+<td headers="HomeWin" class="gt_row gt_center">0</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">88.50%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-11-04</td>
+<td headers="round_number" class="gt_row gt_left">6</td>
+<td headers="home_team_name" class="gt_row gt_left">Cairns Taipans</td>
+<td headers="away_team_name" class="gt_row gt_left">Melbourne United</td>
+<td headers="venue_name" class="gt_row gt_left">Cairns Convention Centre</td>
+<td headers="Margin" class="gt_row gt_right">25</td>
+<td headers="HomeWin" class="gt_row gt_center">1</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">55.49%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-11-03</td>
+<td headers="round_number" class="gt_row gt_left">6</td>
+<td headers="home_team_name" class="gt_row gt_left">Perth Wildcats</td>
+<td headers="away_team_name" class="gt_row gt_left">Tasmania JackJumpers</td>
+<td headers="venue_name" class="gt_row gt_left">RAC Arena</td>
+<td headers="Margin" class="gt_row gt_right">-8</td>
+<td headers="HomeWin" class="gt_row gt_center">0</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">22.00%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-11-03</td>
+<td headers="round_number" class="gt_row gt_left">6</td>
+<td headers="home_team_name" class="gt_row gt_left">Illawarra Hawks</td>
+<td headers="away_team_name" class="gt_row gt_left">Adelaide 36ers</td>
+<td headers="venue_name" class="gt_row gt_left">WIN Entertainment Centre</td>
+<td headers="Margin" class="gt_row gt_right">-16</td>
+<td headers="HomeWin" class="gt_row gt_center">0</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">80.86%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-10-31</td>
+<td headers="round_number" class="gt_row gt_left">5</td>
+<td headers="home_team_name" class="gt_row gt_left">Melbourne United</td>
+<td headers="away_team_name" class="gt_row gt_left">Perth Wildcats</td>
+<td headers="venue_name" class="gt_row gt_left">John Cain Arena</td>
+<td headers="Margin" class="gt_row gt_right">17</td>
+<td headers="HomeWin" class="gt_row gt_center">1</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">55.99%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-10-30</td>
+<td headers="round_number" class="gt_row gt_left">5</td>
+<td headers="home_team_name" class="gt_row gt_left">South East Melbourne Phoenix</td>
+<td headers="away_team_name" class="gt_row gt_left">Adelaide 36ers</td>
+<td headers="venue_name" class="gt_row gt_left">John Cain Arena</td>
+<td headers="Margin" class="gt_row gt_right">5</td>
+<td headers="HomeWin" class="gt_row gt_center">1</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">77.16%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-10-30</td>
+<td headers="round_number" class="gt_row gt_left">5</td>
+<td headers="home_team_name" class="gt_row gt_left">New Zealand Breakers</td>
+<td headers="away_team_name" class="gt_row gt_left">Tasmania JackJumpers</td>
+<td headers="venue_name" class="gt_row gt_left">Spark Arena</td>
+<td headers="Margin" class="gt_row gt_right">32</td>
+<td headers="HomeWin" class="gt_row gt_center">1</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">57.21%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-10-29</td>
+<td headers="round_number" class="gt_row gt_left">5</td>
+<td headers="home_team_name" class="gt_row gt_left">Sydney Kings</td>
+<td headers="away_team_name" class="gt_row gt_left">Cairns Taipans</td>
+<td headers="venue_name" class="gt_row gt_left">Qudos Bank Arena</td>
+<td headers="Margin" class="gt_row gt_right">3</td>
+<td headers="HomeWin" class="gt_row gt_center">1</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">86.41%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-10-29</td>
+<td headers="round_number" class="gt_row gt_left">5</td>
+<td headers="home_team_name" class="gt_row gt_left">Illawarra Hawks</td>
+<td headers="away_team_name" class="gt_row gt_left">Melbourne United</td>
+<td headers="venue_name" class="gt_row gt_left">WIN Entertainment Centre</td>
+<td headers="Margin" class="gt_row gt_right">-6</td>
+<td headers="HomeWin" class="gt_row gt_center">0</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">45.22%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-10-28</td>
+<td headers="round_number" class="gt_row gt_left">5</td>
+<td headers="home_team_name" class="gt_row gt_left">Perth Wildcats</td>
+<td headers="away_team_name" class="gt_row gt_left">South East Melbourne Phoenix</td>
+<td headers="venue_name" class="gt_row gt_left">RAC Arena</td>
+<td headers="Margin" class="gt_row gt_right">-1</td>
+<td headers="HomeWin" class="gt_row gt_center">0</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">45.71%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-10-28</td>
+<td headers="round_number" class="gt_row gt_left">5</td>
+<td headers="home_team_name" class="gt_row gt_left">Adelaide 36ers</td>
+<td headers="away_team_name" class="gt_row gt_left">New Zealand Breakers</td>
+<td headers="venue_name" class="gt_row gt_left">Adelaide Entertainment Centre</td>
+<td headers="Margin" class="gt_row gt_right">-29</td>
+<td headers="HomeWin" class="gt_row gt_center">0</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">60.01%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-10-27</td>
+<td headers="round_number" class="gt_row gt_left">5</td>
+<td headers="home_team_name" class="gt_row gt_left">Brisbane Bullets</td>
+<td headers="away_team_name" class="gt_row gt_left">Illawarra Hawks</td>
+<td headers="venue_name" class="gt_row gt_left">Nissan Arena</td>
+<td headers="Margin" class="gt_row gt_right">25</td>
+<td headers="HomeWin" class="gt_row gt_center">1</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">53.68%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-10-24</td>
+<td headers="round_number" class="gt_row gt_left">4</td>
+<td headers="home_team_name" class="gt_row gt_left">Illawarra Hawks</td>
+<td headers="away_team_name" class="gt_row gt_left">Brisbane Bullets</td>
+<td headers="venue_name" class="gt_row gt_left">WIN Entertainment Centre</td>
+<td headers="Margin" class="gt_row gt_right">-26</td>
+<td headers="HomeWin" class="gt_row gt_center">0</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">76.35%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-10-23</td>
+<td headers="round_number" class="gt_row gt_left">4</td>
+<td headers="home_team_name" class="gt_row gt_left">Melbourne United</td>
+<td headers="away_team_name" class="gt_row gt_left">Sydney Kings</td>
+<td headers="venue_name" class="gt_row gt_left">John Cain Arena</td>
+<td headers="Margin" class="gt_row gt_right">-18</td>
+<td headers="HomeWin" class="gt_row gt_center">0</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">43.97%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-10-23</td>
+<td headers="round_number" class="gt_row gt_left">4</td>
+<td headers="home_team_name" class="gt_row gt_left">Cairns Taipans</td>
+<td headers="away_team_name" class="gt_row gt_left">New Zealand Breakers</td>
+<td headers="venue_name" class="gt_row gt_left">Cairns Convention Centre</td>
+<td headers="Margin" class="gt_row gt_right">-4</td>
+<td headers="HomeWin" class="gt_row gt_center">0</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">62.43%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-10-22</td>
+<td headers="round_number" class="gt_row gt_left">4</td>
+<td headers="home_team_name" class="gt_row gt_left">Tasmania JackJumpers</td>
+<td headers="away_team_name" class="gt_row gt_left">Perth Wildcats</td>
+<td headers="venue_name" class="gt_row gt_left">MyState Bank Arena</td>
+<td headers="Margin" class="gt_row gt_right">31</td>
+<td headers="HomeWin" class="gt_row gt_center">1</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">59.86%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-10-22</td>
+<td headers="round_number" class="gt_row gt_left">4</td>
+<td headers="home_team_name" class="gt_row gt_left">South East Melbourne Phoenix</td>
+<td headers="away_team_name" class="gt_row gt_left">Brisbane Bullets</td>
+<td headers="venue_name" class="gt_row gt_left">John Cain Arena</td>
+<td headers="Margin" class="gt_row gt_right">1</td>
+<td headers="HomeWin" class="gt_row gt_center">1</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">75.88%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-10-21</td>
+<td headers="round_number" class="gt_row gt_left">4</td>
+<td headers="home_team_name" class="gt_row gt_left">Sydney Kings</td>
+<td headers="away_team_name" class="gt_row gt_left">Adelaide 36ers</td>
+<td headers="venue_name" class="gt_row gt_left">Qudos Bank Arena</td>
+<td headers="Margin" class="gt_row gt_right">-4</td>
+<td headers="HomeWin" class="gt_row gt_center">0</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">73.88%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-10-20</td>
+<td headers="round_number" class="gt_row gt_left">4</td>
+<td headers="home_team_name" class="gt_row gt_left">Melbourne United</td>
+<td headers="away_team_name" class="gt_row gt_left">Cairns Taipans</td>
+<td headers="venue_name" class="gt_row gt_left">John Cain Arena</td>
+<td headers="Margin" class="gt_row gt_right">-4</td>
+<td headers="HomeWin" class="gt_row gt_center">0</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">76.63%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-10-20</td>
+<td headers="round_number" class="gt_row gt_left">4</td>
+<td headers="home_team_name" class="gt_row gt_left">New Zealand Breakers</td>
+<td headers="away_team_name" class="gt_row gt_left">South East Melbourne Phoenix</td>
+<td headers="venue_name" class="gt_row gt_left">The Trusts Arena</td>
+<td headers="Margin" class="gt_row gt_right">-22</td>
+<td headers="HomeWin" class="gt_row gt_center">0</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">75.06%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-10-17</td>
+<td headers="round_number" class="gt_row gt_left">3</td>
+<td headers="home_team_name" class="gt_row gt_left">Illawarra Hawks</td>
+<td headers="away_team_name" class="gt_row gt_left">New Zealand Breakers</td>
+<td headers="venue_name" class="gt_row gt_left">WIN Entertainment Centre</td>
+<td headers="Margin" class="gt_row gt_right">-26</td>
+<td headers="HomeWin" class="gt_row gt_center">0</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">61.84%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-10-16</td>
+<td headers="round_number" class="gt_row gt_left">3</td>
+<td headers="home_team_name" class="gt_row gt_left">Brisbane Bullets</td>
+<td headers="away_team_name" class="gt_row gt_left">Sydney Kings</td>
+<td headers="venue_name" class="gt_row gt_left">Nissan Arena</td>
+<td headers="Margin" class="gt_row gt_right">-17</td>
+<td headers="HomeWin" class="gt_row gt_center">0</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">30.09%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-10-16</td>
+<td headers="round_number" class="gt_row gt_left">3</td>
+<td headers="home_team_name" class="gt_row gt_left">Melbourne United</td>
+<td headers="away_team_name" class="gt_row gt_left">Tasmania JackJumpers</td>
+<td headers="venue_name" class="gt_row gt_left">John Cain Arena</td>
+<td headers="Margin" class="gt_row gt_right">-10</td>
+<td headers="HomeWin" class="gt_row gt_center">0</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">76.68%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-10-15</td>
+<td headers="round_number" class="gt_row gt_left">3</td>
+<td headers="home_team_name" class="gt_row gt_left">South East Melbourne Phoenix</td>
+<td headers="away_team_name" class="gt_row gt_left">New Zealand Breakers</td>
+<td headers="venue_name" class="gt_row gt_left">John Cain Arena</td>
+<td headers="Margin" class="gt_row gt_right">-8</td>
+<td headers="HomeWin" class="gt_row gt_center">0</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">64.47%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-10-15</td>
+<td headers="round_number" class="gt_row gt_left">3</td>
+<td headers="home_team_name" class="gt_row gt_left">Adelaide 36ers</td>
+<td headers="away_team_name" class="gt_row gt_left">Illawarra Hawks</td>
+<td headers="venue_name" class="gt_row gt_left">Adelaide Entertainment Centre</td>
+<td headers="Margin" class="gt_row gt_right">10</td>
+<td headers="HomeWin" class="gt_row gt_center">1</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">70.73%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-10-14</td>
+<td headers="round_number" class="gt_row gt_left">3</td>
+<td headers="home_team_name" class="gt_row gt_left">Perth Wildcats</td>
+<td headers="away_team_name" class="gt_row gt_left">Melbourne United</td>
+<td headers="venue_name" class="gt_row gt_left">RAC Arena</td>
+<td headers="Margin" class="gt_row gt_right">-3</td>
+<td headers="HomeWin" class="gt_row gt_center">0</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">64.96%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-10-14</td>
+<td headers="round_number" class="gt_row gt_left">3</td>
+<td headers="home_team_name" class="gt_row gt_left">Sydney Kings</td>
+<td headers="away_team_name" class="gt_row gt_left">Cairns Taipans</td>
+<td headers="venue_name" class="gt_row gt_left">Qudos Bank Arena</td>
+<td headers="Margin" class="gt_row gt_right">-5</td>
+<td headers="HomeWin" class="gt_row gt_center">0</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">57.69%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-10-13</td>
+<td headers="round_number" class="gt_row gt_left">3</td>
+<td headers="home_team_name" class="gt_row gt_left">Adelaide 36ers</td>
+<td headers="away_team_name" class="gt_row gt_left">Tasmania JackJumpers</td>
+<td headers="venue_name" class="gt_row gt_left">Adelaide Entertainment Centre</td>
+<td headers="Margin" class="gt_row gt_right">-25</td>
+<td headers="HomeWin" class="gt_row gt_center">0</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">60.26%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-10-10</td>
+<td headers="round_number" class="gt_row gt_left">2</td>
+<td headers="home_team_name" class="gt_row gt_left">Cairns Taipans</td>
+<td headers="away_team_name" class="gt_row gt_left">Perth Wildcats</td>
+<td headers="venue_name" class="gt_row gt_left">Cairns Convention Centre</td>
+<td headers="Margin" class="gt_row gt_right">-29</td>
+<td headers="HomeWin" class="gt_row gt_center">0</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">54.73%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-10-09</td>
+<td headers="round_number" class="gt_row gt_left">2</td>
+<td headers="home_team_name" class="gt_row gt_left">Melbourne United</td>
+<td headers="away_team_name" class="gt_row gt_left">Sydney Kings</td>
+<td headers="venue_name" class="gt_row gt_left">John Cain Arena</td>
+<td headers="Margin" class="gt_row gt_right">-20</td>
+<td headers="HomeWin" class="gt_row gt_center">0</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">46.73%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-10-09</td>
+<td headers="round_number" class="gt_row gt_left">2</td>
+<td headers="home_team_name" class="gt_row gt_left">Tasmania JackJumpers</td>
+<td headers="away_team_name" class="gt_row gt_left">Brisbane Bullets</td>
+<td headers="venue_name" class="gt_row gt_left">MyState Bank Arena</td>
+<td headers="Margin" class="gt_row gt_right">4</td>
+<td headers="HomeWin" class="gt_row gt_center">1</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">79.75%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-10-08</td>
+<td headers="round_number" class="gt_row gt_left">2</td>
+<td headers="home_team_name" class="gt_row gt_left">Perth Wildcats</td>
+<td headers="away_team_name" class="gt_row gt_left">Illawarra Hawks</td>
+<td headers="venue_name" class="gt_row gt_left">RAC Arena</td>
+<td headers="Margin" class="gt_row gt_right">6</td>
+<td headers="HomeWin" class="gt_row gt_center">1</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">54.24%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-10-08</td>
+<td headers="round_number" class="gt_row gt_left">2</td>
+<td headers="home_team_name" class="gt_row gt_left">South East Melbourne Phoenix</td>
+<td headers="away_team_name" class="gt_row gt_left">Cairns Taipans</td>
+<td headers="venue_name" class="gt_row gt_left">John Cain Arena</td>
+<td headers="Margin" class="gt_row gt_right">-9</td>
+<td headers="HomeWin" class="gt_row gt_center">0</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">49.19%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-10-07</td>
+<td headers="round_number" class="gt_row gt_left">2</td>
+<td headers="home_team_name" class="gt_row gt_left">Sydney Kings</td>
+<td headers="away_team_name" class="gt_row gt_left">Brisbane Bullets</td>
+<td headers="venue_name" class="gt_row gt_left">Qudos Bank Arena</td>
+<td headers="Margin" class="gt_row gt_right">10</td>
+<td headers="HomeWin" class="gt_row gt_center">1</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">69.08%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-10-07</td>
+<td headers="round_number" class="gt_row gt_left">2</td>
+<td headers="home_team_name" class="gt_row gt_left">New Zealand Breakers</td>
+<td headers="away_team_name" class="gt_row gt_left">Tasmania JackJumpers</td>
+<td headers="venue_name" class="gt_row gt_left">Spark Arena</td>
+<td headers="Margin" class="gt_row gt_right">6</td>
+<td headers="HomeWin" class="gt_row gt_center">1</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">58.91%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-10-06</td>
+<td headers="round_number" class="gt_row gt_left">2</td>
+<td headers="home_team_name" class="gt_row gt_left">Illawarra Hawks</td>
+<td headers="away_team_name" class="gt_row gt_left">South East Melbourne Phoenix</td>
+<td headers="venue_name" class="gt_row gt_left">WIN Entertainment Centre</td>
+<td headers="Margin" class="gt_row gt_right">13</td>
+<td headers="HomeWin" class="gt_row gt_center">1</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">73.81%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-10-03</td>
+<td headers="round_number" class="gt_row gt_left">1</td>
+<td headers="home_team_name" class="gt_row gt_left">Tasmania JackJumpers</td>
+<td headers="away_team_name" class="gt_row gt_left">Cairns Taipans</td>
+<td headers="venue_name" class="gt_row gt_left">MyState Bank Arena</td>
+<td headers="Margin" class="gt_row gt_right">-22</td>
+<td headers="HomeWin" class="gt_row gt_center">0</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">66.71%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-10-02</td>
+<td headers="round_number" class="gt_row gt_left">1</td>
+<td headers="home_team_name" class="gt_row gt_left">Perth Wildcats</td>
+<td headers="away_team_name" class="gt_row gt_left">Brisbane Bullets</td>
+<td headers="venue_name" class="gt_row gt_left">RAC Arena</td>
+<td headers="Margin" class="gt_row gt_right">14</td>
+<td headers="HomeWin" class="gt_row gt_center">1</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">60.74%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-10-02</td>
+<td headers="round_number" class="gt_row gt_left">1</td>
+<td headers="home_team_name" class="gt_row gt_left">Melbourne United</td>
+<td headers="away_team_name" class="gt_row gt_left">New Zealand Breakers</td>
+<td headers="venue_name" class="gt_row gt_left">John Cain Arena</td>
+<td headers="Margin" class="gt_row gt_right">4</td>
+<td headers="HomeWin" class="gt_row gt_center">1</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">63.08%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-10-01</td>
+<td headers="round_number" class="gt_row gt_left">1</td>
+<td headers="home_team_name" class="gt_row gt_left">Illawarra Hawks</td>
+<td headers="away_team_name" class="gt_row gt_left">Sydney Kings</td>
+<td headers="venue_name" class="gt_row gt_left">WIN Entertainment Centre</td>
+<td headers="Margin" class="gt_row gt_right">-9</td>
+<td headers="HomeWin" class="gt_row gt_center">0</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">52.20%</td></tr>
+    <tr><td headers="match_time" class="gt_row gt_right">2022-10-01</td>
+<td headers="round_number" class="gt_row gt_left">1</td>
+<td headers="home_team_name" class="gt_row gt_left">South East Melbourne Phoenix</td>
+<td headers="away_team_name" class="gt_row gt_left">Tasmania JackJumpers</td>
+<td headers="venue_name" class="gt_row gt_left">John Cain Arena</td>
+<td headers="Margin" class="gt_row gt_right">5</td>
+<td headers="HomeWin" class="gt_row gt_center">1</td>
+<td headers="HomeWin_predicted" class="gt_row gt_right">52.12%</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+</div>
+</div>
+</div>
+
+
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

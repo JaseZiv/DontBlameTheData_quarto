@@ -5,7 +5,10 @@ image: "nblR_hex.png"
 
 ![](nblR_hex.png)
 
-
 The `nblR` package allows users to obtain basketball statistics for the Australian basketball league (NBL). Stats include play-by-play, shooting locations, results and box scores for teams and players.
 
 The vignette for the package offers a full description of the package and the functions available, and can be found [here](https://jaseziv.github.io/nblR/).
+
+If you wanted to show your support and contribute to server time and data storage costs, feel free to send a small donation through the link below.
+
+<a href="https://www.buymeacoffee.com/jaseziv83A" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Coffee (Server Time)" height="41" width="174"></a>

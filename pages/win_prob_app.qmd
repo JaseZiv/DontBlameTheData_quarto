@@ -1,0 +1,16 @@
+---
+title: "NBL WinProbability App"
+description: "A shiny app to visualise in-game win probability for the NBL for both played games and currently being played games"
+image: "win-prob.png"
+---
+
+![](win-prob.png)
+
+The Win Probability R Shiny App is designed to allow users to visualise in-game win probability for matches played in the NBL and also scrape currently played matches and understand the win probability of teams during the match.
+
+The app can be found [here](https://nbl-r-shiny.herokuapp.com/).
+
+
+If you wanted to show your support and contribute to server time and data storage costs, feel free to send a small donation through the link below.
+
+<a href="https://www.buymeacoffee.com/jaseziv83A" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Coffee (Server Time)" height="41" width="174"></a>

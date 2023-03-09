@@ -1,14 +1,15 @@
 ---
-title: "AFLM Tipping"
+title: "NBL 2023 Match Predictions"
 execute:
   echo: false
-description: "Predicting AFL Men's match results weekly for the Squiggle tipping competition"
+description: "Predicting NBL Men's match results weekly for the 2022-2023 season"
 ---
 
 
 ```{r}
 library(dplyr)
 library(gt)
+library(piggyback)
 
 sysfonts::font_add_google(name = "Overlock", family = "Overlock")
 showtext::showtext_auto()
@@ -44,6 +45,7 @@ gt_theme <- function(data) {
     ) %>%
      tab_options(
       heading.title.font.size = 40,
+      heading.subtitle.font.size = 30,
       heading.padding = px(15),
       column_labels.background.color = "#585d63",
       table_body.hlines.color = "lightgrey",
@@ -59,49 +61,56 @@ gt_theme <- function(data) {
       data_row.padding = px(5)
     ) 
 }
+
+# function to read in data from releases:
+read_from_rel <- function(file_name) {
+
+  piggyback::pb_download(paste0(file_name, ".rds"),
+                         repo = "JaseZiv/NBL-Modelling",
+                         tag = "model_data",
+                         dest = tempdir())
+
+  readRDS(paste0(tempdir(), "/", file_name, ".rds"))
+
+}
+
+dat <- read_from_rel("match_result_predictions")
 ```
 
+
+:::{.column-page}
 
 ```{r}
-dat <- read.csv("https://github.com/JaseZiv/AFL-Tips/releases/download/Tips/AFL_tips_2023.csv")
+mod_acc <- dat %>% 
+  filter(!is.na(Margin)) %>% 
+  summarise(mod_acc = mean(round(HomeWin_predicted) == HomeWin)) %>% pull(mod_acc)
 
-# betting <- readRDS(url("https://github.com/JaseZiv/Betting-Data/releases/download/sports/afl_betting.rds"))
-# 
-# betting_select <- betting %>% 
-#   filter(betOption %in% c("Head To Head", "Line")) %>% 
-#   select(marketId, marketName, betOption, closeTime, name, returnWin, line, scrape_date) %>% 
-#   arrange(marketId, desc(scrape_date)) %>% 
-#   mutate(name = trimws(gsub("\\+.*", "", name)),
-#          name = trimws(gsub("\\-.*", "", name))) %>% 
-#   distinct(marketId, betOption, name, .keep_all = T)
+mod_correct <- dat %>% 
+  filter(!is.na(Margin)) %>% 
+  summarise(mod_acc = sum(round(HomeWin_predicted) == HomeWin)) %>% pull(mod_acc)
 
 
-tab <- dat %>%
-  select(-HomeWinProbability, -AwayWinProbability) %>%
-  mutate(`Home vs Away` = paste0(Home, " vs ", Away)) %>% 
-  mutate(who_winner = ifelse(PredictedWinner == Home, "home", "away")) %>% 
-  select(-Home, -Away, -Season) %>% 
-  select(Round, `Home vs Away`, PredictedWinner, WinProbability, PredictedMargin) %>% 
-  gt() %>%
-  fmt_percent(columns = c(WinProbability)) %>% 
+dat %>% 
+  arrange(desc(match_time_utc)) %>% 
+  select(match_time, round_number, home_team_name, away_team_name, venue_name, Margin, HomeWin, HomeWin_predicted) %>% 
+  mutate(match_time = as.Date(match_time)) %>%
+  gt() %>% 
+  fmt_percent(HomeWin_predicted) %>% 
   cols_label(
-    WinProbability = "Win Probability",
-    PredictedWinner = "Predicted Winner",
-    PredictedMargin = "Predicted Margin"
+    match_time = "Date",
+    round_number = "Round",
+    home_team_name = "Home",
+    away_team_name = "Away",
+    venue_name = "Venue",
+    HomeWin = "Home Win",
+    HomeWin_predicted = "Home Probability"
   ) %>% 
   tab_header(
-    title = "2023 AFL Men's Round Predictions"
+    title = "2022-2023 NBL Men's Match Predictions",
+    subtitle = paste0("Model Accuracy: ", scales::percent(mod_acc, accuracy=0.1))
   ) %>% 
-   tab_style(
-      style = list(
-        cell_text(color = "#3a3d42", weight = "bold")
-      ),
-      locations = cells_body(
-        columns = PredictedWinner
-      )
-    ) %>% 
-  gt_theme()
-
-tab
-
+  gt_theme() %>% 
+  tab_options(table.width = pct(100))
 ```
+
+:::
