@@ -75,6 +75,7 @@ read_from_rel <- function(file_name) {
 }
 
 dat <- read_from_rel("match_result_predictions")
+# saveRDS(dat, "pages/nbl_preds_df.rds")
 ```
 
 
